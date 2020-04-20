@@ -1,0 +1,56 @@
+.TH LIBAXL_REQUEST_KILL_CLIENT 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_KILL_CLIENT - Kill an X client
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_KILL_CLIENT 113
+struct libaxl_request_kill_client {
+        uint8_t     \fIopcode\fP;
+        uint8_t     \fI__pad\fP;
+        uint16_t    \fI_request_length\fP;
+        libaxl_id_t \fIresource\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall close down the client
+that created the resource specified in the
+.I resource
+field, if resource exists. If the client has
+already terminated in either
+.I LIBAXL_RETAIN_PERMANENT
+or
+.I LIBAXL_RETAIN_TEMPORARY
+mode, all its resources are destroyed.
+.PP
+If the value
+.I LIBAXL_ALL_TEMPORARY
+is specified in the
+.I resource
+field, all resources of all clients that
+have terminated in
+.I LIBAXL_RETAIN_TEMPORARY
+mode are destroyed.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_KILL_CLIENT
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+The value specified in the
+.I resource
+field falls outside the range of accepted values.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_SET_CLOSE_DOWN_MODE (3)

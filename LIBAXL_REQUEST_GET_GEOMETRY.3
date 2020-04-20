@@ -1,0 +1,87 @@
+.TH LIBAXL_REQUEST_GET_GEOMETRY 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_GET_GEOMETRY - Get a drawable's position, size, depth, and root
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_GET_GEOMETRY 14
+struct libaxl_request_get_geometry {
+        uint8_t           \fIopcode\fP;
+        uint8_t           \fI__pad\fP;
+        uint16_t          \fI_request_length\fP;
+        libaxl_drawable_t \fIdrawable\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the position,
+size, depth, and root of the drawable (window
+or pixmap) whose ID is specified in the
+.I drawable
+field.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_GET_GEOMETRY
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_DRAWABLE (3)
+The specified drawable ID does not exist.
+.SH REPLIES
+.nf
+struct libaxl_reply_get_geometry {
+        uint8_t         \fI__one\fP;
+        uint8_t         \fIdepth\fP;
+        uint16_t        \fIsequence_number\fP;
+        uint32_t        \fI_reply_length\fP;
+        libaxl_window_t \fIroot\fP;
+        int16_t         \fIx\fP;
+        int16_t         \fIy\fP;
+        uint16_t        \fIwidth\fP;
+        uint16_t        \fIheight\fP;
+        uint16_t        \fIborder_width\fP;
+        uint8_t         \fI__unused\fP[10];
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_get_geometry"
+with the
+.I root
+field set to the root window in the screen
+that the drawable is associated with, the
+.I depth
+(bits per pixel) field to the drawable's
+depth, the
+.I x
+and
+.I y
+fields to the number of pixels is the window
+is right of and below, respectively, of the
+window's parent's top left corner, or to 0
+if the drawable is a pixmap, the
+.I width
+and
+.I height
+fields to the drawable's width and height
+(excluding the border), respectively, in
+pixels, and the
+.I border_width
+field to the window's border-width or to
+0 of the drawable is a pixmap.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_CONFIGURE_WINDOW (3),
+.BR LIBAXL_REQUEST_GET_WINDOW_ATTRIBUTES (3),
+.BR LIBAXL_REQUEST_GET_PROPERTY (3),
+.BR LIBAXL_REQUEST_LIST_PROPERTIES (3),
+.BR LIBAXL_REQUEST_TRANSLATE_COORDINATES (3)

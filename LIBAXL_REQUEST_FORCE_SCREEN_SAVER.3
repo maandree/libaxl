@@ -1,0 +1,56 @@
+.TH LIBAXL_REQUEST_FORCE_SCREEN_SAVER 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_FORCE_SCREEN_SAVER - Activate or deactivate screen-saver
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_FORCE_SCREEN_SAVER 115
+struct libaxl_request_force_screen_saver {
+        uint8_t  \fIopcode\fP;
+        uint8_t  \fImode\fP;
+        uint16_t \fI_request_length\fP;
+};
+.fi
+.SH DESCRIPTION
+If the value of the
+.I mode
+field is
+.IR LIBAXL_ACTIVATE ,
+the screen-saver is activated, even if has been
+disabled with a timeout value of zero, unless
+the screen-saver is already active.
+.PP
+If the value of the
+.I mode
+field is instead
+.IR LIBAXL_RESET ,
+the screen-saver is deactivated (if currently running)
+and the activation timer is reset to its initial
+state (as if device input had just been received).
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_FORCE_SCREEN_SAVER
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+The value of the
+.I mode
+field is neither
+.I LIBAXL_ACTIVATE
+nor
+.IR LIBAXL_RESET .
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_SET_SCREEN_SAVER (3),
+.BR LIBAXL_REQUEST_GET_SCREEN_SAVER (3)

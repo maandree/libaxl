@@ -1,0 +1,35 @@
+.TH LIBAXL_REQUEST_GRAB_SERVER 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_GRAB_SERVER - Disable processing for other connections
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_GRAB_SERVER 36
+struct libaxl_request_grab_server {
+        uint8_t  \fIopcode\fP;
+        uint8_t  \fI__pad\fP;
+        uint16_t \fI_request_length\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall disable processing of
+requests and close-downs on all other connections.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_GRAB_SERVER
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+None.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_UNGRAB_SERVER (3)

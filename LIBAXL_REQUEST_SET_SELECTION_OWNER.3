@@ -1,0 +1,85 @@
+.TH LIBAXL_REQUEST_SET_SELECTION_OWNER 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_SET_SELECTION_OWNER - Change ownership of a selection
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_SET_SELECTION_OWNER 22
+struct libaxl_request_set_selection_owner {
+        uint8_t            \fIopcode\fP;
+        uint8_t            \fI__pad\fP;
+        uint16_t           \fI_request_length\fP;
+        libaxl_window_t    \fIowner\fP;
+        libaxl_atom_t      \fIselection\fP;
+        libaxl_timestamp_t \fItime\fP;
+};
+.fi
+.SH DESCRIPTION
+This request changes the owner window, and last-change
+time of the selection specified in the
+.I selection
+field to the window and time specifed in the
+.I owner
+and
+.I time
+fields, and the owner of the selection to the client
+making the request. However the request has no effect
+if the request new last-change time is less than the
+current last-change time or greater than the current
+time according to the server.
+.PP
+The constant
+.I LIBAXL_CURRENT_TIME
+can be specified in the
+.I time
+field for the current server time.
+.PP
+If the constant
+.I LIBAXL_NONE
+is specified in the
+.I owner
+field, the owner window and the owner are both set to
+.I LIBAXL_NONE
+(none).
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_SET_SELECTION_OWNER
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.PP
+If the new owner is not the same as the
+current owner, and the current owner is not
+.BR LIBAXL_NONE ,
+a
+.BR LIBAXL_EVENT_SELECTION_CLEAR (3)
+event is sent to the current owner.
+.PP
+If the owner of a selection is terminated,
+or the owner window is destroyed, the owner
+and owner window revers to
+.BR LIBAXL_NONE ,
+but the last-change time remains as is.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.TP
+.BR LIBAXL_ERROR_ATOM (3)
+The specified atom ID does not exist.
+.SH REPLIES
+None.
+.SH NOTES
+Selections are global to the display.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_GET_SELECTION_OWNER (3),
+.BR LIBAXL_REQUEST_CONVERT_SELECTION (3),
+.BR LIBAXL_EVENT_SELECTION_REQUEST (3),
+.BR LIBAXL_EVENT_SELECTION_CLEAR (3)

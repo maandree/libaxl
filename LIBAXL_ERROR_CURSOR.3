@@ -1,0 +1,54 @@
+.TH LIBAXL_ERROR_CURSOR 3 libaxl
+.SH NAME
+LIBAXL_ERROR_CURSOR - Invalid cursor ID in request
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_ERROR_CURSOR 6
+struct libaxl_error_cursor {
+        uint8_t  \fI__zero\fP;
+        uint8_t  \fIcode\fP;
+        uint16_t \fIsequence_number\fP;
+        uint32_t \fIbad_resource_id\fP;
+        uint16_t \fIminor_opcode\fP;
+        uint8_t  \fImajor_opcode\fP;
+        uint8_t  \fI__unused\fP[21];
+};
+.fi
+.SH DESCRIPTION
+The request contains an invalid cursor ID.
+.PP
+The value of the
+.I __zero
+field is 0
+.RI ( LIBAXL_ERROR ),
+which signifies that the received message is an
+error message. The value of the
+.I code
+field is
+.I LIBAXL_ERROR_CURSOR
+to signify that the error is of the error type
+described in this document.
+.PP
+The value of the
+.I sequence_number
+field is the sequence number returned by the
+.BR libaxl_send_request (3)
+function for the failed request.
+.PP
+The value of the
+.I bad_resource_id
+field is the invalid cursor ID used in the
+failed request.
+.PP
+The value of the
+.I major_opcode
+and
+.I minor_opcode
+fields are the major and minor (if any) operation
+codes in the failed request.
+.PP
+Other fields are unused and may have any value.
+.SH SEE ALSO
+.BR LIBAXL_ERROR (3)

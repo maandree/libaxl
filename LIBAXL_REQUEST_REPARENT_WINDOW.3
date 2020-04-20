@@ -1,0 +1,73 @@
+.TH LIBAXL_REQUEST_REPARENT_WINDOW 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_REPARENT_WINDOW - Change parent of a window
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_REPARENT_WINDOW 7
+struct libaxl_request_reparent_window {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+        libaxl_window_t \fIparent\fP;
+        int16_t         \fIx\fP;
+        int16_t         \fIy\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall generate an
+.BR LIBAXL_REQUEST_UNMAP_WINDOW (3)
+request, for the window whose ID is specified
+in the
+.I window
+field, and move the window in the window hierarchy
+to be a child of the window whose ID is specified
+in the
+.I parent
+field send its position to the number of pixels
+specified in the
+.I x
+field left of, and the number of pixels specified
+in the below the new parent window's top left
+corner. The window is placed on top in the stacking
+order with respect to the new siblings. The display
+server shall then generate a
+.BR LIBAXL_EVENT_REPARENT_NOTIFY (3)
+event, and then, if the window was mapped at the
+time of the request, generate a
+.BR LIBAXL_REQUEST_MAP_WINDOW (3)
+request.
+.PP
+Normal exposure processing on formerly
+obscured windows is performed.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_REPARENT_WINDOW
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_MATCH (3)
+The new parent is not on the same screen as
+the old parent, the new parent is the window
+itself, the new parent is an inferior of the
+window, the new parent is an input-only window
+but the window is not, or the window has an
+.I LIBAXL_PARENT_RELATIVE
+background and the new parent does not have
+the same depth as the window.
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+A specified window ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3)

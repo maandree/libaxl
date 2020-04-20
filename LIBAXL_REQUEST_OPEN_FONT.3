@@ -1,0 +1,269 @@
+.TH LIBAXL_REQUEST_OPEN_FONT 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_OPEN_FONT - Load a font
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_OPEN_FONT 45
+struct libaxl_request_open_font {
+        uint8_t       \fIopcode\fP;
+        uint8_t       \fI__pad1\fP;
+        uint16_t      \fI_request_length\fP;
+        libaxl_font_t \fIfid\fP;
+        uint16_t      \fIlength_of_name\fP;
+        uint16_t      \fI__pad2\fP;
+        char         *\fIname\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall load a font matching
+the font name pattern specified in the
+.I name
+field, which shall be encoded in ISO Latin-1 and
+is case insensitive, whose length is specified
+in the
+.I length_of_name
+field. The loaded font shall be given the
+ID specified in the
+.I fid
+field, which shall be an unused ID generated
+with the
+.BR libaxl_generate_id (3)
+function.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_OPEN_FONT
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.PP
+If the
+.B ?\,
+character is used in the font name pattern,
+it will matching any single character, the
+.B *
+character will match any number of characters. A
+structured format for font names is specified in the
+X.Org standard X Logical Font Description Conventions.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_ALLOC (3)
+The display server failed to allocate
+enough memory to fulfil the request.
+.TP
+.BR LIBAXL_ERROR_ID_CHOICE (3)
+The specified ID for the font
+.RI ( fid )
+is outside the range of IDs allocated to
+the client or is already in use. Use the
+.BR libaxl_generate_id (3)
+function to avoid this error.
+.TP
+.BR LIBAXL_ERROR_NAME (3)
+The font name in the request
+.RI ( name )
+is invalid: the font does not exist.
+.SH REPLIES
+None.
+.SH EXTENDED DESCRIPTION
+.SS Font names according to the X Logical Font Description Conventions
+Font names are case insensitive, must not e longer than 255 characters,
+and consists only of ISO 8859-1 graphic characters but not
+.B ?\,
+(question mark),
+.B *\,
+(asterisk),
+.B ,\,
+(comma), or
+.B \(dq\,
+(quotation mark).
+.PP
+Private fonts shall not conform fully to the following
+specification. Fonts from X-registered foundaries shall
+have a name with the following format:
+.nf
+	\fB\(dq-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s\(dq,\fP
+		<\fIFoundary\fP>\fB,\fP
+		<\fIFamily name\fP>\fB,\fP
+		<\fIWeight name\fP>\fB,\fP
+		<\fISlant\fP>\fB,\fP
+		<\fISet-width name\fP>\fB,\fP
+		<\fIAdditional style name\fP>\fB,\fP
+		<\fIPixel size\fP>\fB,\fP
+		<\fIPoint size\fP>\fB,\fP
+		<\fIX-resolution\fP>\fB,\fP
+		<\fIY-resolution\fP>\fB,\fP
+		<\fISpacing\fP>\fB,\fP
+		<\fIAverage width\fP>\fB,\fP
+		<\fICharacter-set registry\fP>\fB,\fP
+		<\fICharacter-set encoding\fP>
+.fi
+optionally prefixed with a
+.B +\,
+(plus) followed by a X Logical Font Description version number that
+defines an extension to the font name syntax. The values of the fields
+may not contain the
+.B -\,
+(hyphen) character.
+.PP
+The fields in font names are:
+.TP
+.I Foundary
+The font's foundary. More information can be
+found in the X Logical Font Description specification.
+.TP
+.I Family name
+The typeface family name, this is what the typical
+user knows as the font name.
+.TP
+.I Weight name
+The font's typographic weight (nomincal blackness),
+for example
+.BR Medium ,
+.BR Bold ,
+or
+.BR DemiBold .
+.TP
+.I Slant
+Either
+.B R
+for roman,
+.B I
+for italic,
+.B O
+for oblique,
+.B RI
+for reverse italic,
+.B RO
+for reverse oblique,
+.B OT
+for other, or a numberic value
+for polymorphic fonts.
+.TP
+.I Set-width name
+The font's typographic proportionate width,
+for example
+.BR Normal ,
+.BR Condensed ,
+.BR Narrow ,
+or
+.BR "Double Wide" ,
+or
+.B 0
+if the font is polymorphic.
+.TP
+.I Additional style name
+A string that identifies additional typographic
+style information, for example
+.BR Serif ,
+.BR "Sans Serif" ,
+.BR Informal ,
+or
+.BR Decorated .
+The
+.B [
+character anywhere in the field is used to
+indicate a polymorphic font.
+.TP
+.I Pixel size
+The height of the font, in whole pixels.
+This is not necessarily equivalent to the
+height of the font bounding box.
+.B 0
+if the font is scalable. Alternatively the
+field may be a transformation matrix.
+.TP
+.I Point size
+The height of the font, in whole decipixels.
+This is not necessarily equivalent to the
+height of the font bounding box.
+.B 0
+if the font is scalable. Alternatively the
+field may be a transformation matrix.
+
+722.7\ decipoints (72.27\ points) is equal
+to 1\ inch or 2.54\ cm.
+.TP
+.I X-resolution
+Unsigned integer that give the horizontal
+resolution, measured in dots (or pixels) per
+inch, for which the font was designed.
+.B 0
+if the font is scalable font.
+.TP
+.I Y-resolution
+Unsigned integer that give the vertical
+resolution, measured in dots (or pixels) per
+inch, for which the font was designed.
+.B 0
+if the font is scalable font.
+.TP
+.I Spacing
+The escapement class of the font:
+.B P
+for proportional (variable pitch), 
+.B M
+for monospace (fixed pitch), or
+.B C
+for charcell (a special monospaced font that
+conforms to the traditional data-processing
+character cell font model).
+.TP
+.I Average width
+The unweighted arithmetic mean of the absolute
+value of the width of each glyph in the font,
+measured in decipixels. Prefixed with a
+.B ~
+(tilde) if the dominant writing direction for
+the font is right-to-left.
+.B 0
+if the font is scalable (without potential
+.BR ~ -prefix).
+.TP
+.IR "Character-set registry" ", " "Character-set encoding"
+The registration character-set. More information
+can be found in the X Logical Font Description
+specification.
+
+.I Character-set encoding
+can be suffixed with a subset hint. More information
+can be found in the X Logical Font Description
+specification.
+.PP
+As an example of a font name pattern,
+.B "-misc-fixed-medium-r-normal-*-12-*-*-*-c-*-iso10646-1"
+is widely installed and is a good font for terminals. Its
+foundary is
+.BR misc ,
+its family name is
+.BR fixed ,
+it is
+.B medium
+(weight name),
+.B roman
+(slant),
+.B normal
+(set-width name),
+.B 12
+pixels high (pixel size),
+monospaced with standard typewriter character cell model
+.RB ( c )
+(spacing),
+and uses the Universal Character Set
+.B (iso10646-1)
+(character-set registry and character-set encoding).
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_CLOSE_FONT (3),
+.BR LIBAXL_REQUEST_QUERY_FONT (3),
+.BR LIBAXL_REQUEST_QUERY_TEXT_EXTENTS (3),
+.BR LIBAXL_REQUEST_LIST_FONTS (3),
+.BR LIBAXL_REQUEST_LIST_FONTS_WITH_INFO (3),
+.BR LIBAXL_REQUEST_SET_FONT_PATH (3),
+.BR LIBAXL_REQUEST_GET_FONT_PATH (3)

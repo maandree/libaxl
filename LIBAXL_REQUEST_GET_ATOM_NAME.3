@@ -1,0 +1,60 @@
+.TH LIBAXL_REQUEST_GET_ATOM_NAME 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_GET_ATOM_NAME - Get the name of an atom
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_GET_ATOM_NAME 17
+struct libaxl_request_get_atom_name {
+        uint8_t       \fIopcode\fP;
+        uint8_t       \fI__pad\fP;
+        uint16_t      \fI_request_length\fP;
+        libaxl_atom_t \fIatom\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the name
+of the atom whose ID is specified in the
+.I atom
+field.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_GET_ATOM_NAME
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_ATOM (3)
+The specified atom ID does not exist.
+.SH REPLIES
+.nf
+struct libaxl_reply_get_atom_name {
+        uint8_t  \fI__one\fP;
+        uint8_t  \fI__pad\fP;
+        uint16_t \fIsequence_number\fP;
+        uint32_t \fI_reply_length\fP;
+        uint16_t \fIlength_of_name\fP;
+        uint8_t  \fI__unused\fP[22];
+        char    *\fIname\fP;
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_get_atom_name"
+with the
+.I name
+field set to the name of the atom and the
+.I length_of_name
+field set to the length of the name.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_INTERN_ATOM (3)

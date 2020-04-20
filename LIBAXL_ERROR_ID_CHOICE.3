@@ -1,0 +1,54 @@
+.TH LIBAXL_ERROR_ID_CHOICE 3 libaxl
+.SH NAME
+LIBAXL_ERROR_ID_CHOICE - Invalid resource ID choice
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_ERROR_ID_CHOICE 14
+struct libaxl_error_id_choice {
+        uint8_t  \fI__zero\fP;
+        uint8_t  \fIcode\fP;
+        uint16_t \fIsequence_number\fP;
+        uint32_t \fIbad_resource_id\fP;
+        uint16_t \fIminor_opcode\fP;
+        uint8_t  \fImajor_opcode\fP;
+        uint8_t  \fI__unused\fP[21];
+};
+.fi
+.SH DESCRIPTION
+The value for a resource ID was outside the range
+allocated to the client or is already in use.
+.PP
+The value of the
+.I __zero
+field is 0
+.RI ( LIBAXL_ERROR ),
+which signifies that the received message is an
+error message. The value of the
+.I code
+field is
+.I LIBAXL_ERROR_ID_CHOICE
+to signify that the error is of the error type
+described in this document.
+.PP
+The value of the
+.I sequence_number
+field is the sequence number returned by the
+.BR libaxl_send_request (3)
+function for the failed request.
+.PP
+The value of the
+.I bad_resource_id
+field shall be the chosen resource ID.
+.PP
+The value of the
+.I major_opcode
+and
+.I minor_opcode
+fields are the major and minor (if any) operation
+codes in the failed request.
+.PP
+Other fields are unused and may have any value.
+.SH SEE ALSO
+.BR LIBAXL_ERROR (3)

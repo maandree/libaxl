@@ -1,0 +1,62 @@
+.TH LIBAXL_REQUEST_GET_SELECTION_OWNER 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_GET_SELECTION_OWNER - Get the owner of a selection
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_GET_SELECTION_OWNER 23
+struct libaxl_request_get_selection_owner {
+        uint8_t       \fIopcode\fP;
+        uint8_t       \fI__pad\fP;
+        uint16_t      \fI_request_length\fP;
+        libaxl_atom_t \fIselection\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the ID of
+the window that owns the selection whose
+atom ID is specified in the
+.I selection
+field.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_GET_SELECTION_OWNER
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_ATOM (3)
+The specified atom ID does not exist.
+.SH REPLIES
+.nf
+struct libaxl_reply_get_selection_owner {
+        uint8_t         \fI__one\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fIsequence_number\fP;
+        uint32_t        \fI_reply_length\fP;
+        libaxl_window_t \fIowner\fP;
+        uint8_t         \fI__unused\fP[20];
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_get_selection_owner"
+with the
+.I owner
+field set to the ID of the window that owns
+the specified selection, or
+.I LIBAXL_NONE
+if the selection does not have an owner.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_SET_SELECTION_OWNER (3),
+.BR LIBAXL_REQUEST_CONVERT_SELECTION (3)

@@ -1,0 +1,42 @@
+.TH LIBAXL_REQUEST_FREE_GC 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_FREE_GC - Delete reference to a graphics context
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_FREE_GC 60
+struct libaxl_request_free_gc {
+        uint8_t           \fIopcode\fP;
+        uint8_t           \fI__pad\fP;
+        uint16_t          \fI_request_length\fP;
+        libaxl_gcontext_t \fIgc\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall remove the association
+between the resource ID and deallocate the
+graphics context.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_FREE_GC
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.TP
+.BR LIBAXL_ERROR_GC (3)
+The specified graphics context ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_CREATE_GC (3)

@@ -1,0 +1,63 @@
+.TH LIBAXL_REQUEST_LIST_PROPERTIES 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_LIST_PROPERTIES - Get all properties of a window
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_LIST_PROPERTIES 21
+struct libaxl_request_list_properties {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return a list of all
+properties (sans values) define on the window
+whose ID is specified in the
+.I window
+field.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_LIST_PROPERTIES
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+.nf
+struct libaxl_reply_list_properties {
+        uint8_t        \fI__one\fP;
+        uint8_t        \fI__pad\fP;
+        uint16_t       \fIsequence_number\fP;
+        uint32_t       \fI_reply_length\fP;
+        uint16_t       \fIlength_of_atoms\fP;
+        uint8_t        \fI__unused\fP[22];
+        libaxl_atom_t *\fIatoms\fP;
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_list_properties"
+with the
+.I atoms
+field set to the list of properties name,
+returns as atoms, of the
+.I length_of_atoms
+field set to the number of atoms in the list.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_GET_PROPERTY (3),
+.BR LIBAXL_REQUEST_GET_ATOM_NAME (3)

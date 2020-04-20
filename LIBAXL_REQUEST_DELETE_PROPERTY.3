@@ -1,0 +1,53 @@
+.TH LIBAXL_REQUEST_DELETE_PROPERTY 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_DELETE_PROPERTY - Remove a property from a window
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_DELETE_PROPERTY 18
+struct libaxl_request_delete_property {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+        libaxl_atom_t   \fIproperty\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall remove the property
+specified in the
+.I property
+field from the window whose ID is specified in
+the
+.I window
+field, and generate a [TODO PropertyNotify]
+event on the window.
+.PP
+This request has no effect if the property
+does not exist.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_DELETE_PROPERTY
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.TP
+.BR LIBAXL_ERROR_ATOM (3)
+The specified atom ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_CHANGE_PROPERTY (3),
+.BR LIBAXL_REQUEST_GET_PROPERTY (3),
+.BR LIBAXL_REQUEST_LIST_PROPERTIES (3)

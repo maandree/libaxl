@@ -1,0 +1,47 @@
+.TH LIBAXL_REQUEST_FREE_CURSOR 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_FREE_CURSOR - Delete reference to a cursor
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_FREE_CURSOR 95
+struct libaxl_request_free_cursor {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_cursor_t \fIcursor\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall remove the association
+between the resource ID, which is specified in
+the
+.I cursor
+field, and the cursor.
+.PP
+When no resource references the cursor, it will
+be deallocated.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_FREE_CURSOR
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.TP
+.BR LIBAXL_ERROR_CURSOR (3)
+The specified cursor ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_CREATE_CURSOR (3)

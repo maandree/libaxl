@@ -1,0 +1,51 @@
+.TH LIBAXL_REQUEST_UNMAP_SUBWINDOWS 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_UNMAP_SUBWINDOWS - Unmap a window's children
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_UNMAP_SUBWINDOWS 11
+struct libaxl_request_unmap_subwindows {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall unmap all mapped
+children of the window whose resource ID is
+specified in the
+.I window
+field, but not the specified window itself,
+and generate a
+.BR LIBAXL_EVENT_UNMAP_NOTIFY (3)
+event for each unmapped window.
+.PP
+Windows are unmapped in bottom-to-top
+stacking order.
+.PP
+Normal exposure processing on formerly
+obscured windows is performed.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_UNMAP_SUBWINDOWS
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_UNMAP_WINDOW (3),
+.BR LIBAXL_REQUEST_MAP_SUBWINDOWS (3)

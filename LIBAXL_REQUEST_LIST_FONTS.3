@@ -1,0 +1,100 @@
+.TH LIBAXL_REQUEST_LIST_FONTS 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_LIST_FONTS - List fonts
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_LIST_FONTS 49
+struct libaxl_request_open_font {
+        uint8_t  \fIopcode\fP;
+        uint8_t  \fI__pad\fP;
+        uint16_t \fI_request_length\fP;
+        uint16_t \fImax_names\fP;
+        uint16_t \fIlength_of_pattern\fP;
+        char    *\fIpattern\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall list all fonts
+except no more than the number specified in the
+.I max_names
+field, matching the font name pattern specified
+in the
+.I pattern
+field, which shall be encoded in ISO Latin-1 and
+is case insensitive, whose length is specified
+in the
+.I length_of_name
+field.
+.B ?\,
+and
+.B *
+in the font name pattern are recognised as
+wildcards, see
+.BR LIBAXL_REQUEST_OPEN_FONT (3)
+for more information.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_LIST_FONTS
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.PP
+If the
+.B ?\,
+character is used in the font name pattern,
+it will matching any single character, the
+.B *
+character will match any number of characters. A
+structured format for font names is specified in the
+X.Org standard X Logical Font Description Conventions.
+.SH ERRORS
+None.
+.SH REPLIES
+.nf
+struct libaxl_str8 {
+	uint8_t \fIlength\fP;
+	char   *\fIname\fP;
+};
+
+struct libaxl_reply_list_fonts {
+        uint8_t             \fI__one\fP;
+        uint8_t             \fI__pad\fP;
+        uint16_t            \fIsequence_number\fP;
+        uint32_t            \fI_reply_length\fP;
+        uint16_t            \fInumber_of_names\fP;
+        uint8_t             \fI__unused\fP[22];
+        struct libaxl_str8 *\fInames\fP;
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_intern_atom"
+with the
+.I names
+field set to the list of matching font names and the
+.I number_of_names
+field set to the number of font names in this list.
+For each element in the
+.I names
+field, the
+.I name
+subfield is set to the lower case name of the font
+and the
+.I length
+subfield is set to the length of the name.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_LIST_FONTS_WITH_INFO (3),
+.BR LIBAXL_REQUEST_OPEN_FONT (3),
+.BR LIBAXL_REQUEST_QUERY_FONT (3),
+.BR LIBAXL_REQUEST_QUERY_TEXT_EXTENTS (3),
+.BR LIBAXL_REQUEST_SET_FONT_PATH (3),
+.BR LIBAXL_REQUEST_GET_FONT_PATH (3)

@@ -1,0 +1,64 @@
+.TH LIBAXL_REQUEST_CIRCULATE_WINDOW 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_CIRCULATE_WINDOW - Rotation of window Z-order
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_CIRCULATE_WINDOW 13
+struct libaxl_request_circulate_window {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fIdirection\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+If the value of the
+.I direction
+field is
+.IR LIBAXL_RAISE_LOWEST ,
+the child window, of the window specified in the
+.I window
+field, on the bottom is moved to the top
+of the stack. If the value of the
+.I direction
+field is
+.IR LIBAXL_LOWER_HIGHEST ,
+the child window, of the window specified in the
+.I window
+field, on the top is moved to the bottom.
+.PP
+If another client is listening for [TODO SubstructureRedirect]
+events on the specified window, a [TODO CirculateRequest]
+request is sent to the client instead, and no further
+processing is performed. If however, no such client, other
+than the sender, exists, a [TODO CirculateNotify]
+event is generated if the window is actually restacked.
+.PP
+Normal exposure processing on formerly
+obscured windows is performed.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_CIRCULATE_WINDOW
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+The value of the
+.I direction
+field is invalid.
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3)

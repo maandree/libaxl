@@ -1,0 +1,9 @@
+*\#*
+*~
+*.o
+*.a
+*.su
+*.so
+*.so.*
+*.lo
+/libaxl-*-structs.h

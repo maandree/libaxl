@@ -1,0 +1,54 @@
+.TH LIBAXL_ERROR_ALLOC 3 libaxl
+.SH NAME
+LIBAXL_ERROR_ALLOC - Resource allocation failure
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_ERROR_ALLOC 11
+struct libaxl_error_alloc {
+        uint8_t  \fI__zero\fP;
+        uint8_t  \fIcode\fP;
+        uint16_t \fIsequence_number\fP;
+        uint32_t \fI__unused1\fP;
+        uint16_t \fIminor_opcode\fP;
+        uint8_t  \fImajor_opcode\fP;
+        uint8_t  \fI__unused\fP[21];
+};
+.fi
+.SH DESCRIPTION
+The display server failed to allocate enough
+memory to fulfil the request.
+.PP
+This error can be generated for all requests.
+It is however unspecified how the server shall
+behave when it runs out of memory.
+.PP
+The value of the
+.I __zero
+field is 0
+.RI ( LIBAXL_ERROR ),
+which signifies that the received message is an
+error message. The value of the
+.I code
+field is
+.I LIBAXL_ERROR_ALLOC
+to signify that the error is of the error type
+described in this document.
+.PP
+The value of the
+.I sequence_number
+field is the sequence number returned by the
+.BR libaxl_send_request (3)
+function for the failed request.
+.PP
+The value of the
+.I major_opcode
+and
+.I minor_opcode
+fields are the major and minor (if any) operation
+codes in the failed request.
+.PP
+Other fields are unused and may have any value.
+.SH SEE ALSO
+.BR LIBAXL_ERROR (3)

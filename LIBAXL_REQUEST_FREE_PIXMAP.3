@@ -1,0 +1,47 @@
+.TH LIBAXL_REQUEST_FREE_PIXMAP 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_FREE_PIXMAP - Delete reference to a pixmap
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_FREE_PIXMAP 54
+struct libaxl_request_free_pixmap {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_pixmap_t \fIpixmap\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall remove the association
+between the resource ID, which is specified in
+the
+.I pixmap
+field, and the pixmap.
+.PP
+When no resource references the pixmap, it will
+be deallocated.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_FREE_PIXMAP
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.TP
+.BR LIBAXL_ERROR_PIXMAP (3)
+The specified pixmap ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_CREATE_PIXMAP (3)

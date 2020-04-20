@@ -1,0 +1,165 @@
+.TH LIBAXL_REQUEST_INTERN_ATOM 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_INTERN_ATOM - Get atom ID from atom name
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_INTERN_ATOM 16
+struct libaxl_request_intern_atom {
+        uint8_t  \fIopcode\fP;
+        uint8_t  \fIonly_if_exists\fP;
+        uint16_t \fI_request_length\fP;
+        uint16_t \fIlength_of_name\fP;
+        uint8_t  \fI__pad\fP;
+        char    *\fIname\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the ID of
+the atom whose name is specified in the
+.I name
+field. The length of the name shall be
+specified in the
+.I length_of_name
+field. If the atom does not already exist
+it shall be created if the
+.I only_if_exists
+field is set to 0.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_INTERN_ATOM
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_ALLOC (3)
+The display server failed to allocate
+enough memory to create the atom.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+The request contains a value that falls
+outside the range of accepted values.
+.SH REPLIES
+.nf
+struct libaxl_reply_intern_atom {
+        uint8_t       \fI__one\fP;
+        uint8_t       \fI__pad\fP;
+        uint16_t      \fIsequence_number\fP;
+        uint32_t      \fI_reply_length\fP;
+        libaxl_atom_t \fIatom\fP;
+        uint8_t       \fI__unused\fP[20];
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_intern_atom"
+with the
+.I atom
+field set to the ID of the atom, or to
+.I LIBAXL_NONE
+if the atom does not exist (and the
+.I only_if_exists
+field in the request was not 0).
+.SH NOTES
+An atom is a ISO Latin-1 encoded, case-sensitive
+string that has been integerised. X predefines
+some of the important atoms. The predefined atoms
+can be accessed with the following constants,
+which are named as the atoms themselves except
+with the
+.B LIBAXL_ATOM_
+prefix:
+
+.IR LIBAXL_ATOM_ARC ,
+.IR LIBAXL_ATOM_ATOM ,
+.IR LIBAXL_ATOM_BITMAP ,
+.IR LIBAXL_ATOM_CAP_HEIGHT ,
+.IR LIBAXL_ATOM_CARDINAL ,
+.IR LIBAXL_ATOM_COLORMAP ,
+.IR LIBAXL_ATOM_COPYRIGHT ,
+.IR LIBAXL_ATOM_CURSOR ,
+.IR LIBAXL_ATOM_CUT_BUFFER0 ,
+.IR LIBAXL_ATOM_CUT_BUFFER1 ,
+.IR LIBAXL_ATOM_CUT_BUFFER2 ,
+.IR LIBAXL_ATOM_CUT_BUFFER3 ,
+.IR LIBAXL_ATOM_CUT_BUFFER4 ,
+.IR LIBAXL_ATOM_CUT_BUFFER5 ,
+.IR LIBAXL_ATOM_CUT_BUFFER6 ,
+.IR LIBAXL_ATOM_CUT_BUFFER7 ,
+.IR LIBAXL_ATOM_DRAWABLE ,
+.IR LIBAXL_ATOM_END_SPACE ,
+.IR LIBAXL_ATOM_FAMILY_NAME ,
+.IR LIBAXL_ATOM_FONT ,
+.IR LIBAXL_ATOM_FONT_NAME ,
+.IR LIBAXL_ATOM_FULL_NAME ,
+.IR LIBAXL_ATOM_INTEGER ,
+.IR LIBAXL_ATOM_ITALIC_ANGLE ,
+.IR LIBAXL_ATOM_MAX_SPACE ,
+.IR LIBAXL_ATOM_MIN_SPACE ,
+.IR LIBAXL_ATOM_NORM_SPACE ,
+.IR LIBAXL_ATOM_NOTICE ,
+.IR LIBAXL_ATOM_PIXMAP ,
+.IR LIBAXL_ATOM_POINT ,
+.IR LIBAXL_ATOM_POINT_SIZE ,
+.IR LIBAXL_ATOM_PRIMARY ,
+.IR LIBAXL_ATOM_QUAD_WIDTH ,
+.IR LIBAXL_ATOM_RECTANGLE ,
+.IR LIBAXL_ATOM_RESOLUTION ,
+.IR LIBAXL_ATOM_RESOURCE_MANAGER ,
+.IR LIBAXL_ATOM_RGB_BEST_MAP ,
+.IR LIBAXL_ATOM_RGB_BLUE_MAP ,
+.IR LIBAXL_ATOM_RGB_COLOR_MAP ,
+.IR LIBAXL_ATOM_RGB_DEFAULT_MAP ,
+.IR LIBAXL_ATOM_RGB_GRAY_MAP ,
+.IR LIBAXL_ATOM_RGB_GREEN_MAP ,
+.IR LIBAXL_ATOM_RGB_RED_MAP ,
+.IR LIBAXL_ATOM_SECONDARY ,
+.IR LIBAXL_ATOM_STRIKEOUT_ASCENT ,
+.IR LIBAXL_ATOM_STRIKEOUT_DESCENT ,
+.IR LIBAXL_ATOM_STRING ,
+.IR LIBAXL_ATOM_SUBSCRIPT_X ,
+.IR LIBAXL_ATOM_SUBSCRIPT_Y ,
+.IR LIBAXL_ATOM_SUPERSCRIPT_X ,
+.IR LIBAXL_ATOM_SUPERSCRIPT_Y ,
+.IR LIBAXL_ATOM_UNDERLINE_POSITION ,
+.IR LIBAXL_ATOM_UNDERLINE_THICKNESS ,
+.IR LIBAXL_ATOM_VISUALID ,
+.IR LIBAXL_ATOM_WEIGHT ,
+.IR LIBAXL_ATOM_WINDOW ,
+.IR LIBAXL_ATOM_WM_CLASS ,
+.IR LIBAXL_ATOM_WM_CLIENT_MACHINE ,
+.IR LIBAXL_ATOM_WM_COMMAND ,
+.IR LIBAXL_ATOM_WM_HINTS ,
+.IR LIBAXL_ATOM_WM_ICON_NAME ,
+.IR LIBAXL_ATOM_WM_ICON_SIZE ,
+.IR LIBAXL_ATOM_WM_NAME ,
+.IR LIBAXL_ATOM_WM_NORMAL_HINTS ,
+.IR LIBAXL_ATOM_WM_SIZE_HINTS ,
+.IR LIBAXL_ATOM_WM_TRANSIENT_FOR ,
+.IR LIBAXL_ATOM_WM_ZOOM_HINTS ,
+and
+.IR LIBAXL_ATOM_X_HEIGHT .
+.PP
+Atoms remain defined until the server resets.
+\" TODO See Chapter 10, Connection Close
+.PP
+To avoid conflicts with names for atoms, atoms
+that are private to a particular vendor or
+organisation should be prefixed with an underscore
+followed by additional prefixes, which the
+protocol does not specify how they are chosen.
+Atoms that are private to a single application
+or end user, but stored in globally accessible
+locations, should use two leading underscores.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_GET_ATOM_NAME (3)

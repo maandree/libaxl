@@ -1,0 +1,8 @@
+PREFIX    = /usr
+MANPREFIX = $(PREFIX)/share/man
+
+CC = cc
+
+CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE=700 -D_GNU_SOURCE -DNO_LIBERROR
+CFLAGS   = -std=c17 -Wall -g
+#LDFLAGS  = -lerror -lerror-libc

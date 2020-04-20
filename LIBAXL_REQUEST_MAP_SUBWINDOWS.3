@@ -1,0 +1,43 @@
+.TH LIBAXL_REQUEST_MAP_SUBWINDOWS 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_MAP_SUBWINDOWS - Map all subwindows
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_MAP_SUBWINDOWS 9
+struct libaxl_request_map_subwindows {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+This request perform a
+.BR LIBAXL_REQUEST_MAP_WINDOW (3)
+request for all unmap children of the window,
+whose resource ID is specified in the
+.I window
+field, in top-to-bottom stacking order.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_MAP_SUBWINDOWS
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_MAP_WINDOW (3),
+.BR LIBAXL_REQUEST_UNMAP_SUBWINDOWS (3)

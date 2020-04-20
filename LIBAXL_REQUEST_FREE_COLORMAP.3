@@ -1,0 +1,63 @@
+.TH LIBAXL_REQUEST_FREE_COLORMAP 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_FREE_COLORMAP - Delete reference to a colormap
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_FREE_COLORMAP 79
+struct libaxl_request_free_colormap {
+        uint8_t           \fIopcode\fP;
+        uint8_t           \fI__pad\fP;
+        uint16_t          \fI_request_length\fP;
+        libaxl_colormap_t \fIcmap\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall remove the association
+between the resource ID, which is specified in
+the
+.I cmap
+field, and the colormap.
+.PP
+The the colormap is installed for a screen, it
+will be uninstalled.
+.PP
+If the colormap is defined as the colormap for a
+window, the colormap for the window is changed to
+.BR LIBAXL_NONE ,
+and a [TODO ColormapNotify] event
+is generated. (The protocol does not define colors
+displayed for a window with LIBAXL_NONE as the
+colormap).
+.PP
+When no resource references the colormap, it will
+be deallocated.
+.PP
+This request has no effect on a default colormap
+for a screen.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_FREE_COLORMAP
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.TP
+.BR LIBAXL_ERROR_COLORMAP (3)
+The specified colormap ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.RB LIBAXL_REQUEST_COPY_COLORMAP_AND_FREE (3),
+.RB LIBAXL_REQUEST_CREATE_COLORMAP (3),
+.RB LIBAXL_REQUEST_UNINSTALL_COLORMAP(3)

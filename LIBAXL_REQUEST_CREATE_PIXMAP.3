@@ -1,0 +1,88 @@
+.TH LIBAXL_REQUEST_CREATE_PIXMAP 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_CREATE_PIXMAP - Create a pixmap
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_CREATE_PIXMAP 53
+struct libaxl_request_create_pixmap {
+        uint8_t           \fIopcode\fP;
+        uint8_t           \fIdepth\fP;
+        uint16_t          \fI_request_length\fP;
+        libaxl_pixmap_t   \fIpid\fP;
+        libaxl_drawable_t \fIdrawable\fP;
+        uint16_t          \fIwidth\fP;
+        uint16_t          \fIheight\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall create a pixmap, with
+the ID specified in the
+.I pid
+field, which shall be an unused ID generated
+with the
+.BR libaxl_generate_id (3)
+function, for the drawable whose ID is specified
+in the
+.I drawable
+parameter, which may be a input-only window.
+.PP
+The
+.I width
+and the
+.I height
+of the pixmap must be non-zero.
+The
+.I depth
+must be one of the depths supported by the
+root of the drawable specified.
+.PP
+The initial contents of the pixmap are
+undefined.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_CREATE_PIXMAP
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_ALLOC (3)
+The display server failed to allocate
+enough memory to fulfil the request.
+.TP
+.BR LIBAXL_ERROR_DRAWABLE (3)
+The specified drawable ID does not exist.
+.TP
+.BR LIBAXL_ERROR_ID_CHOICE (3)
+The specified ID for the pixmap
+.RI ( pid )
+is outside the range of IDs allocated to
+the client or is already in use. Use the
+.BR libaxl_generate_id (3)
+function to avoid this error.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+.I width
+is zero.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+.I height
+is zero.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+.I depth
+is not a depth supported by the root of the
+specified drawable.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_generate_id (3),
+.BR LIBAXL_REQUEST_FREE_PIXMAP (3)

@@ -1,0 +1,71 @@
+.TH LIBAXL_REQUEST_QUERY_TREE 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_QUERY_TREE - Get root, parent, and children of window
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_QUERY_TREE 15
+struct libaxl_request_query_tree {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the window's,
+whose ID is specified in the
+.I window
+field, root, parent, and immediate children.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_QUERY_TREE
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+.nf
+struct libaxl_reply_query_tree {
+        uint8_t          \fI__one\fP;
+        uint8_t          \fI__pad\fP;
+        uint16_t         \fIsequence_number\fP;
+        uint32_t         \fI_reply_length\fP;
+        libaxl_window_t  \fIroot\fP;
+        libaxl_window_t  \fIparent\fP;
+        uint16_t         \fInumber_of_children\fP;
+        uint8_t          \fI__unused\fP[14];
+        libaxl_window_t *\fIchildren\fP;
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_query_tree"
+with the
+.I root
+field set to the root window, the
+.I parent
+field set to the parent window or to
+.IR LIBAXL_NONE ,
+and the
+.I children
+field set to the immediate child windows in
+bottom-to-top stacking order, and the
+.I number_of_children
+field set to the number if windows returned
+in the
+.I children
+field.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3)

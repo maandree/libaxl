@@ -1,0 +1,103 @@
+.TH LIBAXL_REQUEST_WARP_POINTER 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_WARP_POINTER - Move mouse pointer
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_WARP_POINTER 41
+struct libaxl_request_warp_pointer {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIsrc_window\fP;
+        libaxl_window_t \fIdest_window\fP;
+        int16_t         \fIsrc_x\fP;
+        int16_t         \fIsrc_y\fP;
+        uint16_t        \fIsrc_width\fP;
+        uint16_t        \fIsrc_height\fP;
+        int16_t         \fIdest_x\fP;
+        int16_t         \fIdest_y\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall move the mouse pointer
+to the number pixels specified in the
+.I dest_x
+field right of, and the number pixels specified
+in the
+.I dest_y
+field below its current position if the value
+of the
+.I dest_window
+field is
+.IR LIBAXL_NONE ,
+or otherwise relative to the top left corner
+of the window whose ID is specified in the
+.I dest_window
+field. However the request cannot move the
+pointer outisde the confine-to window of an
+active pointer grab, but and attempt to move
+the pointer beyond on the of window's edges
+will move the pointer to that edge.
+.PP
+However, unless the value if the
+.I src_window
+field is
+.IR LIBAXL_NONE ,
+the move only takes place if the mouse pointer
+is inside the window whose ID is specified in the
+.I src_window
+field and if the mouse pointer is inside the
+rectangle specified by the
+.IR src_x ,
+.IR src_y ,
+.IR src_width ,
+and
+.I src_height
+fields. The fields
+.I src_x
+and
+.I src_y
+specify the number of pixels right of and
+below, respectively, of the window's, whose
+ID is specified in the
+.I src_window
+field, top left corner. The fields
+.I src_width
+and
+.I src_height
+specify the number of pixels the rectangle
+extend to the right and downwards, respectively,
+and the special value 0 means that the rectangle
+extends to the end of the window, thus if all
+four of the
+.IR src_x ,
+.IR src_y ,
+.IR src_width ,
+and
+.I src_height
+fields have the value 0, the rectangle covers
+the entire window.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_WARP_POINTER
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.PP
+This request will generate events just as if the
+user had instantaneously moved the pointer.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+A specified window ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3)

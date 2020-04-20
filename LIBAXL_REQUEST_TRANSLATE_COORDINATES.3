@@ -1,0 +1,120 @@
+.TH LIBAXL_REQUEST_TRANSLATE_COORDINATES 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_TRANSLATE_COORDINATES - Get coordinates relative to another window and hit child
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_TRANSLATE_COORDINATES 17
+struct libaxl_request_translate_coordinates {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIsrc_window\fP;
+        libaxl_window_t \fIdest_window\fP;
+        int16_t         \fIsrc_x\fP;
+        int16_t         \fIsrc_y\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the coordinates
+.RI ( src_x ", " src_y ),
+which are given as relative to top left corner
+of the window whose ID is specified in the
+.I src_window
+field, as relative to the top left corner
+of the window whose ID is specified in the
+.I dest_window
+field. That is, if the top left corner of
+the window
+.I src_window
+is
+.RI ( x1 ", " y1 )
+and the the top left corner of
+the window
+.I src_window
+is
+.RI ( x2 ", " y2 ),
+then then returned coordinate is
+.RI ( dest_x ", " dest_y ),
+where
+.I dest_x
+is
+.I src_x-x1+x2
+and
+.I dest_y
+is
+.IR src_y-y1+y2 .
+.PP
+The display server shall also return an
+immediate, mapped child window, of the window
+whose ID is specified in the
+.I dest_window
+field, in which the coordinate is contained,
+if there is any.
+\" TODO Is there a rule for which child?
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_TRANSLATE_COORDINATES
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+One of the specified window IDs does not exist.
+.SH REPLIES
+.nf
+struct libaxl_reply_translate_coordinates {
+        uint8_t         \fI__one\fP;
+        libaxl_bool_t   \fIsame_screen\fP;
+        uint16_t        \fIsequence_number\fP;
+        uint32_t        \fI_reply_length\fP;
+        libaxl_window_t \fIchild\fP;
+        int16_t         \fIdest_x\fP;
+        int16_t         \fIdest_y\fP;
+        uint8_t         \fI__unused\fP[16];
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_translate_coordinates"
+with the
+.I same_screen
+field set 1 if both windows in the request
+belong to the same screen, and if so also the
+.I dest_x
+and
+.I dest_y
+fields set to the resulting coordinates as
+described in the
+.B DESCRIPTION
+section and the
+.I child
+field set to an immediate, mapped child of the
+window whose ID is specified in the
+.I dest_window
+field in the request, in which the coordinate
+is contained, if there is any, or to
+.I LIBAXL_NONE
+otherwise; but if the windows are not in the same
+screen, the
+.IR same_screen ,
+.IR dest_x ,
+and
+.I dest y
+fields are set to 0, and the
+.I child
+field is set to
+.IR LIBAXL_NONE .
+\" TODO The value of the child field here is an assumption
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_INTERN_ATOM (3)

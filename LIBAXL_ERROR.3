@@ -1,0 +1,143 @@
+.TH LIBAXL_ERROR 3 libaxl
+.SH NAME
+LIBAXL_ERROR - Error message
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_ERROR 0
+union libaxl_error {
+        struct {
+                uint8_t  \fI__zero\fP;
+                uint8_t  \fIcode\fP;
+                uint16_t \fIsequence_number\fP;
+                uint32_t \fI__detail\fP;
+                uint16_t \fIminor_opcode\fP;
+                uint8_t  \fImajor_opcode\fP;
+        };
+        struct libaxl_error_request        \fIrequest\fP;
+        struct libaxl_error_value          \fIvalue\fP;
+        struct libaxl_error_window         \fIwindow\fP;
+        struct libaxl_error_pixmap         \fIpixmap\fP;
+        struct libaxl_error_atom           \fIatom\fP;
+        struct libaxl_error_cursor         \fIcursor\fP;
+        struct libaxl_error_font           \fIfont\fP;
+        struct libaxl_error_match          \fImatch\fP;
+        struct libaxl_error_drawable       \fIdrawable\fP;
+        struct libaxl_error_access         \fIaccess\fP;
+        struct libaxl_error_alloc          \fIalloc\fP;
+        struct libaxl_error_colormap       \fIcolormap\fP;
+        struct libaxl_error_gcontext       \fIgcontext\fP;
+        struct libaxl_error_id_choice      \fIid_choice\fP;
+        struct libaxl_error_name           \fIname\fP;
+        struct libaxl_error_length         \fIlength\fP;
+        struct libaxl_error_implementation \fIimplementation\fP;
+};
+.fi
+.SH DESCRIPTION
+.B union libaxl_error
+contains the
+.BR struct s
+for all error types and an anonymous
+.B struct
+with the common fields. A received message can
+be identified as an error message checking that
+the value of the first byte in the message is
+.BR LIBAXL_ERROR .
+.PP
+Unless stated otherwise in the documentation for a
+request, if an error message is received for the
+request, it terminated without side-effects, that
+is, without partial execution.
+.PP
+The value of the
+.I __zero
+field is 0
+.RI ( LIBAXL_ERROR ),
+which signifies that the received message is an
+error message. The value of the
+.I code
+field should be one of the following, to
+signify which error type the error has:
+.TP
+.B LIBAXL_ERROR_REQUEST
+Invalid request operation code.
+.TP
+.B LIBAXL_ERROR_VALUE
+Invalid value in request.
+.TP
+.B LIBAXL_ERROR_WINDOW
+Invalid window ID in request.
+.TP
+.B LIBAXL_ERROR_PIXMAP
+Invalid pixmap ID in request.
+.TP
+.B LIBAXL_ERROR_ATOM
+Invalid atom ID in request.
+.TP
+.B LIBAXL_ERROR_CURSOR
+Invalid cursor ID in request.
+.TP
+.B LIBAXL_ERROR_FONT
+Invalid font ID or fontable ID in request.
+.TP
+.B LIBAXL_ERROR_MATCH
+Argument do not match.
+.TP
+.B LIBAXL_ERROR_DRAWABLE
+Invalid drawable ID in request.
+.TP
+.B LIBAXL_ERROR_ACCESS
+Access failure.
+.TP
+.B LIBAXL_ERROR_ALLOC
+Resource allocation failure.
+.TP
+.B LIBAXL_ERROR_COLORMAP
+Invalid colormap ID in request.
+.TP
+.B LIBAXL_ERROR_GCONTEXT
+Invalid graphics context ID in request.
+.TP
+.B LIBAXL_ERROR_ID_CHOICE
+Invalid resource ID choice.
+.TP
+.B LIBAXL_ERROR_NAME
+Invalid font name or color name in request.
+.TP
+.B LIBAXL_ERROR_LENGTH
+Invalid request length.
+.TP
+.B LIBAXL_ERROR_IMPLEMENTATION
+Feature not implemented.
+.PP
+The error
+.B struct
+for the specific error type is accessed via
+the member, of the
+.BR union ,
+with the same name except in lower case and
+without the
+.B libaxl_error_
+prefix. See the section 3 man pages with the
+same names as the error type codes (the
+constants listed above) for more information.
+.PP
+The value of the
+.I sequence_number
+field is the sequence number returned by the
+.BR libaxl_send_request (3)
+function for the failed request.
+.PP
+The value of the
+.I major_opcode
+and
+.I minor_opcode
+fields are the major and minor (if any) operation
+codes in the failed request.
+.PP
+The value of the
+.I __detail
+field is error-specific.
+.SH SEE ALSO
+.BR libaxl_receive (3)

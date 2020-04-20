@@ -1,0 +1,54 @@
+.TH LIBAXL_ERROR_MATCH 3 libaxl
+.SH NAME
+LIBAXL_ERROR_MATCH - Argument do not match
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_ERROR_MATCH 15
+struct libaxl_error_match {
+        uint8_t  \fI__zero\fP;
+        uint8_t  \fIcode\fP;
+        uint16_t \fIsequence_number\fP;
+        uint32_t \fI__unused1\fP;
+        uint16_t \fIminor_opcode\fP;
+        uint8_t  \fImajor_opcode\fP;
+        uint8_t  \fI__unused\fP[21];
+};
+.fi
+.SH DESCRIPTION
+An input-only window is used a drawable object,
+the graphics context argument does not have the
+same root and depths the destination drawable
+argument, or some argument or argument pair has
+same correct type and range, but fails to match
+in some other way required by for the request.
+.PP
+The value of the
+.I __zero
+field is 0
+.RI ( LIBAXL_ERROR ),
+which signifies that the received message is an
+error message. The value of the
+.I code
+field is
+.I LIBAXL_ERROR_MATCH
+to signify that the error is of the error type
+described in this document.
+.PP
+The value of the
+.I sequence_number
+field is the sequence number returned by the
+.BR libaxl_send_request (3)
+function for the failed request.
+.PP
+The value of the
+.I major_opcode
+and
+.I minor_opcode
+fields are the major and minor (if any) operation
+codes in the failed request.
+.PP
+Other fields are unused and may have any value.
+.SH SEE ALSO
+.BR LIBAXL_ERROR (3)

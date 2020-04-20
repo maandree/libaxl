@@ -1,0 +1,57 @@
+.TH LIBAXL_REQUEST_DESTROY_WINDOW 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_DESTROY_WINDOW - Destroy a window
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_DESTROY_WINDOW 4
+struct libaxl_request_destroy_window {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall unmap
+.RB ( LIBAXL_REQUEST_UNMAP_WINDOW (3))
+the window whose resource ID is specified
+in the
+.I window
+field, if it is mapped. After potential
+unmapping, the display server shall destroy
+the window and all its inferiors. A
+.BR LIBAXL_EVENT_DESTROY_NOTIFY (3)
+event is generated for each window. The
+.BR LIBAXL_EVENT_DESTROY_NOTIFY (3)
+events for the inferiors are generated before the
+.BR LIBAXL_EVENT_DESTROY_NOTIFY (3)
+event for the window itself. No other ordering
+contraints apply.
+.PP
+This request has no effect on root windows.
+.PP
+Normal exposure processing on formerly obscured
+windows is performed.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_DESTROY_WINDOW
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_DESTROY_SUBWINDOWS (3),
+.BR LIBAXL_REQUEST_UNMAP_WINDOW (3)

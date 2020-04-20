@@ -1,0 +1,44 @@
+.TH LIBAXL_REQUEST_CLOSE_FONT 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_CLOSE_FONT - Delete reference to a font
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_CLOSE_FONT 46
+struct libaxl_request_close_font {
+        uint8_t       \fIopcode\fP;
+        uint8_t       \fI__pad\fP;
+        uint16_t      \fI_request_length\fP;
+        libaxl_font_t \fIfont\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall remove the association
+between the resource ID, which is specified in
+the
+.I font
+field, and the font.
+.PP
+When no resource references the font, it will
+be deallocated.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_CLOSE_FONT
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_FONT (3)
+The specified font ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_OPEN_FONT (3)

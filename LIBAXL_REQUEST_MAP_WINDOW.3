@@ -1,0 +1,57 @@
+.TH LIBAXL_REQUEST_MAP_WINDOW 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_MAP_WINDOW - Map a window
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_MAP_WINDOW 8
+struct libaxl_request_map_window {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall map the window
+whose resource ID is specified in the
+.I window
+field, and generate a
+.BR LIBAXL_EVENT_MAP_NOTIFY (3)
+event. However, if the
+.I override_redirect
+attribute of the window is false and another
+client is listening on [TODO SubstructureRedirect]
+events on the parent of the window, the window remains
+unmapped but a [TODO MapRequest] event
+is sent to that client. Otherwise, the window is
+mapped and a [TODO MapNotify] event
+is generated.
+.PP
+Exposure processing is performed on the window.
+.PP
+This request has no effect if the window
+is already mapped.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_MAP_WINDOW
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_MAP_SUBWINDOWS (3),
+.BR LIBAXL_REQUEST_UNMAP_WINDOW (3),
+.BR LIBAXL_REQUEST_CREATE_WINDOW (3)
