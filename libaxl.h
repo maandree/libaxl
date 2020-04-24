@@ -152,7 +152,7 @@ int libaxl_fileno(LIBAXL_CONNECTION *); /* TODO man */
  * On failure, no error is returned, but the error
  * is always LIBAXL_ERROR_SYSTEM
  */
-_LIBAXL_GCC_ONLY(__attribute__((__nonnull__, __warn_unused_result__)))
+_LIBAXL_GCC_ONLY(__attribute__((__nonnull__, __warn_unused_result__, __const__)))
 const struct libaxl_display_info *libaxl_info(LIBAXL_CONNECTION *, int); /* TODO man */
 
 /**
@@ -171,6 +171,7 @@ const struct libaxl_display_info *libaxl_info(LIBAXL_CONNECTION *, int); /* TODO
  * @param   depth  The element before the element to return
  * @return         The element after `depth`
  */
+_LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__, __pure__, __nonnull__, __returns_nonnull__)))
 inline const struct libaxl_depth *
 libaxl_next_depth(const struct libaxl_depth *depth) /* TODO man */
 {
@@ -192,6 +193,7 @@ libaxl_next_depth(const struct libaxl_depth *depth) /* TODO man */
  * @param   screen  The element before the element to return
  * @return          The element after `screen`
  */
+_LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__, __pure__, __nonnull__, __returns_nonnull__)))
 inline const struct libaxl_screen *
 libaxl_next_screen(const struct libaxl_screen *screen) /* TODO man */
 {

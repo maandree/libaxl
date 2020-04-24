@@ -12,7 +12,7 @@ The goals of libaxl is:
 
 *   Do not use aggregate returns (unlike XCB)
 
-*   Abstract away as little as reasonable possible (unlike XCB and libX11)
+*   Abstract away as little as reasonably possible (unlike XCB and libX11)
 
 *   But do not require the user to know about the order of bits in bitmasks (unlike XCB)
 
