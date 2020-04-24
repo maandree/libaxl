@@ -273,7 +273,7 @@ int libaxl_parse_display(const char *, char **, char **, int *, int *); /* TODO 
  * @param   display  The display's number, the function will assume that it is a valid number
  * @return           The TCP port used for the display
  */
-_LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__)))
+_LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__, __const__)))
 inline uint16_t libaxl_get_tcp_port(int display) /* TODO man */
 {
 	return (uint16_t)(display + 6000);

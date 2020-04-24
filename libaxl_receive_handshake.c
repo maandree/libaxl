@@ -194,7 +194,7 @@ continue_read:
 		conn->info.vendor  = inbuf;
 		conn->info.formats = (void *)&inbuf[t];
 		conn->info.screens = (void *)&inbuf[t + conn->info.nformats * 8];
-		conn->info.default_screens = conn->info.screens;
+		conn->info.default_screen = conn->info.screens;
 
 		ctx->in_buf_size = 0;
 		ctx->in_buf = NULL;
