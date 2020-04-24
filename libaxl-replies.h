@@ -7,7 +7,7 @@ struct libaxl_reply_get_window_attributes {
 	uint8_t                   backing_store;         /* LIBAXL_NOT_USEFUL, LIBAXL_WHEN_MAPPED, or LIBAXL_ALWAYS */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 3 */
-	libaxl_visual_id_t        visual;
+	libaxl_visual_t           visual;
 	uint16_t                  class;                 /* LIBAXL_INPUT_OUTPUT (= 1) or LIBAXL_INPUT_ONLY (= 2) */
 	uint8_t                   bit_gravity;
 	uint8_t                   win_gravity;
@@ -264,7 +264,7 @@ struct libaxl_reply_get_image {
 	uint8_t                   depth;
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;
-	libaxl_visual_id_t        visual;                /* Can be LIBAXL_NONE */
+	libaxl_visual_t           visual;                /* Can be LIBAXL_NONE */
 	uint8_t                   __unused[20];
 	size_t                    size_of_data;
 	uint8_t                  *data;

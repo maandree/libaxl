@@ -79,6 +79,14 @@
 #define LIBAXL_KEYBOARD             1
 #define LIBAXL_POINTER              2
 
+/* struct libaxl_visual_type.class */
+#define LIBAXL_STATIC_GRAY          0
+#define LIBAXL_GRAY_SCALE           1
+#define LIBAXL_STATIC_COLOR         2
+#define LIBAXL_PSEUDO_COLOR         3
+#define LIBAXL_TRUE_COLOR           4
+#define LIBAXL_DIRECT_COLOR         5
+
 /* circatulation place */
 #define LIBAXL_TOP                  0
 #define LIBAXL_BOTTOM               1
@@ -208,7 +216,8 @@
 #define LIBAXL_INCLUDE_INFERIORS    1
 
 /* backing store */
-#define LIBAXL_NOT_USEFUL           0
+#define LIBAXL_NOT_USEFUL           0 /* Not used in `struct libaxl_screen.backing_stores` */
+#define LIBAXL_NEVER                0 /* Used in `struct libaxl_screen.backing_stores` */
 #define LIBAXL_WHEN_MAPPED          1
 #define LIBAXL_ALWAYS               2
 
@@ -230,9 +239,9 @@
 #define LIBAXL_NONLINEAR            3
 #define LIBAXL_NONLINEAR_VIRTUAL    4
 /* window focus details */
-#define LIBAXL_FOCUS_POINTER        5 /* Just called Pointer in the specification*/
-#define LIBAXL_FOCUS_POINTER_ROOT   6 /* Just called PointerRoot in the specification*/
-#define LIBAXL_FOCUS_NONE           7 /* Just called None in the specification*/
+#define LIBAXL_FOCUS_POINTER        5 /* Just called Pointer in the specification */
+#define LIBAXL_FOCUS_POINTER_ROOT   6 /* Just called PointerRoot in the specification */
+#define LIBAXL_FOCUS_NONE           7 /* Just called None in the specification */
 
 /* misc. */
 #define LIBAXL_ANY_PROPERTY_TYPE    0

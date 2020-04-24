@@ -23,37 +23,37 @@ LIBAXL_REQUEST_CREATE_WINDOW - Create an unmapped window
 
 #define LIBAXL_REQUEST_CREATE_WINDOW 1
 struct libaxl_request_create_window {
-        uint8_t            \fIopcode\fP;
-        uint8_t            \fIdepth\fP;
-        uint16_t           \fI_request_length\fP;
-        libaxl_window_t    \fIwid\fP;
-        libaxl_window_t    \fIparent\fP;
-        int16_t            \fIx\fP;
-        int16_t            \fIy\fP;
-        uint16_t           \fIwidth\fP;
-        uint16_t           \fIheight\fP;
-        uint16_t           \fIborder_width\fP;
-        uint16_t           \fIclass\fP;
-        libaxl_visual_id_t \fIvisual\fP;
-        uint32_t           \fIvalue_mask\fP;
+        uint8_t           \fIopcode\fP;
+        uint8_t           \fIdepth\fP;
+        uint16_t          \fI_request_length\fP;
+        libaxl_window_t   \fIwid\fP;
+        libaxl_window_t   \fIparent\fP;
+        int16_t           \fIx\fP;
+        int16_t           \fIy\fP;
+        uint16_t          \fIwidth\fP;
+        uint16_t          \fIheight\fP;
+        uint16_t          \fIborder_width\fP;
+        uint16_t          \fIclass\fP;
+        libaxl_visual_t   \fIvisual\fP;
+        uint32_t          \fIvalue_mask\fP;
 
-        libaxl_pixmap_t    \fIbackground_pixmap\fP;
-        uint32_t           \fIbackground_pixel\fP;
-        libaxl_pixmap_t    \fIborder_pixmap\fP;
-        uint32_t           \fIborder_pixel\fP;
-        uint8_t            \fIbit_gravity\fP;
-        uint8_t            \fIwin_gravity\fP;
-        uint8_t            \fIbacking_store\fP;
-        uint8_t            \fI__omitted1\fP;
-        uint32_t           \fIbacking_planes\fP;
-        uint32_t           \fIbacking_pixel\fP;
-        libaxl_bool_t      \fIoverride_redirect\fP;
-        libaxl_bool_t      \fIsave_under\fP;
-        uint16_t           \fI__omitted2\fP;
-        uint32_t           \fIevent_mask\fP;
-        uint32_t           \fIdo_not_propagate_mask\fP;
-        libaxl_colormap_t  \fIcolormap\fP;
-        libaxl_cursor_t    \fIcursor\fP;
+        libaxl_pixmap_t   \fIbackground_pixmap\fP;
+        uint32_t          \fIbackground_pixel\fP;
+        libaxl_pixmap_t   \fIborder_pixmap\fP;
+        uint32_t          \fIborder_pixel\fP;
+        uint8_t           \fIbit_gravity\fP;
+        uint8_t           \fIwin_gravity\fP;
+        uint8_t           \fIbacking_store\fP;
+        uint8_t           \fI__omitted1\fP;
+        uint32_t          \fIbacking_planes\fP;
+        uint32_t          \fIbacking_pixel\fP;
+        libaxl_bool_t     \fIoverride_redirect\fP;
+        libaxl_bool_t     \fIsave_under\fP;
+        uint16_t          \fI__omitted2\fP;
+        uint32_t          \fIevent_mask\fP;
+        uint32_t          \fIdo_not_propagate_mask\fP;
+        libaxl_colormap_t \fIcolormap\fP;
+        libaxl_cursor_t   \fIcursor\fP;
 };
 .fi
 .SH DESCRIPTION

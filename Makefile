@@ -13,9 +13,21 @@ include $(OSCONFIGFILE)
 OBJ =\
 	libaxl_context_create.o\
 	libaxl_context_free.o\
+	libaxl_fileno.o\
 	libaxl_flush.o\
+	libaxl_generate_id.o\
+	libaxl_get_decnet_object.o\
+	libaxl_get_tcp_port.o\
+	libaxl_info.o\
+	libaxl_next_depth.o\
+	libaxl_next_screen.o\
 	libaxl_parse_display.o\
+	libaxl_protocol_version_major.o\
+	libaxl_protocol_version_minor.o\
+	libaxl_protocol_version.o\
 	libaxl_receive.o\
+	libaxl_receive_handshake.o\
+	libaxl_send_handshake.o\
 	libaxl_send_request.o
 
 LIB_HDR =\
@@ -31,7 +43,8 @@ LIB_HDR =\
 	libaxl-requests.h\
 	libaxl-requests-ptr-structs.h\
 	libaxl-requests-structs.h\
-	libaxl-types.h
+	libaxl-types.h\
+	libaxl-display-info.h
 
 HDR =\
 	common.h\

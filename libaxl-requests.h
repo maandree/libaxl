@@ -13,7 +13,7 @@ struct libaxl_request_create_window {
 	uint16_t                  height;
 	uint16_t                  border_width;
 	uint16_t                  class;                 /* LIBAXL_COPY_FROM_PARENT, LIBAXL_INPUT_OUTPUT, or LIBAXL_INPUT_ONLY */
-	libaxl_visual_id_t        visual;                /* Can be LIBAXL_COPY_FROM_PARENT */
+	libaxl_visual_t           visual;                /* Can be LIBAXL_COPY_FROM_PARENT */
 	uint32_t                  value_mask;            /* Determines which below are included, all are encoded as uint32_t */
 #define LIBAXL_REQUEST_CREATE_WINDOW_BACKGROUND_PIXMAP     0x00000001UL
 #define LIBAXL_REQUEST_CREATE_WINDOW_BACKGROUND_PIXEL      0x00000002UL
@@ -1008,7 +1008,7 @@ struct libaxl_request_create_colormap {
 	uint16_t                  _request_length;       /* = 4 */
 	libaxl_colormap_t         mid;
 	libaxl_window_t           window;
-	libaxl_visual_id_t        visual;
+	libaxl_visual_t           visual;
 };
 
 struct libaxl_request_free_colormap {

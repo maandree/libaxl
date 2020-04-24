@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <stdatomic.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -54,18 +55,21 @@ DEFINE_CHECKED(ssize_t, __checked_ssize_t)
 
 #define X_TCP_PORT 6000
 
-struct libaxl_connection {
-	int                fd;
-	uint16_t           last_seqnum;
+struct libaxl_connection { /* TODO add serialisation functions, add close and detach functions */
+	int                         fd;
+	uint16_t                    last_seqnum;
 	LIBAXL_CONNECTION_RWLOCK; /* INIT_LIBAXL_CONNECTION_RWLOCK(&.) */
-	LIBAXL_CONTEXT    *pending_out;
-	size_t             in_progress;
-	size_t             in_buf_size;
-	char              *in_buf;
-	uint32_t           xid_base; /* TODO information for these are send by server when connecting { */
-	uint32_t           xid_bits;
-	uint32_t           xid_shift; /* } */
-	uint8_t            request_map[1UL << 16];
+	LIBAXL_CONTEXT             *pending_out;
+	size_t                      in_progress;
+	size_t                      in_buf_size;
+	char                       *in_buf;
+	uint32_t                    xid_base;
+	uint32_t                    xid_max;
+	uint32_t                    xid_shift;
+	volatile _Atomic uint32_t   xid_last; /* atomic_init(&.xid_last, 0) */
+	uint8_t                     request_map[1UL << 16];
+	struct libaxl_display_info  info;
+	char                       *info_buf;
 };
 
 struct libaxl_context {
