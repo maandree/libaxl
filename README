@@ -1,0 +1,21 @@
+libaxl is a currently under develop X library, and is not
+in a usable state (please help write man pages if you want
+it really sooner).
+
+The goals of libaxl is:
+
+*   Use asynchronous communication model (unlike libX11)
+
+*   Use as few memory allocations as possible (unlike XCB)
+
+*   Always use proper namespacing (unlike libX11)
+
+*   Do not use aggregate returns (unlike XCB)
+
+*   Abstract away as little as reasonable possible (unlike XCB and libX11)
+
+*   But do not require the user to know about the order of bits in bitmasks (unlike XCB)
+
+*   Be as tiny as possible without removing functionality (unlike XCB and libX11)
+
+*   Be thread-safe by default (unlike libX11)
