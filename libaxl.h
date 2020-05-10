@@ -112,6 +112,9 @@ const struct libaxl_display_info *libaxl_info(LIBAXL_CONNECTION *, int); /* TODO
  *             ... do something with `depth` or `break` if `i` is of a desired value (index) ...
  *         }
  * 
+ * Note, the function does not check if another
+ * element exists
+ * 
  * @param   depth  The element before the element to return
  * @return         The element after `depth`
  */
@@ -133,6 +136,9 @@ libaxl_next_depth(const struct libaxl_depth *depth) /* TODO man */
  *         for (screen = info->screens; i < info->nscreens; screen = libaxl_next_screen(screen)) {
  *             ... do something with `screen` or `break` if `i` is of a desired value (index) ...
  *         }
+ * 
+ * Note, the function does not check if another
+ * element exists
  * 
  * @param   screen  The element before the element to return
  * @return          The element after `screen`

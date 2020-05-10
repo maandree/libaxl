@@ -301,10 +301,10 @@ struct libaxl_display_info {
 	/**
 	 * List of all screens in the display
 	 */
-	const struct libaxl_format *screens;
+	const struct libaxl_screen *screens;
 
 	/**
 	 * The default screen
 	 */
-	const struct libaxl_format *default_screen;
+	const struct libaxl_screen *default_screen;
 };
