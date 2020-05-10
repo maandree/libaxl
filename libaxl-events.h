@@ -513,7 +513,11 @@ struct libaxl_event_client_message {
 	uint16_t                  sequence_number;
 	libaxl_window_t           window;
 	libaxl_atom_t             type;
-	uint8_t                   __unused[20];
+	union {
+		uint8_t           u8[20];
+		uint16_t          u16[10];
+		uint32_t          u32[5];
+	} data;
 };
 
 struct libaxl_event_mapping_notify {
