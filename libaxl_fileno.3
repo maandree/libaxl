@@ -1,0 +1,31 @@
+.TH libaxl_fileno 3 libaxl
+.SH NAME
+libaxl_fileno - Get file descriptor of connection
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+int libaxl_fileno(LIBAXL_CONNECTION *\fIconn\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_fileno ()
+function returns the number of the file descriptor
+of a connection to the display server. The connection
+is specified in the
+.I conn
+parameter, which the function assumes is
+.RI non- NULL .
+.SH RETURN VALUE
+The
+.BR libaxl_fileno ()
+function returns file descriptor.
+.SH ERRORS
+The
+.BR libaxl_fileno ()
+function cannot fail.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_attach (3),
+.BR libaxl_detach (3)

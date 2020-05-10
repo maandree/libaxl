@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/types.h> directly, include <libaxl.h> instead.
+#endif
+
 #include <stddef.h>
 #include <stdint.h>
 

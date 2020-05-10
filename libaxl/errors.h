@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/errors.h> directly, include <libaxl.h> instead.
+#endif
+
 #define LIBAXL_ERROR 0
 
 struct libaxl_error_request {
@@ -198,5 +202,5 @@ union libaxl_error {
 		uint16_t    minor_opcode;
 		uint8_t     major_opcode;
 	};
-#include "libaxl-errors-structs.h"
+#include "errors-structs.h"
 };

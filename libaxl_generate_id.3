@@ -1,0 +1,38 @@
+.TH libaxl_generate_id 3 libaxl
+.SH NAME
+libaxl_generate_id - Generate a resource ID
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+libaxl_id_t libaxl_generate_id(LIBAXL_CONTEXT *\fIctx\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_generate_id ()
+function returns an X resource ID that
+the client can assign to any resource
+created for the connection for which
+the object in the
+.I ctx
+parameter, which the function assumes is
+.RI non- NULL ,
+ is created for.
+.SH RETURN VALUE
+The
+.BR libaxl_generate_id ()
+function returns an unused resource ID
+allocated to the connection to the
+display server, or 0 on failure.
+.SH ERRORS
+The
+.BR libaxl_generate_id ()
+function can only fail if there are no
+more resource IDs allocated to the
+connection, which corresponds to the
+.I LIBAXL_ERROR_OUT_OF_RESOURCE_IDS
+error number.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_deallocate_id (3)

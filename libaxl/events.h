@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/events.h> directly, include <libaxl.h> instead.
+#endif
+
 struct libaxl_event_key_press {
 #define LIBAXL_EVENT_KEY_PRESS 2
 	uint8_t                   code;
@@ -534,5 +538,5 @@ struct libaxl_event_mapping_notify {
 union libaxl_event {
 	uint8_t                   code;                  /* Highest bit marks the event as sent with SendEvent */
 	/* .keymap_notify does not have a sequence number */
-#include "libaxl-events-structs.h"
+#include "events-structs.h"
 };

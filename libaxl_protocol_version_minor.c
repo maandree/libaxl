@@ -4,5 +4,5 @@
 int
 libaxl_protocol_version_minor(void)
 {
-	return LIBAXL_PROTOCOL_MINOR;
+	return LIBAXL_PROTOCOL_VERSION_MINOR;
 }

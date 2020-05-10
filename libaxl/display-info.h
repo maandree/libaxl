@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/display-info.h> directly, include <libaxl.h> instead.
+#endif
+
 /**
  * The highest number of the `struct_version` field in
  * `struct libaxl_display_info` that this header file

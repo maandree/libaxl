@@ -29,8 +29,8 @@ libaxl_send_handshake(LIBAXL_CONTEXT *restrict ctx, const char *auth_name, size_
 
 	RLOCK_CONNECTION_SEND(conn);
 	pending = conn->pending_out;
-	conn->info.protocol_version_major = LIBAXL_PROTOCOL_MAJOR;
-	conn->info.protocol_version_minor = LIBAXL_PROTOCOL_MINOR;
+	conn->info.protocol_version_major = LIBAXL_PROTOCOL_VERSION_MAJOR;
+	conn->info.protocol_version_minor = LIBAXL_PROTOCOL_VERSION_MINOR;
 	conn->info.protocol_version       = LIBAXL_PROTOCOL_VERSION;
 	conn->info.protocol_byte_order    = LIBAXL_MSB_FIRST; /* TODO Use LIBAXL_LSB_FIRST if preferable */
 	RUNLOCK_CONNECTION_SEND(conn);
@@ -70,9 +70,9 @@ libaxl_send_handshake(LIBAXL_CONTEXT *restrict ctx, const char *auth_name, size_
 
 	buf[o++] = 'B'; /* TODO Use 'l' (LSB first) if preferable */
 	buf[o++] = 0;
-	*(uint16_t *)&buf[o] = htons(LIBAXL_PROTOCOL_MAJOR);
+	*(uint16_t *)&buf[o] = htons(LIBAXL_PROTOCOL_VERSION_MAJOR);
 	o += 2;
-	*(uint16_t *)&buf[o] = htons(LIBAXL_PROTOCOL_MINOR);
+	*(uint16_t *)&buf[o] = htons(LIBAXL_PROTOCOL_VERSION_MINOR);
 	o += 2;
 	*(uint16_t *)&buf[o] = htons((uint16_t)auth_name_len);
 	o += 2;

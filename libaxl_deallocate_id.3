@@ -1,0 +1,34 @@
+.TH libaxl_deallocate_id 3 libaxl
+.SH NAME
+libaxl_deallocate_id - Mark a resource ID as reusable
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+int libaxl_deallocate_id(LIBAXL_CONTEXT *\fIctx\fP, libaxl_id_t \fIid\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_deallocate_id ()
+function marks that the resource ID
+specified in the
+.I id
+parameter is reusable. The value of the
+.I ctx
+parameter must be
+.RI non- NULL
+(the function will assume this to be
+the case) and must be created for the
+same connection as the ID was generated
+for.
+.SH RETURN VALUE
+The
+.BR libaxl_deallocate_id ()
+function returns 0 on successful completion
+and a negative libaxl error code on failure.
+.SH ERRORS
+TODO \" errors for libaxl_deallocate_id
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_generate_id (3)

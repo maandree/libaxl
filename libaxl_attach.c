@@ -1,8 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 #include "common.h"
 
-int
-libaxl_protocol_version_major(void)
+void
+libaxl_attach(LIBAXL_CONNECTION *conn, int fd)
 {
-	return LIBAXL_PROTOCOL_VERSION_MAJOR;
+	conn->fd = fd;
 }

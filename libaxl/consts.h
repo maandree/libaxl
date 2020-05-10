@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/consts.h> directly, include <libaxl.h> instead.
+#endif
+
 /* libaxl_keycode_t */
 #define LIBAXL_ANY_KEY              0
 

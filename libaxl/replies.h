@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/replies.h> directly, include <libaxl.h> instead.
+#endif
+
 #define LIBAXL_REPLY 1 /* TODO man */
 
 struct libaxl_reply_get_window_attributes {
@@ -486,5 +490,5 @@ union libaxl_reply {
 		uint16_t          sequence_number;
 		uint32_t          _reply_length;
 	};
-#include "libaxl-replies-structs.h"
+#include "replies-structs.h"
 };

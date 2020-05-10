@@ -2,7 +2,7 @@
 #include "common.h"
 
 int
-libaxl_protocol_version_major(void)
+libaxl_close(LIBAXL_CONNECTION *conn)
 {
-	return LIBAXL_PROTOCOL_VERSION_MAJOR;
+	return close(libaxl_detach(conn));
 }

@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/atoms.h> directly, include <libaxl.h> instead.
+#endif
+
 #define LIBAXL_ATOM_PRIMARY             1
 #define LIBAXL_ATOM_SECONDARY           2
 #define LIBAXL_ATOM_ARC                 3

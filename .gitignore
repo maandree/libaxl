@@ -6,4 +6,4 @@
 *.so
 *.so.*
 *.lo
-/libaxl-*-structs.h
+/libaxl/*-structs.h

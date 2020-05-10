@@ -1,0 +1,25 @@
+.TH LIBAXL_PROTOCOL_VERSION_MINOR 3 libaxl
+.SH NAME
+LIBAXL_PROTOCOL_VERSION_MINOR - X protocol version, minor number
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_PROTOCOL_VERSION_MINOR /* value omitted */
+.fi
+.SH DESCRIPTION
+The
+.BR LIBAXL_PROTOCOL_VERSION_MINOR
+macro expands to the minor number of the
+highest version of the X protocol that
+the library, as compiled against, supports.
+.SH NOTES
+There is no corresponding macro for the lowest
+supported version. The lowest supported
+version is 11.0 (X11); X11 was released in
+September 1987 and predates Linux, thus
+this is extremely unlikely this will change.
+.SH SEE ALSO
+.BR libaxl_protocol_version_minor (3),
+.BR LIBAXL_PROTOCOL_VERSION_MAJOR (3),
+.BR LIBAXL_PROTOCOL_VERSION (3)

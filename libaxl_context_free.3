@@ -1,0 +1,26 @@
+.TH libaxl_context_free 3 libaxl
+.SH NAME
+libaxl_context_free - Deallocation a context
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+void libaxl_context_free(LIBAXL_CONTEXT *\fIctx\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_context_free ()
+function deallocates the object specified in the
+.I ctx
+parameter, or does nothing if the argument is
+.IR NULL .
+.SH RETURN VALUE
+None.
+.SH ERRORS
+The
+.BR libaxl_context_free ()
+function cannot fail.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_context_create (3)

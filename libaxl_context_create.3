@@ -1,0 +1,37 @@
+.TH libaxl_context_create 3 libaxl
+.SH NAME
+libaxl_context_create - Create a context
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+LIBAXL_CONTEXT *libaxl_context_create(LIBAXL_CONNECTION *\fIconn\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_context_create ()
+function creates a context, for a thread,
+to use when accessing the display server
+via the connection specified in the
+.I conn
+parameter.
+.SH RETURN VALUE
+The
+.BR libaxl_context_create ()
+returns the context on success completion, or
+.I NULL
+on failure.
+.SH ERRORS
+The
+.BR libaxl_generate_id ()
+function can only fail if enough memory
+cannot be allocates for the process,
+which is corresponds to the
+.I ENOMEM
+error number and the
+.I LIBAXL_ERROR_SYSTEM
+libaxl error number.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_context_free (3)

@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+#if !defined(LIBAXL_H) || (LIBAXL_H < 2)
+# error Do not include <libaxl/requests.h> directly, include <libaxl.h> instead.
+#endif
+
 struct libaxl_request_create_window {
 #define LIBAXL_REQUEST_CREATE_WINDOW 1
 	uint8_t                   opcode;
@@ -1435,11 +1439,11 @@ union libaxl_request { /* TODO man page */
 		uint8_t           __data;
 		uint16_t          _request_length;
 	};
-# include "libaxl-requests-structs.h"
+# include "requests-structs.h"
 };
 
 union libaxl_request_const_ptr { /* TODO man page */
 	void                     *as_voidptr;
 	union libaxl_request     *as_union;
-# include "libaxl-requests-ptr-structs.h"
+# include "requests-ptr-structs.h"
 } _LIBAXL_GCC_ONLY(__attribute__((__transparent_union__)));

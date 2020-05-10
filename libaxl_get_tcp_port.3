@@ -1,0 +1,31 @@
+.TH libaxl_get_tcp_port 3 libaxl
+.SH NAME
+libaxl_get_tcp_port - Get file descriptor of connection
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+uint16_t libaxl_get_tcp_port(int *\fIdisplay\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_get_tcp_port ()
+function returns the number TCP port that
+should be used to connect to a display based
+on the display's number, which is specified
+in the
+.I display
+parameter.
+.SH RETURN VALUE
+The
+.BR libaxl_get_tcp_port ()
+function returns TCP port that the display
+uses.
+.SH ERRORS
+The
+.BR libaxl_get_tcp_port ()
+function cannot fail.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_get_decnet_object (3)
