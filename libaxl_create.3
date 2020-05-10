@@ -1,0 +1,46 @@
+.TH libaxl_create 3 libaxl
+.SH NAME
+libaxl_create - Create connection record
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+LIBAXL_CONNECTION *libaxl_create(int \fIfd\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_create ()
+function creates a connection record context,
+for a connection to the display server. The
+connection does not have to be established
+yet, but they socket for the connection should
+have been created and should be specified in the
+.I fd
+parameter.
+.SH RETURN VALUE
+The
+.BR libaxl_create ()
+returns the connection record on success
+completion, or
+.I NULL
+on failure.
+.SH ERRORS
+The
+.BR libaxl_create ()
+function can only fail if enough memory
+cannot be allocates for the process,
+which is corresponds to the
+.I ENOMEM
+error number and the
+.I LIBAXL_ERROR_SYSTEM
+libaxl error number.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_connect (3),
+.BR libaxl_parse_display (3),
+.BR libaxl_send_handshake (3),
+.BR libaxl_close (3),
+.BR libaxl_detach (3),
+.BR libaxl_attach (3),
+.BR libaxl_context_create (3)

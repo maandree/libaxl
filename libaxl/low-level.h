@@ -12,7 +12,7 @@
  * The largest possible return of the libaxl_get_decnet_object()
  * function, plus 1 for the terminal NUL byte
  */
-#define LIBAXL_DECNET_OBJECT_MAX (5 + 3 * sizeof(int) - sizeof(int) / 2) /* TODO man */
+#define LIBAXL_DECNET_OBJECT_MAX (5 + 3 * sizeof(int) - sizeof(int) / 2)
 
 /**
  * Create a connection object for a socket
@@ -25,7 +25,7 @@
  * is always LIBAXL_ERROR_SYSTEM
  */
 _LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
-LIBAXL_CONNECTION *libaxl_create(int); /* TODO man */
+LIBAXL_CONNECTION *libaxl_create(int);
 
 /**
  * Parse a display name string
@@ -44,11 +44,11 @@ LIBAXL_CONNECTION *libaxl_create(int); /* TODO man */
  * @param   protocolp  Output parameter for the network protocol used to access the display,
  *                     remember to free after successful completion
  * @param   displayp   Output parameter for the display's index (0 if the protocol is "unix")
- * @param   screenp    Output parameter for the screen's index
+ * @param   screenp    Output parameter for the screen's index (-1 of not specified)
  * @return             0 on success, a negative libaxl error code on failure
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__(2, 3, 4, 5))))
-int libaxl_parse_display(const char *, char **, char **, int *, int *); /* TODO man */
+int libaxl_parse_display(const char *, char **, char **, int *, int *);
 
 /**
  * Get the TCP port that is used for a display
@@ -66,7 +66,7 @@ inline uint16_t libaxl_get_tcp_port(int display)
  * Get the DECnet object name that is used for a display
  * 
  * @param   buf      Buffer that the object name shall be written to, it is recommended
- *                   that is size, if static, is LIBAXL_DECNET_OBJECT_MAX (which is
+ *                   that its size, if static, is LIBAXL_DECNET_OBJECT_MAX (which is
  *                   always sufficient), otherwise it should be at least the return value
  *                   of this function (for the same last argument but with NULL and 0
  *                   as the first two arguments) plus 1
@@ -75,10 +75,10 @@ inline uint16_t libaxl_get_tcp_port(int display)
  * @return           The length of the object name, will not exceed LIBAXL_DECNET_OBJECT_MAX
  *                   less 1; an additional uncounted NUL byte will be written to the buffer
  *                   if it is large enough; or -1 on failure (specifically snprintf(3), which
- *                   the function calls, by fail with EOVERFLOW if the `size` argument is
+ *                   the function calls, will fail with EOVERFLOW if the `size` argument is
  *                   greater than {INT_MAX})
  */
-int libaxl_get_decnet_object(char *, size_t, int); /* TODO man */
+int libaxl_get_decnet_object(char *, size_t, int);
 
 /**
  * This function is to be called once and only once, excluding any

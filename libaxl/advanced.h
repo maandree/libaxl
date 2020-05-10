@@ -73,7 +73,7 @@ int libaxl_protocol_version(void);
  * @return        The file descriptor of the connection
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__, __warn_unused_result__)))
-int libaxl_detach(LIBAXL_CONNECTION *); /* TODO man */
+int libaxl_detach(LIBAXL_CONNECTION *);
 
 /**
  * Change the file descriptor of a connection
@@ -82,4 +82,4 @@ int libaxl_detach(LIBAXL_CONNECTION *); /* TODO man */
  * @param  fd    The new file descriptor
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__)))
-void libaxl_attach(LIBAXL_CONNECTION *, int); /* TODO man */
+void libaxl_attach(LIBAXL_CONNECTION *, int);

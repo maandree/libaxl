@@ -1,0 +1,56 @@
+.TH libaxl_get_decnet_object 3 libaxl
+.SH NAME
+libaxl_get_decnet_object - Get DECnet object name for a display
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_DECNET_OBJECT_MAX /* value omitted */
+
+int libaxl_get_decnet_object(char *\fIbuf\fP, size_t \fIsize\fP, int *\fIdisplay\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_get_decnet_object ()
+function stores, in the buffer specified
+in the
+.I buf
+parameter, the DECnet object name used
+for the display specified in the
+.I display
+parameter.
+.PP
+The value of the
+.I size
+parameter shall be the size of the buffer;
+.I LIBAXL_DECNET_OBJECT_MAX
+is recommended for static buffers, as
+this is always sufficient.
+If buffer is
+.IR NULL ,
+.I size
+must be 0.
+.SH RETURN VALUE
+The
+.BR libaxl_get_decnet_object ()
+function returns the number of bytes
+the DECnet object name consists of
+(this excludes the terminating NUL byte
+used in C strings, which is also written
+to the buffer if it fits), or -1 on
+failure.
+.SH ERRORS
+The
+.BR libaxl_get_decnet_object ()
+function may fail if
+.TP
+.I EOVERFLOW
+The value of the
+.I size
+argument is greater than {INT_MAX}.
+.BR libaxl_get_decnet_object ()
+function cannot fail.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_get_tcp_port (3)

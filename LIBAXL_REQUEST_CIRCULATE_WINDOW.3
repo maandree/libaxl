@@ -33,7 +33,8 @@ If another client is listening for [TODO SubstructureRedirect]
 events on the specified window, a [TODO CirculateRequest]
 request is sent to the client instead, and no further
 processing is performed. If however, no such client, other
-than the sender, exists, a [TODO CirculateNotify]
+than the sender, exists, a
+.I LIBAXL_EVENT_CIRCULATE_NOTIFY
 event is generated if the window is actually restacked.
 .PP
 Normal exposure processing on formerly

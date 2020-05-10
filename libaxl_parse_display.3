@@ -1,0 +1,107 @@
+.TH libaxl_parse_display 3 libaxl
+.SH NAME
+libaxl_parse_display - Parse a display name string
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+int libaxl_parse_display(const char *\fIname\fP, char **\fIhostp\fP, char **\fIprotocolp\fP, int *\fIdisplayp\fP, int *\fIscreenp\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_parse_display ()
+function the display name string specified in the
+.I name
+parameter, or the
+.B DISPLAY
+environment variable if
+.I name
+is
+.I NULL
+or the empty string.
+.PP
+The host, or the empty string or
+.I NULL
+(represents localhost) if not specified,
+is stored in
+.IR *hostp ,
+or the path of the socket if the protocol is
+.BR unix .
+.PP
+The protocol name is stored in
+.IR *protocolp ,
+the empty string or
+.I NULL
+can is stored if no protocol is specified
+(and is not
+.BR unix ),
+in which case TCP should be assumes.
+.PP
+The displays number (0 if (but not only if)
+the protocol is
+.BR unix )
+is stored in
+.IR *displayp .
+.PP
+The specified screen, which should be assumes
+as the default screen, is stored in
+.IR *screenp .
+If no screen is specified, -1 is stored in
+.I *screenp
+instead, and 0 should be assumed the default screen.
+.PP
+Remember to call the
+.BR free (3)
+function for
+.I *hostp
+and
+.I *protocolp
+after succesful completion when they result
+is no longer needed.
+.SH RETURN VALUE
+The
+.BR libaxl_parse_display ()
+function returns 0 upon successful
+completion or a negative libaxl
+error number on failure.
+.SH ERRORS
+The
+.BR libaxl_parse_display ()
+function may fail if
+.TP
+.I LIBAXL_ERROR_NO_DISPLAY_SERVER_SPECIFIED
+Both
+.I name
+and the
+.B DISPLAY
+environment variable are
+.IR NULL ,
+unset or the empty string.
+.TP
+.I LIBAXL_ERROR_INVALID_DISPLAY_NAME_NO_DISPLAY_INDEX
+No display number is specified but
+required for the specified protocol.
+.TP
+.I LIBAXL_ERROR_INVALID_DISPLAY_NAME_DISPLAY_INDEX_OUT_OF_DOMAIN
+The display number is too large for
+the specified protocol.
+.TP
+.I LIBAXL_ERROR_INVALID_DISPLAY_NAME_INVALID_SCREEN_INDEX
+The specified screen number is invalid.
+.TP
+.I LIBAXL_ERROR_INVALID_DISPLAY_NAME_SCREEN_INDEX_OUT_OF_DOMAIN
+The specified screen number is too large.
+.TP
+.IR LIBAXL_ERROR_SYSTEM " with " ENOMEM
+Enough memory could not be allocated.
+.SH NOTES
+The
+.BR libaxl_parse_display ()
+function assumes that all arguments except
+.I name
+are
+.RI non- NULL .
+.SH SEE ALSO
+.BR libaxl_create (3),
+.BR libaxl_get_tcp_port (3),
+.BR libaxl_get_decnet_object (3)

@@ -133,6 +133,7 @@ MAN3 =\
 	LIBAXL_ATOM_WM_TRANSIENT_FOR.3\
 	LIBAXL_ATOM_WM_ZOOM_HINTS.3\
 	LIBAXL_ATOM_X_HEIGHT.3\
+	LIBAXL_DECNET_OBJECT_MAX.3\
 	LIBAXL_ERROR.3\
 	LIBAXL_ERROR_ACCESS.3\
 	LIBAXL_ERROR_ALLOC.3\
@@ -277,12 +278,17 @@ MAN3 =\
 	LIBAXL_REQUEST_UNMAP_SUBWINDOWS.3\
 	LIBAXL_REQUEST_UNMAP_WINDOW.3\
 	LIBAXL_REQUEST_WARP_POINTER.3\
+	libaxl_attach.3\
 	libaxl_context_create.3\
 	libaxl_context_free.3\
+	libaxl_create.3\
 	libaxl_deallocate_id.3\
+	libaxl_detach.3\
 	libaxl_fileno.3\
 	libaxl_generate_id.3\
+	libaxl_get_decnet_object.3\
 	libaxl_get_tcp_port.3\
+	libaxl_parse_display.3\
 	libaxl_protocol_version.3\
 	libaxl_protocol_version_major.3\
 	libaxl_protocol_version_minor.3\

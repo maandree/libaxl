@@ -1,0 +1,33 @@
+.TH libaxl_attach 3 libaxl
+.SH NAME
+libaxl_attach - Change file descriptor of a connection
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+void libaxl_attach(LIBAXL_CONNECTION *\fIconn\fP, int \fIfd\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_attach ()
+function changes the file descript in the
+connection record specified in the
+.I conn
+parameter, which the function will assume is
+.RI non- NULL ,
+to the file descriptor specified in the
+.I fd
+parameter.
+.SH RETURN VALUE
+None.
+.SH ERRORS
+The
+.BR libaxl_attach ()
+function cannot fail.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_unmarshal (3),
+.BR libaxl_create (3),
+.BR libaxl_fileno (3),
+.BR libaxl_detach (3)

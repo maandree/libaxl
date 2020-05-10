@@ -23,7 +23,7 @@ returns the context on success completion, or
 on failure.
 .SH ERRORS
 The
-.BR libaxl_generate_id ()
+.BR libaxl_context_create ()
 function can only fail if enough memory
 cannot be allocates for the process,
 which is corresponds to the
@@ -34,4 +34,6 @@ libaxl error number.
 .SH NOTES
 None.
 .SH SEE ALSO
-.BR libaxl_context_free (3)
+.BR libaxl_context_free (3),
+.BR libaxl_connect (3),
+.BR libaxl_create (3)

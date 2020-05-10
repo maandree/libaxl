@@ -26,10 +26,12 @@ will be uninstalled.
 If the colormap is defined as the colormap for a
 window, the colormap for the window is changed to
 .BR LIBAXL_NONE ,
-and a [TODO ColormapNotify] event
-is generated. (The protocol does not define colors
-displayed for a window with LIBAXL_NONE as the
-colormap).
+and a
+.I LIBAXL_EVENT_COLORMAP_NOTIFY
+event is generated. (The protocol does not define
+colors displayed for a window with
+.I LIBAXL_NONE
+as the colormap).
 .PP
 When no resource references the colormap, it will
 be deallocated.

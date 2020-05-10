@@ -14,7 +14,7 @@ libaxl_parse_display(const char *name, char **hostp, char **protocolp, int *disp
 	*hostp     = NULL;
 	*protocolp = NULL;
 	*displayp  = 0;
-	*screenp   = 0;
+	*screenp   = -1;
 
 	/* Get display server name string, if not specified */
 	if (!name || !*name) {

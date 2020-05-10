@@ -24,10 +24,12 @@ event. However, if the
 attribute of the window is false and another
 client is listening on [TODO SubstructureRedirect]
 events on the parent of the window, the window remains
-unmapped but a [TODO MapRequest] event
-is sent to that client. Otherwise, the window is
-mapped and a [TODO MapNotify] event
-is generated.
+unmapped but a
+.I LIBAXL_EVENT_MAP_REQUEST
+event is sent to that client. Otherwise, the
+window is mapped and a
+.I LIBAXL_EVENT_MAP_NOTIFY
+event is generated.
 .PP
 Exposure processing is performed on the window.
 .PP

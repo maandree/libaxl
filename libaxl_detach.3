@@ -1,0 +1,35 @@
+.TH libaxl_detach 3 libaxl
+.SH NAME
+libaxl_detach - Deallocate but do not close connection
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+int libaxl_detach(LIBAXL_CONNECTION *\fIconn\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_detach ()
+function deallocates the connection record
+specified in the
+.I conn
+parameter, which the function will assume is
+.IR non- NULL ,
+but return the file descriptor of the connection
+instead of closing it.
+.SH RETURN VALUE
+The
+.BR libaxl_detach ()
+returns the file descriptor of the connection.
+.SH ERRORS
+The
+.BR libaxl_detach ()
+function cannot fail.
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_marshal (3),
+.BR libaxl_fileno (3),
+.BR libaxl_close (3),
+.BR libaxl_detach (3),
+.BR libaxl_attach (3)

@@ -55,7 +55,7 @@ DEFINE_CHECKED(ssize_t, __checked_ssize_t)
 
 #define X_TCP_PORT 6000
 
-struct libaxl_connection { /* TODO add serialisation functions */
+struct libaxl_connection {
 	int                         fd;
 	uint16_t                    last_seqnum;
 	LIBAXL_CONNECTION_RWLOCK;
