@@ -35,17 +35,17 @@
 #  define __checked_ptr(X, _FUN)     X
 #  define __checked_ssize_t(X, _FUN) X
 # else
-#  define DEFINE_CHECKED(TYPE, NAME)\
+#  define DEFINE_CHECKED(TYPE, NAME, ERR_IF)\
 	static inline TYPE\
 	NAME(TYPE ret, const char *func)\
 	{\
-		if (!ret)\
+		if (ERR_IF)\
 			liberror_set_error_errno(strerror(errno), func, errno);\
 		return ret;\
 	}
-DEFINE_CHECKED(int, __checked_int)
-DEFINE_CHECKED(void *, __checked_ptr)
-DEFINE_CHECKED(ssize_t, __checked_ssize_t)
+DEFINE_CHECKED(int, __checked_int, ret < 0)
+DEFINE_CHECKED(void *, __checked_ptr, !ret)
+DEFINE_CHECKED(ssize_t, __checked_ssize_t, ret < 0)
 # endif
 # define liberror_snprintf(...)           __checked_int(snprintf(__VA_ARGS__), "snprintf")
 # define liberror_close(FD)               __checked_int(close(FD), "close")
