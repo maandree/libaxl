@@ -16,6 +16,7 @@ OBJ =\
 	libaxl_context_create.o\
 	libaxl_context_free.o\
 	libaxl_create.o\
+	libaxl_deallocate_id.o\
 	libaxl_detach.o\
 	libaxl_fileno.o\
 	libaxl_flush.o\

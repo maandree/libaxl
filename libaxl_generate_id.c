@@ -5,7 +5,33 @@ libaxl_id_t
 libaxl_generate_id(LIBAXL_CONTEXT *ctx)
 {
 	LIBAXL_CONNECTION *conn = ctx->conn;
+	struct id_pool *pool = NULL, *next, *last;
 	uint32_t id;
+
+	pool = atomic_exchange(&conn->xid_pool, pool);
+	if (pool) {
+		id = pool->first;
+		pool->first += (uint32_t)1 << conn->xid_shift;
+		if (id == pool->last) {
+			next = pool->next;
+			if (next) {
+				free(pool);
+				pool = next;
+			}
+			next = NULL;
+			if (atomic_compare_exchange_strong(&conn->xid_pool, &next, pool))
+				return id;
+			if (!pool->next) {
+				free(pool);
+				return id;
+			}
+		}
+		while ((pool = atomic_exchange(&conn->xid_pool, pool))) {
+			for (last = pool; last->next; last = last->next);
+			last->next = atomic_exchange(&conn->xid_pool, NULL);
+		}
+		return id;
+	}
 
 	id = atomic_fetch_add(&conn->xid_last, 1);
 	if (id <= conn->xid_max)

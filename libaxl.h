@@ -194,7 +194,7 @@ libaxl_id_t libaxl_generate_id(LIBAXL_CONTEXT *);
  * @return       0 on success, a negative libaxl error code on failure
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__)))
-int libaxl_deallocate_id(LIBAXL_CONTEXT *, libaxl_id_t); /* TODO implement */
+int libaxl_deallocate_id(LIBAXL_CONTEXT *, libaxl_id_t);
 
 /**
  * Send a request to the display server

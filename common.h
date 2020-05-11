@@ -31,6 +31,7 @@
 # include <liberror-libc.h>
 #else
 # if defined(NO_LIBERROR)
+#  define __checked_int(X, _FUN)     X
 #  define __checked_ptr(X, _FUN)     X
 #  define __checked_ssize_t(X, _FUN) X
 # else
@@ -42,10 +43,14 @@
 			liberror_set_error_errno(strerror(errno), func, errno);\
 		return ret;\
 	}
+DEFINE_CHECKED(int, __checked_int)
 DEFINE_CHECKED(void *, __checked_ptr)
 DEFINE_CHECKED(ssize_t, __checked_ssize_t)
 # endif
+# define liberror_snprintf(...)           __checked_int(snprintf(__VA_ARGS__), "snprintf")
+# define liberror_close(FD)               __checked_int(close(FD), "close")
 # define liberror_malloc(N)               __checked_ptr(malloc(N), "malloc")
+# define liberror_calloc(N, M)            __checked_ptr(calloc(N, M), "calloc")
 # define liberror_realloc(P, N)           __checked_ptr(realloc(P, N), "realloc")
 # define liberror_send(FD, B, N, F, _NAM) __checked_ssize_t(send(FD, B, N, F), "send")
 # define liberror_recv(FD, B, N, F, _NAM) __checked_ssize_t(recv(FD, B, N, F), "recv")
@@ -55,21 +60,28 @@ DEFINE_CHECKED(ssize_t, __checked_ssize_t)
 
 #define X_TCP_PORT 6000
 
+struct id_pool {
+	uint32_t        first;
+	uint32_t        last;
+	struct id_pool *next;
+};
+
 struct libaxl_connection {
-	int                         fd;
-	uint16_t                    last_seqnum;
+	int                              fd;
+	uint16_t                         last_seqnum;
 	LIBAXL_CONNECTION_RWLOCK;
-	LIBAXL_CONTEXT             *pending_out;
-	size_t                      in_progress;
-	size_t                      in_buf_size;
-	char                       *in_buf;
-	uint32_t                    xid_base;
-	uint32_t                    xid_max;
-	uint32_t                    xid_shift;
-	volatile _Atomic uint32_t   xid_last;
-	uint8_t                     request_map[1UL << 16];
-	struct libaxl_display_info  info;
-	char                       *info_buf;
+	LIBAXL_CONTEXT                  *pending_out;
+	size_t                           in_progress;
+	size_t                           in_buf_size;
+	char                            *in_buf;
+	uint32_t                         xid_base;
+	uint32_t                         xid_max;
+	uint32_t                         xid_shift;
+	volatile _Atomic uint32_t        xid_last;
+	struct id_pool *_Atomic volatile xid_pool;
+	uint8_t                          request_map[1UL << 16];
+	struct libaxl_display_info       info;
+	char                            *info_buf;
 };
 
 struct libaxl_context {

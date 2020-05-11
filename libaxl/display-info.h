@@ -305,6 +305,8 @@ struct libaxl_display_info {
 
 	/**
 	 * The default screen
+	 * 
+	 * `NULL` if the specified default screen does not exist
 	 */
 	const struct libaxl_screen *default_screen;
 };

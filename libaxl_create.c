@@ -5,7 +5,7 @@ LIBAXL_CONNECTION *
 libaxl_create(int fd)
 {
 	LIBAXL_CONNECTION *conn;
-	conn = calloc(1, sizeof(*conn));
+	conn = liberror_calloc(1, sizeof(*conn));
 	if (conn) {
 		conn->fd = fd;
 		atomic_init(&conn->xid_last, 0);

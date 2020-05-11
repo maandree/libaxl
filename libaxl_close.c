@@ -4,5 +4,5 @@
 int
 libaxl_close(LIBAXL_CONNECTION *conn)
 {
-	return close(libaxl_detach(conn));
+	return liberror_close(libaxl_detach(conn));
 }

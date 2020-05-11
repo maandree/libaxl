@@ -1,0 +1,86 @@
+.TH LIBAXL_REQUEST_CLEAR_AREA 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_CLEAR_AREA - Restore background
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_CLEAR_AREA 61
+struct libaxl_request_clear_area {
+        uint8_t         \fIopcode\fP;
+        libaxl_bool_t   \fIexposures\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+        int16_t         \fIx\fP;
+        int16_t         \fIy\fP;
+        uint16_t        \fIwidth\fP;
+        uint16_t        \fIheight\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall redraw the window's,
+whose ID is specified in the
+.I window
+field, background in the rectangle specified
+by the
+.IR x ,
+.IR y ,
+.IR width ,
+and
+.IR height .
+.PP
+The
+.I x
+and
+.I y
+fields specify the rectangles top left corner
+as pixels offset right of and down from the
+window's top left corner. The
+.I width
+and
+.I height
+fields specify the width and height, in
+pixels, of the rectangle, however the
+specified
+.I width
+is 0, than the rectangle stretches to the
+right edge of the window, and if the specified
+.I height
+is 0, than the rectangle stretches to the
+bottom edge of the window.
+.PP
+If the
+.I exposures
+field is set to
+.IR LIBAXL_TRUE ,
+one or more
+.I LIBAXL_EVENT_EXPOSE
+events are generated for regions of the rectangle
+that are either visible or are being retained in
+a backing store.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_CLEAR_AREA
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_MATCH (3)
+The window with the specified window ID
+is an input-only window.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+TODO \" LIBAXL_ERROR_VALUE
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+None
+.SH SEE ALSO
+.BR libaxl_send_request (3)
