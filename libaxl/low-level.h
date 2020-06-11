@@ -27,6 +27,9 @@
 _LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
 LIBAXL_CONNECTION *libaxl_create(int);
 
+_LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
+LIBAXL_CONNECTION *libaxl_connect_without_handshake(const char *host, const char *protocol, int display, int screen); /* TODO man doc */
+
 /**
  * Parse a display name string
  * 
@@ -129,7 +132,10 @@ int libaxl_send_handshake(LIBAXL_CONTEXT *restrict, const char *, size_t, const 
  *                   LIBAXL_HANDSHAKE_FAILED or LIBAXL_HANDSHAKE_AUTHENTICATE.
  *                   Remember to free after successful completion (non-negative return)
  * @param   flags    Flags to use for the 4th parameter when calling recv(3)
- * @return           0 on success, a negative libaxl error code on failure
+ * @return           LIBAXL_HANDSHAKE_SUCCESS (NB! this value is not 0) on
+ *                   success, LIBAXL_HANDSHAKE_FAILED on handshake failure,
+ *                   LIBAXL_HANDSHAKE_AUTHENTICATE 2, or a negative libaxl error
+ *                   code on failure
  * 
  * Behaviour is unspecified if SO_PEEK_OFF is active on the
  * connection to the display server or if the MSG_PEEK flag

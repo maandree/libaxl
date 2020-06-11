@@ -8,6 +8,7 @@ libaxl_create(int fd)
 	conn = liberror_calloc(1, sizeof(*conn));
 	if (conn) {
 		conn->fd = fd;
+		conn->info.struct_version = LIBAXL_DISPLAY_INFO_VERSION;
 		atomic_init(&conn->xid_last, 0);
 		INIT_LIBAXL_CONNECTION_RWLOCK(conn);
 	}

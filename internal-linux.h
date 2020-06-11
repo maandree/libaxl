@@ -11,7 +11,7 @@ _Static_assert(sizeof(MUTEX) == sizeof(uint32_t));
 
 
 #define INIT_MUTEX(MUTEX)\
-	((void)0) /* TODO atomic_init(&(MUTEX), 0) */
+	atomic_init(&(MUTEX), 0)
 
 #define _TRYLOCK(MUTEX)\
 	!atomic_exchange(&(MUTEX), 1)
@@ -27,6 +27,7 @@ _Static_assert(sizeof(MUTEX) == sizeof(uint32_t));
 		atomic_store(&(MUTEX), 0);\
 		if (syscall(SYS_futex, &(MUTEX), FUTEX_PRIVATE_FLAG | FUTEX_WAKE, INT_MAX, NULL, 0, 0) < 0) {\
 			/* TODO handle of error in _UNLOCK */\
+			abort();\
 		}\
 	} while (0)
 
@@ -34,5 +35,6 @@ _Static_assert(sizeof(MUTEX) == sizeof(uint32_t));
 	do {\
 		if (syscall(SYS_futex, &(MUTEX), FUTEX_PRIVATE_FLAG | FUTEX_WAIT, 1, NULL, 0, 0) < 0) {\
 			/* TODO handle of error in _WAIT */\
+			abort();\
 		}\
 	} while (0)

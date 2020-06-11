@@ -2,7 +2,7 @@ libaxl is a currently under develop X library, and is not
 in a usable state (please help write man pages if you want
 it ready sooner).
 
-The goals of libaxl is:
+The goals of libaxl are:
 
 *   Use asynchronous communication model (unlike libX11)
 

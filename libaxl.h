@@ -49,6 +49,7 @@ typedef struct libaxl_context LIBAXL_CONTEXT; /* TODO man */
 #define LIBAXL_ERROR_INVALID_REPLY_OPCODE                             -11
 #define LIBAXL_ERROR_INVALID_HANDSHAKE_RESPONSE                       -12
 #define LIBAXL_ERROR_OUT_OF_RESOURCE_IDS                              -13
+#define LIBAXL_ERROR_PROTOCOL_NOT_SUPPORTED                           -14
 
 union libaxl_input { /* TODO doc, man */
 	uint8_t            type;
@@ -57,14 +58,16 @@ union libaxl_input { /* TODO doc, man */
 	union libaxl_event event; /* otherwise (.type = event type) */
 };
 
+_LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
+LIBAXL_CONNECTION *libaxl_connect(const char *restrict, char **restrict); /* TODO man doc */
+
 /**
  * Deallocation and close a connection
  * 
  * @param   conn  The connection to the display server
  * @return        0 on success, -1 of there was an asynchronous error
  */
-_LIBAXL_GCC_ONLY(__attribute__((__nonnull__)))
-int libaxl_close(LIBAXL_CONNECTION *); /* TODO man */
+int libaxl_close(LIBAXL_CONNECTION *);
 
 /**
  * Get the file description used for a connection to

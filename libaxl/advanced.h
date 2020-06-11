@@ -38,7 +38,7 @@
  * @return  The major version number of highest support version of the protocol
  */
 _LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__)))
-int libaxl_protocol_version_major(void);
+int libaxl_protocol_version_major(void); /* TODO should be an `extern const int` */
 
 /**
  * Returns the minor version number of the highest version of
@@ -49,7 +49,7 @@ int libaxl_protocol_version_major(void);
  * @return  The minor version number of highest support version of the protocol
  */
 _LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__)))
-int libaxl_protocol_version_minor(void);
+int libaxl_protocol_version_minor(void); /* TODO should be an `extern const int` */
 
 /**
  * Returns the minor version number of the highest version of
@@ -62,7 +62,7 @@ int libaxl_protocol_version_minor(void);
  *          the minor number, e.g. 11000 for 11.0 (X11)
  */
 _LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__)))
-int libaxl_protocol_version(void);
+int libaxl_protocol_version(void); /* TODO should be an `extern const int` */
 
 /**
  * Deallocations a connection object without

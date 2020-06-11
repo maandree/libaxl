@@ -341,6 +341,8 @@ again:
 
 		case 'e': /* TODO event */
 			ALIGN(&i, union libaxl_event);
+			fprintf(stderr, "libaxl_send_request: function not fully implemented: 'e' case\n");
+			abort();
 			break;
 
 		case '?':

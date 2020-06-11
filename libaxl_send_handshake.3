@@ -1,0 +1,84 @@
+.TH libaxl_send_handshake 3 libaxl
+.SH NAME
+libaxl_send_handshake - Initiate connection handshake
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+int libaxl_send_handshake(LIBAXL_CONTEXT *\fIctx\fP, const char *\fIauth_name\fP, size_t \fIauth_name_len\fP,
+                          const char *\fIauth_data\fP, size_t \fIauth_data_len\fP, int \fIflags\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_send_handshake ()
+function sends the clients part of the handshake
+to the display server.
+.PP
+The value of the
+.I ctx
+parameter shall be the thread's state for the
+connection to the display server.
+.PP
+The value of the
+.I auth_name
+shall be the protocol name of the authorisation
+the client expects the server to use, and the
+value of the
+.I auth_name_len
+shall be the length of the name, or 0 if
+.I auth_name
+is
+.IR NULL .
+The value of the
+.I auth_data
+shall be the authorisation data, which is specific
+to the choosen authorisation mechanism, and the
+value of the
+.I auth_data_len
+shall be the length of the authorisation data,
+or 0 if
+.I auth_data
+is
+.IR NULL .
+.PP
+This function is called immediately after connecting
+to the socket for the display, and shall not be called
+again except of the authorisation failed, in which
+case a new authorisation mechanism can be tried.
+.SH RETURN VALUE
+The
+.BR libaxl_send_handshake ()
+function return 0 upon successful completion, or a
+negative libaxl error code on failure.
+.SH ERRORS
+The
+.BR libaxl_send_handshake ()
+function can only fail if:
+.TP
+.IR LIBAXL_ERROR_SYSTEM " with " EINVAL
+.I auth_name_len
+or
+.I auth_data_len
+is greater than 65535.
+.TP
+.IR LIBAXL_ERROR_SYSTEM " with " EALREADY
+There is an incompleted send pending, that must
+be flushed with the
+.BR libaxl_flush (3)
+function first.
+.TP
+.IR LIBAXL_ERROR_SYSTEM " with " EINPROGRESS
+The message could not be fully sent (why
+.BR send (3)
+failed can be found in the causal of the error)
+and must be completed by flushing it with the
+.BR libaxl_flush (3)
+function.
+.SH NOTES
+Valid authorisation mechanisms are not part of
+the core X protocol.
+.SH SEE ALSO
+.BR libaxl_connect (3),
+.BR libaxl_create (3),
+.BR libaxl_parse_display (3),
+.BR libaxl_receive_handshake (3)

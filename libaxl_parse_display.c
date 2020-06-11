@@ -110,7 +110,7 @@ normal:
 	errno = saved_errno;
 
 	/* Get screen */
-	if (*name)
+	if (!*name)
 		goto done;
 	if (!isdigit(*name)) {
 		liberror_save_backtrace(NULL);

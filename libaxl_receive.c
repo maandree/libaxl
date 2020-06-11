@@ -230,14 +230,15 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 	while (conn->in_progress < n) {
 		r = recv(conn->fd, &inbuf[conn->in_progress], n - conn->in_progress, flags);
 		if (r <= 0) {
-			WUNLOCK_CONNECTION_RECV(conn);
 			liberror_save_backtrace(NULL);
 			if (!r) {
 				liberror_set_error("The connection to the display server has been closed",
 				                   "libaxl_receive", "libaxl", LIBAXL_ERROR_CONNECTION_CLOSED);
+				WUNLOCK_CONNECTION_RECV(conn);
 				return LIBAXL_ERROR_CONNECTION_CLOSED;
 			}
 			liberror_recv_failed(conn->fd, &inbuf[conn->in_progress], n - conn->in_progress, flags, "<display server>");
+			WUNLOCK_CONNECTION_RECV(conn);
 			return LIBAXL_ERROR_SYSTEM;
 		}
 		conn->in_progress += (size_t)r;
@@ -268,15 +269,16 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 		while (conn->in_progress < n) {
 			r = recv(conn->fd, &inbuf[conn->in_progress], n - conn->in_progress, flags);
 			if (r <= 0) {
-				WUNLOCK_CONNECTION_RECV(conn);
 				liberror_save_backtrace(NULL);
 				if (!r) {
 					liberror_set_error("The connection to the display server has been closed",
 					                   "libaxl_receive", "libaxl", LIBAXL_ERROR_CONNECTION_CLOSED);
+					WUNLOCK_CONNECTION_RECV(conn);
 					return LIBAXL_ERROR_CONNECTION_CLOSED;
 				}
 				liberror_recv_failed(conn->fd, &inbuf[conn->in_progress], n - conn->in_progress,
 				                     flags, "<display server>");
+				WUNLOCK_CONNECTION_RECV(conn);
 				return LIBAXL_ERROR_SYSTEM;
 			}
 			conn->in_progress += (size_t)r;
@@ -575,9 +577,13 @@ received_reply:
 			*(void **)&msg[o] = data = &inbuf[i];
 			count = counts[oc++];
 			/* TODO */
+			fprintf(stderr, "libaxl_receive: function not fully implemented: '*' case\n");
+			abort();
 			break;
 
 		case '&': /* TODO */
+			fprintf(stderr, "libaxl_receive: function not fully implemented: '&' case\n");
+			abort();
 			/*
 			  LIBAXL_REQUEST_LIST_FONTS
 			  LIBAXL_REQUEST_GET_FONT_PATH

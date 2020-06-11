@@ -2,20 +2,28 @@
 #include "common.h"
 
 struct response {
-	uint8_t  status;
-	uint8_t  length_of_reason; /* Only used in Failed, and not in Authenticate */
-	uint16_t protocol_major_version; /* Not in Authenticate */
-	uint16_t protocol_minor_version; /* Not in Authenticate */
 	union {
 		struct {
+			uint8_t  status;
+			uint8_t  length_of_reason; /* Only used in Failed, and not in Authenticate */
+			uint16_t protocol_major_version; /* Not in Authenticate */
+			uint16_t protocol_minor_version; /* Not in Authenticate */
 			uint16_t length_of_addition_data;
 			char additional_data[];
 		};
 		struct {
+			uint8_t  __status__1;
+			uint8_t  __length_of_reason__1;
+			uint16_t __protocol_major_version__1;
+			uint16_t __protocol_minor_version__1;
 			uint16_t __length_of_addition_data__1;
 			char reason[];
 		};
 		struct {
+			uint8_t  __status__2;
+			uint8_t  __length_of_reason__2;
+			uint16_t __protocol_major_version__2;
+			uint16_t __protocol_minor_version__2;
 			uint16_t __length_of_addition_data__2;
 			uint32_t release_number;
 			uint32_t resource_id_base;
@@ -42,10 +50,11 @@ libaxl_receive_handshake(LIBAXL_CONTEXT *restrict ctx, int *restrict majorp, int
 {
 	LIBAXL_CONNECTION *conn = ctx->conn;
 	char *restrict inbuf, *new;
-	size_t n, t, len, vendor_len, out_off, in_off;
+	size_t i, n, t, len, vendor_len, out_off, in_off;
 	ssize_t r;
-	int read_stage = 0, saved_errno;
+	int read_stage = 0, saved_errno, status;
 	struct response *resp;
+	uint32_t xid_base, xid_mask;
 #ifdef MSG_TRUNC
 	int flag_trunc;
 #endif
@@ -59,6 +68,7 @@ libaxl_receive_handshake(LIBAXL_CONTEXT *restrict ctx, int *restrict majorp, int
 	inbuf = conn->in_buf;
 	n = offsetof(struct response, additional_data);
 
+continue_read:
 	if (conn->in_buf_size < n) {
 		inbuf = liberror_realloc(inbuf, n);
 		if (!inbuf) {
@@ -69,25 +79,25 @@ libaxl_receive_handshake(LIBAXL_CONTEXT *restrict ctx, int *restrict majorp, int
 		conn->in_buf_size = n;
 	}
 
-continue_read:
 	while (conn->in_progress < n) {
 		r = recv(conn->fd, &inbuf[conn->in_progress], n - conn->in_progress, flags);
 		if (r <= 0) {
-			WUNLOCK_CONNECTION_RECV(conn);
 			liberror_save_backtrace(NULL);
 			if (!r) {
 				liberror_set_error("The connection to the display server has been closed",
 				                   "libaxl_receive_handshake", "libaxl", LIBAXL_ERROR_CONNECTION_CLOSED);
+				WUNLOCK_CONNECTION_RECV(conn);
 				return LIBAXL_ERROR_CONNECTION_CLOSED;
 			}
 			liberror_recv_failed(conn->fd, &inbuf[conn->in_progress], n - conn->in_progress, flags, "<display server>");
+			WUNLOCK_CONNECTION_RECV(conn);
 			return LIBAXL_ERROR_SYSTEM;
 		}
 		conn->in_progress += (size_t)r;
 	}
 
 	if (read_stage == 0) {
-		n += (size_t)((struct response *)inbuf)->length_of_addition_data * 4;
+		n += (size_t)ntohs(((struct response *)inbuf)->length_of_addition_data) * 4;
 		read_stage = 1;
 		goto continue_read;
 	}
@@ -113,15 +123,16 @@ continue_read:
 	resp = (struct response *)inbuf;
 
 	if (majorp)
-		*majorp = (int)resp->protocol_major_version;
+		*majorp = (int)ntohs(resp->protocol_major_version);
 	if (minorp)
-		*minorp = (int)resp->protocol_minor_version;
+		*minorp = (int)ntohs(resp->protocol_minor_version);
 	if (reasonp)
 		*reasonp = NULL;
 
+	status = (int)resp->status;
 	switch (resp->status) {
 	case LIBAXL_HANDSHAKE_FAILED:
-		len = (size_t)resp->length_of_reason;
+		len = (size_t)ntohs(resp->length_of_reason);
 		if (n < len + offsetof(struct response, reason))
 			goto invalid;
 		goto return_reason;
@@ -139,27 +150,28 @@ continue_read:
 		break;
 
 	case LIBAXL_HANDSHAKE_SUCCESS:
-		if (resp->resource_id_base & resp->resource_id_mask ||
-		    (resp->resource_id_base | resp->resource_id_mask) >> 29)
+		xid_base = ntohl(resp->resource_id_base);
+		xid_mask = ntohl(resp->resource_id_mask);
+		if (xid_base & xid_mask || (xid_base | xid_mask) >> 29)
 			goto invalid;
 
-		conn->xid_base = resp->resource_id_base;
-		for (conn->xid_shift = 0; !(resp->resource_id_mask & 1); conn->xid_shift += 1)
-			resp->resource_id_mask >>= 1;
-		conn->xid_max = resp->resource_id_mask;
-		conn->info.vendor_release              = resp->release_number;
+		conn->xid_base = xid_base;
+		for (conn->xid_shift = 0; !(xid_mask & 1); conn->xid_shift += 1)
+			xid_mask >>= 1;
+		conn->xid_max = xid_mask;
+		conn->info.vendor_release              = ntohl(resp->release_number);
 		conn->info.min_keycode                 = resp->min_keycode;
 		conn->info.max_keycode                 = resp->max_keycode;
 		conn->info.image_byte_order            = resp->image_byte_order;
-		conn->info.motion_buffer_size          = resp->motion_buffer_size;
-		conn->info.maximum_request_length      = resp->maximum_request_length;
+		conn->info.motion_buffer_size          = ntohl(resp->motion_buffer_size);
+		conn->info.maximum_request_length      = resp->maximum_request_length = ntohs(resp->maximum_request_length);
 		conn->info.bitmap_format_bit_order     = resp->bitmap_format_bit_order;
 		conn->info.bitmap_format_scanline_unit = resp->bitmap_format_scanline_unit;
 		conn->info.bitmap_format_scanline_pad  = resp->bitmap_format_scanline_pad;
 
 		/* These restricts are less restrictive than the protocol specifices,
 		 * in case the they are modified later on */
-		if (resp->resource_id_mask                ||
+		if (!xid_mask                             ||
 		    conn->xid_max + 1 < UINT16_C(1) << 18 ||
 		    (conn->xid_max & (conn->xid_max + 1)) ||
 		    resp->min_keycode < 8                 ||
@@ -171,7 +183,7 @@ continue_read:
 		    resp->bitmap_format_scanline_unit > resp->bitmap_format_scanline_pad)
 			goto invalid;
 
-		vendor_len          = resp->length_of_vendor;
+		vendor_len          = ntohs(resp->length_of_vendor);
 		conn->info.nscreens = resp->number_of_roots;
 		conn->info.nformats = resp->number_of_pixmap_formats;
 
@@ -194,7 +206,13 @@ continue_read:
 		conn->info.vendor  = inbuf;
 		conn->info.formats = (void *)&inbuf[t];
 		conn->info.screens = (void *)&inbuf[t + conn->info.nformats * 8];
-		conn->info.default_screen = conn->info.screens;
+		if ((size_t)conn->info.default_screen_number < conn->info.nscreens) {
+			conn->info.default_screen = conn->info.screens;
+			for (i = 0; i < (size_t)conn->info.default_screen_number; i++)
+				conn->info.default_screen = libaxl_next_screen(conn->info.default_screen);
+		} else {
+			conn->info.default_screen = NULL;
+		}
 
 		ctx->in_buf_size = 0;
 		ctx->in_buf = NULL;
@@ -208,5 +226,5 @@ continue_read:
 		return LIBAXL_ERROR_INVALID_HANDSHAKE_RESPONSE;
 	}
 
-	return (int)resp->status;
+	return status;
 }

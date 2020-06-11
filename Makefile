@@ -13,6 +13,8 @@ include $(OSCONFIGFILE)
 OBJ =\
 	libaxl_attach.o\
 	libaxl_close.o\
+	libaxl_connect.o\
+	libaxl_connect_without_handshake.o\
 	libaxl_context_create.o\
 	libaxl_context_free.o\
 	libaxl_create.o\
@@ -280,6 +282,7 @@ MAN3 =\
 	LIBAXL_REQUEST_UNMAP_WINDOW.3\
 	LIBAXL_REQUEST_WARP_POINTER.3\
 	libaxl_attach.3\
+	libaxl_close.3\
 	libaxl_context_create.3\
 	libaxl_context_free.3\
 	libaxl_create.3\
@@ -293,6 +296,8 @@ MAN3 =\
 	libaxl_protocol_version.3\
 	libaxl_protocol_version_major.3\
 	libaxl_protocol_version_minor.3\
+	libaxl_receive_handshake.3\
+	libaxl_send_handshake.3\
 	struct_libaxl_error_access.3\
 	struct_libaxl_error_alloc.3\
 	struct_libaxl_error_atom.3\
@@ -525,6 +530,7 @@ install: libaxl.a libaxl.$(LIBEXT)
 
 uninstall:
 	-cd -- "$(DESTDIR)$(PREFIX)/include/" && rm -f -- $(LIB_HDR)
+	-rmdir -- "$(DESTDIR)$(PREFIX)/include/libaxl"
 	-rm -f -- "$(DESTDIR)$(PREFIX)/lib/libaxl.a"
 	-rm -f -- "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBMINOREXT)"
 	-rm -f -- "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBMAJOREXT)"

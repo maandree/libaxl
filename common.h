@@ -2,8 +2,10 @@
 #include "libaxl.h"
 
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/un.h>
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -12,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 
 #if defined(__linux__)
@@ -21,10 +24,14 @@
 #if !defined(NO_LIBERROR)
 # include <liberror.h>
 #else
+struct liberror_state {int err;};
+# define liberror_start(STATEP)        ((STATEP)->err = errno)
+# define liberror_end(STATEP)          (errno = (STATEP)->err)
 # define liberror_save_backtrace(...)  ((void) 0)
 # define liberror_set_error(...)       ((void) 0)
 # define liberror_set_error_errno(...) ((void) 0)
 # define liberror_reset_error()        ((void) 0)
+# define liberror_pop_error()          ((void) 0)
 #endif
 
 #if !defined(NO_LIBERROR) && !defined(NO_LIBERROR_LIBC)

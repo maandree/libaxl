@@ -182,7 +182,7 @@ struct libaxl_display_info {
 	 * is the lowest of the number stored in this field and the
 	 * number stored in the LIBAXL_DISPLAY_INFO_VERSION constant.
 	 */
-	int struct_version; /* TODO set when creating LIBAXL_CONNECTION */
+	int struct_version;
 
 	/* SINCE STRUCT VERSION 0: */
 
@@ -309,4 +309,9 @@ struct libaxl_display_info {
 	 * `NULL` if the specified default screen does not exist
 	 */
 	const struct libaxl_screen *default_screen;
+
+	/**
+	 * The default screen
+	 */
+	int default_screen_number;
 };

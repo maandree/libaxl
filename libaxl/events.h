@@ -163,7 +163,7 @@ struct libaxl_event_enter_notify {
 	int16_t                   event_y;
 	libaxl_keybutmask_t       state;
 	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, or LIBAXL_UNGRAB */
-	uint8_t                   flags;                 /* TODO #x01 = Focus, #x02 = Same-screen */
+	uint8_t                   flags;                 /* Bitmask: LIBAXL_FOCUS, LIBAXL_SAME_SCREEN */
 };
 
 struct libaxl_event_leave_notify {
@@ -181,7 +181,7 @@ struct libaxl_event_leave_notify {
 	int16_t                   event_y;
 	libaxl_keybutmask_t       state;
 	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, or LIBAXL_UNGRAB */
-	uint8_t                   flags;                 /* TODO #x01 = Focus, #x02 = Same-screen */
+	uint8_t                   flags;                 /* Bitmask: LIBAXL_FOCUS, LIBAXL_SAME_SCREEN */
 };
 
 struct libaxl_event_pointer_window_event {
@@ -199,7 +199,7 @@ struct libaxl_event_pointer_window_event {
 	int16_t                   event_y;
 	libaxl_keybutmask_t       state;
 	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, or LIBAXL_UNGRAB */
-	uint8_t                   flags;                 /* TODO #x01 = Focus, #x02 = Same-screen */
+	uint8_t                   flags;                 /* Bitmask: LIBAXL_FOCUS, LIBAXL_SAME_SCREEN */
 };
 
 struct libaxl_event_focus_in {

@@ -1,0 +1,46 @@
+.TH libaxl_close 3 libaxl
+.SH NAME
+libaxl_close - Deallocate and close connection
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+int libaxl_close(LIBAXL_CONNECTION *\fIconn\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_close ()
+function deallocates the connection record
+specified in the
+.I conn
+parameter, and closes the file descriptor of
+the connection (without first shutting down
+the connection).
+.PP
+If
+.I conn
+is
+.IR NULL ,
+the function will return 0 without doing
+anything.
+.SH RETURN VALUE
+The
+.BR libaxl_close ()
+function returns 0 upon completion except if there
+the file descriptor could not be closed or if there
+was an asynchronous failure.
+.SH ERRORS
+The
+.BR libaxl_close ()
+function can fail if for any reason specified
+for the
+.BR close (3)
+function, and will in these cases return
+.IR LIBAXL_ERROR_SYSTEM .
+.SH NOTES
+None.
+.SH SEE ALSO
+.BR libaxl_marshal (3),
+.BR libaxl_fileno (3),
+.BR libaxl_detach (3),
+.BR libaxl_attach (3)

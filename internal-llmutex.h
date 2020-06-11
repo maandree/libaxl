@@ -26,7 +26,7 @@
 #define WTRYLOCK_CONNECTION_(CONN, SUFFIX) _TRYLOCK((CONN)->exguard_##SUFFIX)
 #define  WUNLOCK_CONNECTION_(CONN, SUFFIX)  _UNLOCK((CONN)->exguard_##SUFFIX)
 
-#define   RLOCK_CONNECTION_(CONN, SUFFIX)\
+#define RLOCK_CONNECTION_(CONN, SUFFIX)\
 	do {\
 		char old_val__;\
 		do {\

@@ -27,7 +27,13 @@ The
 function returns 0 on successful completion
 and a negative libaxl error code on failure.
 .SH ERRORS
-TODO \" errors for libaxl_deallocate_id
+The
+.BR libaxl_deallocate_id ()
+function may fail if
+.TP
+.IR LIBAXL_ERROR_SYSTEM " with " ENOMEM
+Enough memory could not be allocated to add the
+resource ID to the pool of reusable resource IDs.
 .SH NOTES
 None.
 .SH SEE ALSO

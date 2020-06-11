@@ -1,0 +1,67 @@
+.TH libaxl_receive_handshake 3 libaxl
+.SH NAME
+libaxl_receive_handshake - Finish connection handshake
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_HANDSHAKE_FAILED       0
+#define LIBAXL_HANDSHAKE_SUCCESS      1
+#define LIBAXL_HANDSHAKE_AUTHENTICATE 2
+
+int libaxl_receive_handshake(LIBAXL_CONTEXT *\fIctx\fP, int *\fImajorp\fP, int *\fIminorp\fP, char **\fIreasonp\fP, int \fIflags\fP);
+.fi
+.SH DESCRIPTION
+The
+.BR libaxl_receive_handshake ()
+function receives the display server's part of
+the handshake, which is sent in response to the
+client's handshake message which is sent with the
+.BR libaxl_send_handshake ()
+function.
+.PP
+The value of the
+.I ctx
+parameter shall be the thread's state for the
+connection to the display server.
+.PP
+TODO majorp, minorp, reasonp
+.PP
+Flags to used in the fourth argument when the
+.BR libaxl_receive_handshake ()
+function calls the
+.BR recv (3)
+function shall be specified in the
+.I flags
+parameter.
+.SH RETURN VALUE
+The
+.BR libaxl_receive_handshake ()
+function return
+.B LIBAXL_HANDSHAKE_SUCCESS
+upon successful completion with successful handshake
+(beaware, this value is not 0),
+.B LIBAXL_HANDSHAKE_FAILURE
+upon successful completion with handshake failure,
+.B LIBAXL_HANDSHAKE_AUTHENTICATE
+upon successful completion handshake rejection
+due to insufficient or incorrect authentication,
+or a negative libaxl error code on failure.
+.SH ERRORS
+The
+.BR libaxl_receive_handshake ()
+function can only fail if:
+.TP
+TODO errors
+.SH NOTES
+The
+.BR libaxl_receive_handshake ()
+function's behaviour is unspecified if the
+.I SO_PEEK_OFF
+socket option is active or the
+.I MSG_PEEK
+flag is used.
+.SH SEE ALSO
+.BR libaxl_connect (3),
+.BR libaxl_send_handshake (3),
+.BR libaxl_send (3)

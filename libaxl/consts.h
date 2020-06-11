@@ -247,6 +247,10 @@
 #define LIBAXL_FOCUS_POINTER_ROOT   6 /* Just called PointerRoot in the specification */
 #define LIBAXL_FOCUS_NONE           7 /* Just called None in the specification */
 
+/* focus flags */
+#define LIBAXL_FOCUS                0x01
+#define LIBAXL_SAME_SCREEN          0x02
+
 /* misc. */
 #define LIBAXL_ANY_PROPERTY_TYPE    0
 #define LIBAXL_ALL_TEMPORARY        0
