@@ -50,11 +50,13 @@ libaxl_receive_handshake(LIBAXL_CONTEXT *restrict ctx, int *restrict majorp, int
 {
 	LIBAXL_CONNECTION *conn = ctx->conn;
 	char *restrict inbuf, *new;
-	size_t i, n, t, len, vendor_len, out_off, in_off;
+	size_t i, j, k, n, t, len, vendor_len, out_off, in_off;
 	ssize_t r;
 	int read_stage = 0, saved_errno, status;
 	struct response *resp;
 	uint32_t xid_base, xid_mask;
+	struct libaxl_screen *screen;
+	struct libaxl_depth *depth;
 #ifdef MSG_TRUNC
 	int flag_trunc;
 #endif
@@ -205,13 +207,41 @@ continue_read:
 		conn->info_buf     = inbuf;
 		conn->info.vendor  = inbuf;
 		conn->info.formats = (void *)&inbuf[t];
-		conn->info.screens = (void *)&inbuf[t + conn->info.nformats * 8];
+		conn->info.screens = screen = (void *)&inbuf[t + conn->info.nformats * 8];
 		if ((size_t)conn->info.default_screen_number < conn->info.nscreens) {
 			conn->info.default_screen = conn->info.screens;
 			for (i = 0; i < (size_t)conn->info.default_screen_number; i++)
 				conn->info.default_screen = libaxl_next_screen(conn->info.default_screen);
 		} else {
 			conn->info.default_screen = NULL;
+		}
+
+		for (i = 0; i < (size_t)conn->info.nscreens; i++) {
+			screen->root                  = ntohl(screen->root);
+			screen->default_colormap      = ntohl(screen->default_colormap);
+			screen->white_pixel           = ntohl(screen->white_pixel);
+			screen->black_pixel           = ntohl(screen->black_pixel);
+			screen->current_input_masks   = ntohl(screen->current_input_masks);
+			screen->width_in_pixels       = ntohs(screen->width_in_pixels);
+			screen->height_in_pixels      = ntohs(screen->height_in_pixels);
+			screen->width_in_millimeters  = ntohs(screen->width_in_millimeters);
+			screen->height_in_millimeters = ntohs(screen->height_in_millimeters);
+			screen->min_installed_maps    = ntohs(screen->min_installed_maps);
+			screen->max_installed_maps    = ntohs(screen->max_installed_maps);
+			screen->root_visual           = ntohs(screen->root_visual);
+			depth = screen->allowed_depths;
+			for (j = 0; j < (size_t)screen->number_of_allowed_depths; j++) {
+				depth->number_of_visuals = ntohs(depth->number_of_visuals);
+				for (k = 0; k < (size_t)depth->number_of_visuals; k++) {
+					depth->visuals[k].visual_id        = ntohl(depth->visuals[k].visual_id);
+					depth->visuals[k].colormap_entries = ntohs(depth->visuals[k].colormap_entries);
+					depth->visuals[k].red_mask         = ntohl(depth->visuals[k].red_mask);
+					depth->visuals[k].green_mask       = ntohl(depth->visuals[k].green_mask);
+					depth->visuals[k].blue_mask        = ntohl(depth->visuals[k].blue_mask);
+				}
+				depth = (void *)(uintptr_t)&depth->visuals[depth->number_of_visuals];
+			}
+			screen = (void *)(uintptr_t)depth;
 		}
 
 		ctx->in_buf_size = 0;

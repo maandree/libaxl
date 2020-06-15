@@ -180,6 +180,8 @@ libaxl_send_request(LIBAXL_CONTEXT *restrict ctx, union libaxl_request_const_ptr
 	uint32_t mask;
 	char *buf = ctx->out_buf, *subbuf, *new;
 	size_t size = ctx->out_buf_size;
+	uint16_t u16;
+	uint32_t u32;
 
 	RLOCK_CONNECTION_SEND(conn);
 	pending = conn->pending_out;
@@ -225,12 +227,15 @@ again:
 
 		case '_':
 			buf[o++] = 0; /* need not be 0 */
+			i += 1;
 			/* fall through */
 		case ',':
 			buf[o++] = 0; /* need not be 0 */
+			i += 1;
 			/* fall through */
 		case '.':
 			buf[o++] = 0; /* need not be 0 */
+			i += 1;
 			break;
 
 		case '!':
@@ -261,15 +266,17 @@ again:
 			break;
 
 		case 's':
-			*(uint16_t *)&buf[o] = htons(*(const uint16_t *)&req[i]);
-			TWOS_COMPLEMENT16(&buf[o]);
+			u16 = *(const uint16_t *)&req[i];
+			TWOS_COMPLEMENT16(&u16);
+			*(uint16_t *)&buf[o] = htons(u16);
 			i += 2;
 			o += 2;
 			break;
 
 		case 'S':
-			*(uint32_t *)&buf[o] = htonl(*(const uint32_t *)&req[i]);
-			TWOS_COMPLEMENT32(&buf[o]);
+			u32 = *(const uint32_t *)&req[i];
+			TWOS_COMPLEMENT32(&u32);
+			*(uint32_t *)&buf[o] = htonl(u32);
 			i += 4;
 			o += 4;
 			break;
@@ -416,9 +423,10 @@ again:
 				case '2':
 				case 's':
 					if (mask & 1) {
-						*(uint32_t *)&buf[o] = htonl((uint32_t)*(const uint16_t *)&req[i]);
-						if (*fmt == 'z')
-							TWOS_COMPLEMENT16(&buf[o]);
+						u16 = *(const uint16_t *)&req[i];
+						if (*fmt == 's')
+							TWOS_COMPLEMENT16(&u16);
+						*(uint32_t *)&buf[o] = htonl((uint32_t)u16);
 						o += 4;
 					}
 					mask >>= 1;
@@ -428,9 +436,10 @@ again:
 				case '4':
 				case 'S':
 					if (mask & 1) {
-						*(uint32_t *)&buf[o] = htonl(*(const uint32_t *)&req[i]);
-						if (*fmt == 'z')
-							TWOS_COMPLEMENT32(&buf[o]);
+						u32 = *(const uint16_t *)&req[i];
+						if (*fmt == 'S')
+							TWOS_COMPLEMENT32(&u32);
+						*(uint32_t *)&buf[o] = htonl(u32);
 						o += 4;
 					}
 					mask >>= 1;

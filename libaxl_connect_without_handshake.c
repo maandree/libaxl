@@ -62,6 +62,7 @@ libaxl_connect_without_handshake(const char *host, const char *protocol, int dis
 	if ((!protocol || !*protocol) && (!host || !*host)) {
 		sprintf(path, "/tmp/.X11-unix/X%i", display);
 		fd = connect_unix(path);
+		/* TODO also try abstract address version with a NUL byte before it (truncate address to remove tailing NULs) */
 		if (fd < 0) {
 			fd = connect_tcp_ip("localhost", display);
 			if (fd >= 0)
@@ -88,7 +89,7 @@ libaxl_connect_without_handshake(const char *host, const char *protocol, int dis
 
 	conn = libaxl_create(fd);
 	if (conn)
-		conn->info.default_screen_number = screen;
+		conn->info.default_screen_number = screen < 0 ? 0 : screen;
 
 	return conn;
 }
