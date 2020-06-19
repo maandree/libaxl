@@ -347,7 +347,7 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 			break;
 
 		case '2':
-			if (i + 2 <= n) {
+			if (i + 2 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
@@ -356,7 +356,7 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 			break;
 
 		case '4':
-			if (i + 4 <= n) {
+			if (i + 4 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
@@ -371,7 +371,7 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 			break;
 
 		case 's':
-			if (i + 2 <= n) {
+			if (i + 2 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
@@ -381,7 +381,7 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 			break;
 
 		case 'S':
-			if (i + 4 <= n) {
+			if (i + 4 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
@@ -462,7 +462,7 @@ received_reply:
 			break;
 
 		case '2':
-			if (i + 2 >= n) {
+			if (i + 2 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
@@ -472,7 +472,7 @@ received_reply:
 			break;
 
 		case '4':
-			if (i + 4 >= n) {
+			if (i + 4 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
@@ -489,7 +489,7 @@ received_reply:
 			break;
 
 		case 's':
-			if (i + 2 >= n) {
+			if (i + 2 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
@@ -500,7 +500,7 @@ received_reply:
 			break;
 
 		case 'S':
-			if (i + 4 >= n) {
+			if (i + 4 > n) {
 				liberror_save_backtrace(NULL);
 				goto short_msg;
 			}
