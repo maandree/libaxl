@@ -28,7 +28,7 @@ static const char *const req_formats[] = {
 	 * the length field and will be filled in by the function
 	 */
 	[LIBAXL_REQUEST_CREATE_WINDOW]              = "11,44ss222244|4444111.44!!,4444",
-	[LIBAXL_REQUEST_CHANGE_WINDOW_ATTRIBUTES]   = "1_44|4444111.44111.44!!,4444",
+	[LIBAXL_REQUEST_CHANGE_WINDOW_ATTRIBUTES]   = "1_44|4444111.44!!,4444",
 	[LIBAXL_REQUEST_GET_WINDOW_ATTRIBUTES]      = "1_4",
 	[LIBAXL_REQUEST_DESTROY_WINDOW]             = "1_4",
 	[LIBAXL_REQUEST_DESTROY_SUBWINDOWS]         = "1_4",
@@ -436,7 +436,7 @@ again:
 				case '4':
 				case 'S':
 					if (mask & 1) {
-						u32 = *(const uint16_t *)&req[i];
+						u32 = *(const uint32_t *)&req[i];
 						if (*fmt == 'S')
 							TWOS_COMPLEMENT32(&u32);
 						*(uint32_t *)&buf[o] = htonl(u32);
