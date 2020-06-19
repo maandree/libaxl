@@ -221,7 +221,7 @@ int libaxl_deallocate_id(LIBAXL_CONTEXT *, libaxl_id_t);
  * and set `errno` to EINPROGRESS, or such happened in another
  * thread.
  */
-_LIBAXL_GCC_ONLY(__attribute__((__nonnull__)))
+_LIBAXL_GCC_ONLY(__attribute__((__nonnull__(1))))
 int libaxl_send_request(LIBAXL_CONTEXT *restrict, union libaxl_request_const_ptr, int, uint16_t *restrict); /* TODO man */
 
 /**

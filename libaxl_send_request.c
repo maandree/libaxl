@@ -22,7 +22,7 @@ static const char *const req_formats[] = {
 	 * e = event, align input to (union libaxl_event)
 	 * ? = jump to special encoding routine
 	 * * = following are repeated, align input to (void *) and enter
-	 * | = following are included and encoded as uint32_t if corresponding bit is set in previous
+	 * | = following are included and encoded as uint32_t (align output accordingly) if corresponding bit is set in previous
 	 * 
 	 * The bytes 2–3 (starting at 0) are ignored here because its
 	 * the length field and will be filled in by the function
@@ -38,7 +38,7 @@ static const char *const req_formats[] = {
 	[LIBAXL_REQUEST_MAP_SUBWINDOWS]             = "1_4",
 	[LIBAXL_REQUEST_UNMAP_WINDOW]               = "1_4",
 	[LIBAXL_REQUEST_UNMAP_SUBWINDOWS]           = "1_4",
-	[LIBAXL_REQUEST_CONFIGURE_WINDOW]           = "1_42|,ss222,1",
+	[LIBAXL_REQUEST_CONFIGURE_WINDOW]           = "1_42|,ss222,41",
 	[LIBAXL_REQUEST_CIRCULATE_WINDOW]           = "11,4",
 	[LIBAXL_REQUEST_GET_GEOMETRY]               = "1_4",
 	[LIBAXL_REQUEST_QUERY_TREE]                 = "1_4",
@@ -373,6 +373,16 @@ again:
 				mask = (uint32_t)*(const uint16_t *)&req[i - 2];
 			else
 				mask = (uint32_t)*(const uint8_t *)&req[i - 1];
+			if (o + 4 > size) {
+				size += 32;
+				new = liberror_realloc(buf, size);
+				if (!new)
+					return LIBAXL_ERROR_SYSTEM;
+				ctx->out_buf = buf = new;
+				ctx->out_buf_size = size;
+			}
+			memset(&buf[o], 0, 4 - (fmt[-1] - '0'));
+			o += 4 - (fmt[-1] - '0');
 			for (fmt++;; fmt++) {
 				if (o + 4 > size) {
 					size += 32;
@@ -523,8 +533,9 @@ done:
 
 	WLOCK_CONNECTION_SEND(conn);
 
-	*seqnump = ++conn->last_seqnum;
-	conn->request_map[*seqnump] = code;
+	conn->request_map[++conn->last_seqnum] = code;
+	if (seqnump)
+		*seqnump = conn->last_seqnum;
 	if (send_all(conn->fd, ctx->out_buf, ctx->out_length, flags, &ctx->out_progress)) {
 		ctx->next_pending_out = NULL;
 		pendingp = &conn->pending_out;

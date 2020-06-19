@@ -115,7 +115,7 @@ struct libaxl_event_button_press_release {
 struct libaxl_event_motion_notify {
 #define LIBAXL_EVENT_MOTION_NOTIFY 6
 	uint8_t                   code;
-	uint8_t                   detail;                /* LIBAXL_NORMAL or LIBAXL_HINT */
+	uint8_t                   detail;                /* LIBAXL_{NORMAL or HINT} */
 	uint16_t                  sequence_number;
 	libaxl_timestamp_t        time;
 	libaxl_window_t           root;
@@ -151,7 +151,7 @@ struct libaxl_event_input_device_event {
 struct libaxl_event_enter_notify {
 #define LIBAXL_EVENT_ENTER_NOTIFY 7
 	uint8_t                   code;
-	uint8_t                   detail;                /* See "pointer window details" in libaxl-consts.h */
+	uint8_t                   detail;                /* See "pointer window details" in "consts.h" */
 	uint16_t                  sequence_number;
 	libaxl_timestamp_t        time;
 	libaxl_window_t           root;
@@ -162,14 +162,14 @@ struct libaxl_event_enter_notify {
 	int16_t                   event_x;
 	int16_t                   event_y;
 	libaxl_keybutmask_t       state;
-	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, or LIBAXL_UNGRAB */
-	uint8_t                   flags;                 /* Bitmask: LIBAXL_FOCUS, LIBAXL_SAME_SCREEN */
+	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, or UNGRAB} */
+	uint8_t                   flags;                 /* Bitmask: LIBAXL_{FOCUS, SAME_SCREEN} */
 };
 
 struct libaxl_event_leave_notify {
 #define LIBAXL_EVENT_LEAVE_NOTIFY 8
 	uint8_t                   code;
-	uint8_t                   detail;                /* See "pointer window details" in libaxl-consts.h */
+	uint8_t                   detail;                /* See "pointer window details" in "consts.h" */
 	uint16_t                  sequence_number;
 	libaxl_timestamp_t        time;
 	libaxl_window_t           root;
@@ -180,14 +180,14 @@ struct libaxl_event_leave_notify {
 	int16_t                   event_x;
 	int16_t                   event_y;
 	libaxl_keybutmask_t       state;
-	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, or LIBAXL_UNGRAB */
-	uint8_t                   flags;                 /* Bitmask: LIBAXL_FOCUS, LIBAXL_SAME_SCREEN */
+	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, or UNGRAB} */
+	uint8_t                   flags;                 /* Bitmask: LIBAXL_{FOCUS, SAME_SCREEN} */
 };
 
 struct libaxl_event_pointer_window_event {
 	/* {enter,leave}_notify */
 	uint8_t                   code;
-	uint8_t                   detail;                /* See "pointer window details" in libaxl-consts.h */
+	uint8_t                   detail;                /* See "pointer window details" in "consts.h" */
 	uint16_t                  sequence_number;
 	libaxl_timestamp_t        time;
 	libaxl_window_t           root;
@@ -198,37 +198,37 @@ struct libaxl_event_pointer_window_event {
 	int16_t                   event_x;
 	int16_t                   event_y;
 	libaxl_keybutmask_t       state;
-	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, or LIBAXL_UNGRAB */
-	uint8_t                   flags;                 /* Bitmask: LIBAXL_FOCUS, LIBAXL_SAME_SCREEN */
+	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, or UNGRAB} */
+	uint8_t                   flags;                 /* Bitmask: LIBAXL_{FOCUS, SAME_SCREEN} */
 };
 
 struct libaxl_event_focus_in {
 #define LIBAXL_EVENT_FOCUS_IN 9
 	uint8_t                   code;
-	uint8_t                   detail;                /* See "window focus details" in libaxl-consts.h (Beware of namespacing!) */
+	uint8_t                   detail;                /* See "window focus details" in "consts.h" (Beware of namespacing!) */
 	uint16_t                  sequence_number;
 	libaxl_window_t           window;
-	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, LIBAXL_UNGRAB, or LIBAXL_WHILE_GRABBED */
+	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, UNGRAB, or WHILE_GRABBED} */
 	uint8_t                   __unused[23];
 };
 
 struct libaxl_event_focus_out {
 #define LIBAXL_EVENT_FOCUS_OUT 10
 	uint8_t                   code;
-	uint8_t                   detail;                /* See "window focus details" in libaxl-consts.h (Beware of namespacing!) */
+	uint8_t                   detail;                /* See "window focus details" in "consts.h" (Beware of namespacing!) */
 	uint16_t                  sequence_number;
 	libaxl_window_t           window;
-	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, LIBAXL_UNGRAB, or LIBAXL_WHILE_GRABBED */
+	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, UNGRAB, or WHILE_GRABBED} */
 	uint8_t                   __unused[23];
 };
 
 struct libaxl_event_input_focus_event {
 	/* focus_{in,out} */
 	uint8_t                   code;
-	uint8_t                   detail;                /* See "window focus details" in libaxl-consts.h (Beware of namespacing!) */
+	uint8_t                   detail;                /* See "window focus details" in "consts.h" (Beware of namespacing!) */
 	uint16_t                  sequence_number;
 	libaxl_window_t           window;
-	uint8_t                   mode;                  /* LIBAXL_NORMAL, LIBAXL_GRAB, LIBAXL_UNGRAB, or LIBAXL_WHILE_GRABBED */
+	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, UNGRAB, or WHILE_GRABBED} */
 	uint8_t                   __unused[23];
 };
 
@@ -285,7 +285,7 @@ struct libaxl_event_visibility_notify {
 	uint8_t                   __pad;
 	uint16_t                  sequence_number;
 	libaxl_drawable_t         drawable;
-	uint8_t                   state;                 /* LIBAXL_UNOBSCURED, LIBAXL_PARTIALLY_OBSCURED, or LIBAXL_FULLY_OBSCURED */
+	uint8_t                   state;                 /* LIBAXL_{UNOBSCURED, PARTIALLY_OBSCURED, or FULLY_OBSCURED} */
 	uint8_t                   __unused[23];
 };
 
@@ -298,9 +298,9 @@ struct libaxl_event_create_notify {
 	libaxl_window_t           window;
 	int16_t                   x;
 	int16_t                   y;
-	int16_t                   width;
-	int16_t                   height;
-	int16_t                   border_width;
+	uint16_t                  width;
+	uint16_t                  height;
+	uint16_t                  border_width;
 	libaxl_bool_t             override_redirect;
 	uint8_t                   __unused[9];
 };
@@ -381,7 +381,7 @@ struct libaxl_event_configure_notify {
 struct libaxl_event_configure_request {
 #define LIBAXL_EVENT_CONFIGURE_REQUEST 23
 	uint8_t                   code;
-	uint8_t                   stack_mode;            /* See "stack mode" in libaxl-consts.h */
+	uint8_t                   stack_mode;            /* See "stack mode" in "consts.h" */
 	uint16_t                  sequence_number;
 	libaxl_window_t           event;
 	libaxl_window_t           window;
@@ -433,7 +433,7 @@ struct libaxl_event_circulate_notify {
 	libaxl_window_t           event;
 	libaxl_window_t           window;
 	uint32_t                  __unused1;
-	uint8_t                   place;                 /* LIBAXL_TOP or LIBAXL_BOTTOM */
+	uint8_t                   place;                 /* LIBAXL_{TOP or BOTTOM} */
 	uint8_t                   __unused[15];
 };
 
@@ -445,7 +445,7 @@ struct libaxl_event_circulate_request {
 	libaxl_window_t           parent;
 	libaxl_window_t           window;
 	uint32_t                  __unused1;
-	uint8_t                   place;                 /* LIBAXL_TOP or LIBAXL_BOTTOM */
+	uint8_t                   place;                 /* LIBAXL_{TOP or BOTTOM} */
 	uint8_t                   __unused[15];
 };
 
@@ -456,7 +456,7 @@ struct libaxl_event_property_notify {
 	uint16_t                  sequence_number;
 	libaxl_window_t           window;
 	libaxl_atom_t             atom;
-	uint8_t                   state;                 /* LIBAXL_NEW_VALUE or LIBAXL_DELETED */
+	uint8_t                   state;                 /* LIBAXL_{NEW_VALUE or DELETED} */
 	uint8_t                   __unused[15];
 };
 
@@ -506,7 +506,7 @@ struct libaxl_event_colormap_notify {
 	libaxl_window_t           requestor;
 	libaxl_colormap_t         colormap;              /* Can be LIBAXL_NONE */
 	libaxl_bool_t             new;
-	uint8_t                   state;                 /* LIBAXL_UNINSTALLED or LIBAXL_INSTALLED */
+	uint8_t                   state;                 /* LIBAXL_{UNINSTALLED or INSTALLED} */
 	uint8_t                   __unused[18];
 };
 
@@ -529,7 +529,7 @@ struct libaxl_event_mapping_notify {
 	uint8_t                   code;
 	uint8_t                   __pad;
 	uint16_t                  sequence_number;
-	uint8_t                   request;               /* LIBAXL_MODIFIER, LIBAXL_KEYBOARD, or LIBAXL_POINTER */
+	uint8_t                   request;               /* LIBAXL_{MODIFIER, KEYBOARD, or POINTER} */
 	libaxl_keycode_t          first_keycode;
 	uint8_t                   count;
 	uint8_t                   __unused[25];

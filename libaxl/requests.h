@@ -47,7 +47,7 @@ struct libaxl_request_create_window {
 	libaxl_bool_t                   override_redirect;
 	libaxl_bool_t                   save_under;
 	uint16_t                        __omitted2;
-	uint32_t                        event_mask;            /* See "window event mask" in libaxl/consts.h */
+	uint32_t                        event_mask;            /* See "window event mask" in "consts.h" */
 	uint32_t                        do_not_propagate_mask; /* TODO SETofDEVICEEVENT */
 	libaxl_colormap_t               colormap;              /* Can be LIBAXL_COPY_FROM_PARENT */
 	libaxl_cursor_t                 cursor;                /* Can be LIBAXL_NONE */
@@ -88,7 +88,7 @@ struct libaxl_request_change_window_attributes {
 	libaxl_bool_t                   override_redirect;
 	libaxl_bool_t                   save_under;
 	uint16_t                        __omitted2;
-	uint32_t                        event_mask;            /* See "window event mask" in libaxl/consts.h */
+	uint32_t                        event_mask;            /* See "window event mask" in "consts.h" */
 	uint32_t                        do_not_propagate_mask; /* TODO SETofDEVICEEVENT */
 	libaxl_colormap_t               colormap;              /* Can be LIBAXL_COPY_FROM_PARENT */
 	libaxl_cursor_t                 cursor;                /* Can be LIBAXL_NONE */
@@ -191,7 +191,7 @@ struct libaxl_request_configure_window {
 	uint16_t                        border_width;
 	uint16_t                        __omitted1;
 	libaxl_window_t                 sibling;
-	uint8_t                         stack_mode;            /* See "stack mode" in libaxl/consts.h */
+	uint8_t                         stack_mode;            /* See "stack mode" in "consts.h" */
 	uint8_t                         __omitted2[3];
 };
 
@@ -240,7 +240,7 @@ struct libaxl_request_get_atom_name {
 struct libaxl_request_change_property {
 #define LIBAXL_REQUEST_CHANGE_PROPERTY 18
 	uint8_t                         opcode;
-	uint8_t                         mode;                  /* See libaxl/consts.h */
+	uint8_t                         mode;                  /* See "consts.h" */
 	uint16_t                        _request_length;
 	libaxl_window_t                 window;
 	libaxl_atom_t                   property;
@@ -320,7 +320,7 @@ struct libaxl_request_send_event {
 	libaxl_bool_t                   propagate;
 	uint16_t                        _request_length;       /* = 11 */
 	libaxl_window_t                 destination;           /* Can be LIBAXL_{POINTER_WINDOW or INPUT_FOCUS} */
-	uint32_t                        event_mask;            /* See "window event mask" in libaxl/consts.h */
+	uint32_t                        event_mask;            /* See "window event mask" in "consts.h" */
 	union libaxl_event              event;
 };
 
@@ -429,7 +429,7 @@ struct libaxl_request_ungrab_key {
 struct libaxl_request_allow_events {
 #define LIBAXL_REQUEST_ALLOW_EVENTS 35
 	uint8_t                         opcode;
-	uint8_t                         mode;                  /* See libaxl/consts.h */
+	uint8_t                         mode;                  /* See "consts.h" */
 	uint16_t                        _request_length;       /* = 2 */
 	libaxl_timestamp_t              time;                  /* Can be LIBAXL_CURRENT_TIME */
 };
@@ -639,15 +639,15 @@ struct libaxl_request_create_gc {
 #define LIBAXL_REQUEST_CREATE_GC_DASH_OFFSET           0x00100000UL
 #define LIBAXL_REQUEST_CREATE_GC_DASHES                0x00200000UL
 #define LIBAXL_REQUEST_CREATE_GC_ARC_MODE              0x00400000UL
-	uint8_t                         function;              /* See "gcontext function" in libaxl/consts.h */
+	uint8_t                         function;              /* See "gcontext function" in "consts.h" */
 	uint8_t                         __omitted1[3];
 	uint32_t                        plane_mask;
 	uint32_t                        foreground;
 	uint32_t                        background;
 	uint16_t                        line_width;
 	uint8_t                         line_style;            /* LIBAXL_{SOLID, ON_OFF_DASH, or DOUBLE_DASH} */
-	uint8_t                         cap_style;             /* See "cap style" in libaxl/consts.h (Beware of namespacing) */
-	uint8_t                         join_style;            /* See "join style" in libaxl/consts.h (Beware of namespacing) */
+	uint8_t                         cap_style;             /* See "cap style" in "consts.h" (Beware of namespacing) */
+	uint8_t                         join_style;            /* See "join style" in "consts.h" (Beware of namespacing) */
 	uint8_t                         fill_style;            /* LIBAXL_{SOLID, TILED, STIPPLED, or OPAQUE_STIPPLED} */
 	uint8_t                         fill_rule;             /* LIBAXL_{EVEN_ODD or WINDING} */
 	uint8_t                         __omitted2;
@@ -697,15 +697,15 @@ struct libaxl_request_change_gc {
 #define LIBAXL_REQUEST_CHANGE_GC_DASH_OFFSET           0x00100000UL
 #define LIBAXL_REQUEST_CHANGE_GC_DASHES                0x00200000UL
 #define LIBAXL_REQUEST_CHANGE_GC_ARC_MODE              0x00400000UL
-	uint8_t                         function;              /* See "gcontext function" in libaxl/consts.h */
+	uint8_t                         function;              /* See "gcontext function" in "consts.h" */
 	uint8_t                         __omitted1[3];
 	uint32_t                        plane_mask;
 	uint32_t                        foreground;
 	uint32_t                        background;
 	uint16_t                        line_width;
 	uint8_t                         line_style;            /* LIBAXL_{SOLID, ON_OFF_DASH, or DOUBLE_DASH} */
-	uint8_t                         cap_style;             /* See "cap style" in libaxl/consts.h (Beware of namespacing) */
-	uint8_t                         join_style;            /* See "join style" in libaxl/consts.h (Beware of namespacing) */
+	uint8_t                         cap_style;             /* See "cap style" in "consts.h" (Beware of namespacing) */
+	uint8_t                         join_style;            /* See "join style" in "consts.h" (Beware of namespacing) */
 	uint8_t                         fill_style;            /* LIBAXL_{SOLID, TILED, STIPPLED, or OPAQUE_STIPPLED} */
 	uint8_t                         fill_rule;             /* LIBAXL_{EVEN_ODD or WINDING} */
 	uint8_t                         __omitted2;
@@ -1125,7 +1125,7 @@ struct libaxl_request_store_colors {
 struct libaxl_request_store_named_color {
 #define LIBAXL_REQUEST_STORE_NAMED_COLOR 90
 	uint8_t                         opcode;
-	uint8_t                         flags;                 /* See libaxl/consts.h */
+	uint8_t                         flags;                 /* See "consts.h" */
 	uint16_t                        _request_length;
 	libaxl_colormap_t               cmap;
 	uint32_t                        pixel;
@@ -1343,7 +1343,7 @@ struct libaxl_request_change_hosts {
 	uint8_t                         opcode;
 	uint8_t                         mode;                  /* LIBAXL_{INSERT or DELETE} */
 	uint16_t                        _request_length;
-	uint8_t                         family;                /* See libaxl/consts.h */
+	uint8_t                         family;                /* See "consts.h" */
 	uint8_t                         __pad;
 	uint16_t                        length_of_address;
 	const uint8_t                  *address;

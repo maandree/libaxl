@@ -93,7 +93,7 @@ struct libaxl_coloritem {
 	uint16_t           red;
 	uint16_t           green;
 	uint16_t           blue;
-	uint8_t            flags;                /* See libaxl-consts.h */
+	uint8_t            flags;                /* See "consts.h" */
 	uint8_t            __unused;
 };
 
@@ -130,7 +130,7 @@ struct libaxl_str8 {
 };
 
 struct libaxl_host {
-	uint8_t            family;               /* See libaxl-consts.h */
+	uint8_t            family;               /* See "consts.h" */
 	uint8_t            __pad;
 	uint16_t           length_of_address;
 	uint8_t           *address;

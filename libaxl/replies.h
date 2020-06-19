@@ -8,22 +8,22 @@
 
 struct libaxl_reply_get_window_attributes {
 	uint8_t                   __one;
-	uint8_t                   backing_store;         /* LIBAXL_NOT_USEFUL, LIBAXL_WHEN_MAPPED, or LIBAXL_ALWAYS */
+	uint8_t                   backing_store;         /* LIBAXL_{NOT_USEFUL, WHEN_MAPPED, or ALWAYS} */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 3 */
 	libaxl_visual_t           visual;
-	uint16_t                  class;                 /* LIBAXL_INPUT_OUTPUT (= 1) or LIBAXL_INPUT_ONLY (= 2) */
+	uint16_t                  class;                 /* LIBAXL_{INPUT_OUTPUT (= 1) or INPUT_ONLY (= 2)} */
 	uint8_t                   bit_gravity;
 	uint8_t                   win_gravity;
 	uint32_t                  backing_planes;
 	uint32_t                  backing_pixel;
 	libaxl_bool_t             save_under;
 	libaxl_bool_t             map_is_installed;
-	uint8_t                   map_state;             /* LIBAXL_UNMAPPED, LIBAXL_UNVIEWABLE, or LIBAXL_VIEWABLE */
+	uint8_t                   map_state;             /* LIBAXL_{UNMAPPED, UNVIEWABLE, or VIEWABLE} */
 	libaxl_bool_t             override_redirect;
 	libaxl_colormap_t         colormap;              /* Can be LIBAXL_NONE */
-	uint32_t                  all_event_masks;       /* TODO SETofEVENT */
-	uint32_t                  your_event_mask;       /* TODO SETofEVENT */
+	uint32_t                  all_event_masks;       /* See "window event mask" in "consts.h" */
+	uint32_t                  your_event_mask;       /* See "window event mask" in "consts.h" */
 	uint16_t                  do_not_propagate_mask; /* TODO SETofDEVICEEVENT */
 	uint16_t                  __pad;
 };
@@ -111,7 +111,7 @@ struct libaxl_reply_get_selection_owner {
 
 struct libaxl_reply_grab_pointer {
 	uint8_t                   __one;
-	uint8_t                   status;                /* See "grab status" in libaxl-consts.h */
+	uint8_t                   status;                /* See "grab status" in "consts.h" */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 0 */
 	uint8_t                   __unused[24];
@@ -119,7 +119,7 @@ struct libaxl_reply_grab_pointer {
 
 struct libaxl_reply_grab_keyboard {
 	uint8_t                   __one;
-	uint8_t                   status;                /* See "grab status" in libaxl-consts.h */
+	uint8_t                   status;                /* See "grab status" in "consts.h" */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 0 */
 	uint8_t                   __unused[24];
@@ -163,10 +163,10 @@ struct libaxl_reply_translate_coordinates {
 
 struct libaxl_reply_get_input_focus {
 	uint8_t                   __one;
-	uint8_t                   revert_to;             /* LIBAXL_NONE, LIBAXL_POINTER_ROOT, or LIBAXL_PARENT */
+	uint8_t                   revert_to;             /* LIBAXL_{NONE, POINTER_ROOT, or PARENT} */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 0 */
-	libaxl_window_t           focus;                 /* Can be LIBAXL_NONE or LIBAXL_POINTER_ROOT */
+	libaxl_window_t           focus;                 /* Can be LIBAXL_{NONE or POINTER_ROOT} */
 	int8_t                    __unused[20];
 };
 
@@ -191,7 +191,7 @@ struct libaxl_reply_query_font {
 	uint16_t                  max_char_or_byte2;
 	uint16_t                  default_char;
 	uint16_t                  number_of_properties;
-	uint8_t                   draw_direction;        /* LIBAXL_LEFT_TO_RIGHT or LIBAXL_RIGHT_TO_LEFT */
+	uint8_t                   draw_direction;        /* LIBAXL_{LEFT_TO_RIGHT or RIGHT_TO_LEFT} */
 	uint8_t                   min_byte1;
 	uint8_t                   max_byte1;
 	libaxl_bool_t             all_chars_exist;
@@ -204,7 +204,7 @@ struct libaxl_reply_query_font {
 
 struct libaxl_reply_query_text_extents {
 	uint8_t                   __one;
-	uint8_t                   draw_direction;        /* LIBAXL_LEFT_TO_RIGHT or LIBAXL_RIGHT_TO_LEFT */
+	uint8_t                   draw_direction;        /* LIBAXL_{LEFT_TO_RIGHT or RIGHT_TO_LEFT} */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 0 */
 	int16_t                   font_ascent;
@@ -242,7 +242,7 @@ struct libaxl_reply_list_fonts_with_info {
 	uint16_t                  max_char_or_byte2;
 	uint16_t                  default_char;
 	uint16_t                  number_of_properties;
-	uint8_t                   draw_direction;        /* LIBAXL_LEFT_TO_RIGHT or LIBAXL_RIGHT_TO_LEFT */
+	uint8_t                   draw_direction;        /* LIBAXL_{LEFT_TO_RIGHT or RIGHT_TO_LEFT} */
 	uint8_t                   min_byte1;
 	uint8_t                   max_byte1;
 	libaxl_bool_t             all_chars_exist;
@@ -404,7 +404,7 @@ struct libaxl_reply_get_keyboard_mapping {
 
 struct libaxl_reply_get_keyboard_control {
 	uint8_t                   __one;
-	uint8_t                   global_auto_repeat;    /* LIBAXL_OFF or LIBAXL_ON */
+	uint8_t                   global_auto_repeat;    /* LIBAXL_{OFF or ON} */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 5 */
 	uint32_t                  led_mask;
@@ -434,14 +434,14 @@ struct libaxl_reply_get_screen_saver {
 	uint32_t                  _reply_length;         /* = 0 */
 	uint16_t                  timeout;
 	uint16_t                  interval;
-	uint8_t                   prefer_blanking;       /* LIBAXL_NO or LIBAXL_YES */
-	uint8_t                   allow_exposures;       /* LIBAXL_NO or LIBAXL_YES */
+	uint8_t                   prefer_blanking;       /* LIBAXL_{NO or YES} */
+	uint8_t                   allow_exposures;       /* LIBAXL_{NO or YES} */
 	uint8_t                   __unused[18];
 };
 
 struct libaxl_reply_list_hosts {
 	uint8_t                   __one;
-	uint8_t                   mode;                  /* LIBAXL_DISABLED or LIBAXL_ENABLED */
+	uint8_t                   mode;                  /* LIBAXL_{DISABLED or ENABLED} */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 0 */
 	uint16_t                  number_of_hosts;
@@ -451,7 +451,7 @@ struct libaxl_reply_list_hosts {
 
 struct libaxl_reply_set_pointer_mapping {
 	uint8_t                   __one;
-	uint8_t                   status;                /* LIBAXL_SUCCESS or LIBAXL_BUSY */
+	uint8_t                   status;                /* LIBAXL_{SUCCESS or BUSY} */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 0 */
 	uint8_t                   __unused[24];
@@ -468,7 +468,7 @@ struct libaxl_reply_get_pointer_mapping {
 
 struct libaxl_reply_set_modifier_mapping {
 	uint8_t                   __one;
-	uint8_t                   status;                /* LIBAXL_SUCCESS, LIBAXL_BUSY, or LIBAXL_FAILED */
+	uint8_t                   status;                /* LIBAXL_{SUCCESS, BUSY, or FAILED} */
 	uint16_t                  sequence_number;
 	uint32_t                  _reply_length;         /* = 0 */
 	uint8_t                   __unused[24];

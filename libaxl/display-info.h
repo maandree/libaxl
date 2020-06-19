@@ -50,8 +50,7 @@ struct libaxl_format {
 
 struct libaxl_visual_type {
 	libaxl_visual_t visual_id;
-	uint8_t class;                /* LIBAXL_STATIC_GRAY, LIBAXL_GRAY_SCALE, LIBAXL_STATIC_COLOR,
-	                               * LIBAXL_PSEUDO_COLOR, LIBAXL_TRUE_COLOR, LIBAXL_DIRECT_COLOR */
+	uint8_t class;                /* LIBAXL_{STATIC_GRAY, GRAY_SCALE, STATIC_COLOR, PSEUDO_COLOR, TRUE_COLOR, DIRECT_COLOR} */
 	uint8_t bits_per_rgb_value;
 	uint16_t colormap_entries;
 	uint32_t red_mask;
