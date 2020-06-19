@@ -150,9 +150,9 @@ static const char *const req_formats[] = {
 };
 
 static int
-send_all(int fd, void *restrict data, size_t n, int flags, size_t *restrict progressp)
+send_all(int fd, const void *restrict data, size_t n, int flags, size_t *restrict progressp)
 {
-	char *bs = data;
+	const char *bs = data;
 	ssize_t r;
 
 	while (n) {
@@ -506,8 +506,8 @@ done:
 				return LIBAXL_ERROR_SYSTEM;
 			ctx->out_buf = buf = new;
 			ctx->out_buf_size = o;
-			memset(&buf[n], 0, o - n);
 		}
+		memset(&buf[n], 0, o - n);
 	}
 	n = o / 4;
 	if (n > UINT16_MAX) {
