@@ -245,6 +245,7 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 	}
 
 	code = *(uint8_t *)inbuf;
+	code &= 0x7F; /* Synthetic events have the highest bit set. */
 
 	if (code == LIBAXL_REPLY) {
 		n = (uint64_t)ntohl(*(uint32_t *)&inbuf[4]);
