@@ -7,12 +7,12 @@ LIBAXL_REQUEST_INTERN_ATOM - Get atom ID from atom name
 
 #define LIBAXL_REQUEST_INTERN_ATOM 16
 struct libaxl_request_intern_atom {
-        uint8_t  \fIopcode\fP;
-        uint8_t  \fIonly_if_exists\fP;
-        uint16_t \fI_request_length\fP;
-        uint16_t \fIlength_of_name\fP;
-        uint8_t  \fI__pad\fP;
-        char    *\fIname\fP;
+        uint8_t     \fIopcode\fP;
+        uint8_t     \fIonly_if_exists\fP;
+        uint16_t    \fI_request_length\fP;
+        uint16_t    \fIlength_of_name\fP;
+        uint8_t     \fI__pad\fP;
+        const char *\fIname\fP;
 };
 .fi
 .SH DESCRIPTION
