@@ -48,7 +48,7 @@ struct libaxl_request_create_window {
 	libaxl_bool_t                   save_under;
 	uint16_t                        __omitted2;
 	uint32_t                        event_mask;            /* See "window event mask" in "consts.h" */
-	uint32_t                        do_not_propagate_mask; /* TODO SETofDEVICEEVENT */
+	uint32_t                        do_not_propagate_mask; /* See SETofDEVICEEVENT in "consts.h" */
 	libaxl_colormap_t               colormap;              /* Can be LIBAXL_COPY_FROM_PARENT */
 	libaxl_cursor_t                 cursor;                /* Can be LIBAXL_NONE */
 };
@@ -89,7 +89,7 @@ struct libaxl_request_change_window_attributes {
 	libaxl_bool_t                   save_under;
 	uint16_t                        __omitted2;
 	uint32_t                        event_mask;            /* See "window event mask" in "consts.h" */
-	uint32_t                        do_not_propagate_mask; /* TODO SETofDEVICEEVENT */
+	uint32_t                        do_not_propagate_mask; /* See SETofDEVICEEVENT in "consts.h" */
 	libaxl_colormap_t               colormap;              /* Can be LIBAXL_COPY_FROM_PARENT */
 	libaxl_cursor_t                 cursor;                /* Can be LIBAXL_NONE */
 };
@@ -330,7 +330,7 @@ struct libaxl_request_grab_pointer {
 	libaxl_bool_t                   owner_events;
 	uint16_t                        _request_length;       /* = 6 */
 	libaxl_window_t                 grab_window;
-	uint16_t                        event_mask;            /* TODO SETofPOINTEREVENT */
+	uint16_t                        event_mask;            /* See SETofPOINTEREVENT in "consts.h" */
 	uint8_t                         pointer_mode;          /* LIBAXL_{SYNCHRONOUS or ASYNCHRONOUS} */
 	uint8_t                         keyboard_mode;         /* LIBAXL_{SYNCHRONOUS or ASYNCHRONOUS} */
 	libaxl_window_t                 confine_to;            /* Can be LIBAXL_NONE */
@@ -352,7 +352,7 @@ struct libaxl_request_grab_button {
 	uint8_t                         __pad1;
 	uint16_t                        _request_length;       /* = 6 */
 	libaxl_window_t                 grab_window;
-	uint16_t                        event_mask;            /* TODO SETofPOINTEREVENT */
+	uint16_t                        event_mask;            /* See SETofPOINTEREVENT in "consts.h" */
 	uint8_t                         pointer_mode;          /* LIBAXL_{SYNCHRONOUS or ASYNCHRONOUS} */
 	uint8_t                         keyboard_mode;         /* LIBAXL_{SYNCHRONOUS or ASYNCHRONOUS} */
 	libaxl_window_t                 confine_to;            /* Can be LIBAXL_NONE */
@@ -379,7 +379,7 @@ struct libaxl_request_change_active_pointer_grab {
 	uint16_t                        _request_length;       /* = 4 */
 	libaxl_cursor_t                 cursor;                /* Can be LIBAXL_NONE */
 	libaxl_timestamp_t              time;                  /* Can be LIBAXL_CURRENT_TIME */
-	uint16_t                        event_mask;            /* TODO SETofPOINTEREVENT */
+	uint16_t                        event_mask;            /* See SETofPOINTEREVENT in "consts.h" */
 	uint16_t                        __pad2;
 };
 

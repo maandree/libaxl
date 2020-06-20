@@ -24,7 +24,7 @@ struct libaxl_reply_get_window_attributes {
 	libaxl_colormap_t         colormap;              /* Can be LIBAXL_NONE */
 	uint32_t                  all_event_masks;       /* See "window event mask" in "consts.h" */
 	uint32_t                  your_event_mask;       /* See "window event mask" in "consts.h" */
-	uint16_t                  do_not_propagate_mask; /* TODO SETofDEVICEEVENT */
+	uint16_t                  do_not_propagate_mask; /* See SETofDEVICEEVENT in "consts.h" */
 	uint16_t                  __pad;
 };
 

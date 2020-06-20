@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <pwd.h>
 #include <stdatomic.h>
 #include <stdio.h>
 #include <stdlib.h>

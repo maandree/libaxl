@@ -60,12 +60,13 @@ static const char *const reply_formats[] = {
 	 * $ = previous marked length, in units
 	 * % = previous marked format, in bits
 	 * @ = non-encoded size_t length marked, align output to (size_t)
-	 * u = STRING8, align output to (void *) and enter
-	 * U = STRING16, align output to (void *) and enter
+	 * u = STRING8, align output to (void *) and enter (equivalent to "*1/")
+	 * U = STRING16, align output to (void *) and enter (equivalent to "*2/")
 	 * d = data, uses %, align output to (void *) and enter
 	 * * = following are repeated, align output to (void *) and enter
 	 * & = * but requires allocation
-	 * p = padding
+	 * / = end of * or &
+	 * p = padding, align input to byte-quad
 	 */
 	[0]                                         = NULL,
 	[LIBAXL_REQUEST_CREATE_WINDOW]              = NULL,
@@ -82,13 +83,13 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_CONFIGURE_WINDOW]           = NULL,
 	[LIBAXL_REQUEST_CIRCULATE_WINDOW]           = NULL,
 	[LIBAXL_REQUEST_GET_GEOMETRY]               = "1244ss222",
-	[LIBAXL_REQUEST_QUERY_TREE]                 = "1.24442$=-,*4",
+	[LIBAXL_REQUEST_QUERY_TREE]                 = "1.24442$=-,*4/",
 	[LIBAXL_REQUEST_INTERN_ATOM]                = "1.244",
 	[LIBAXL_REQUEST_GET_ATOM_NAME]              = "1.242$==-,u",
 	[LIBAXL_REQUEST_CHANGE_PROPERTY]            = NULL,
 	[LIBAXL_REQUEST_DELETE_PROPERTY]            = NULL,
 	[LIBAXL_REQUEST_GET_PROPERTY]               = "11%24444$=-d",
-	[LIBAXL_REQUEST_LIST_PROPERTIES]            = "1.242$==-,*4",
+	[LIBAXL_REQUEST_LIST_PROPERTIES]            = "1.242$==-,*4/",
 	[LIBAXL_REQUEST_SET_SELECTION_OWNER]        = NULL,
 	[LIBAXL_REQUEST_GET_SELECTION_OWNER]        = "1.244",
 	[LIBAXL_REQUEST_CONVERT_SELECTION]          = NULL,
@@ -106,7 +107,7 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_GRAB_SERVER]                = NULL,
 	[LIBAXL_REQUEST_UNGRAB_SERVER]              = NULL,
 	[LIBAXL_REQUEST_QUERY_POINTER]              = ".!2444ssss2",
-	[LIBAXL_REQUEST_GET_MOTION_EVENTS]          = "1!244$==-*4ss",
+	[LIBAXL_REQUEST_GET_MOTION_EVENTS]          = "1!244$==-*4ss/",
 	[LIBAXL_REQUEST_TRANSLATE_COORDINATES]      = "1!244ss",
 	[LIBAXL_REQUEST_WARP_POINTER]               = NULL,
 	[LIBAXL_REQUEST_SET_INPUT_FOCUS]            = "11244",
@@ -114,12 +115,12 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_QUERY_KEYMAP]               = "1.24#",
 	[LIBAXL_REQUEST_OPEN_FONT]                  = NULL,
 	[LIBAXL_REQUEST_CLOSE_FONT]                 = NULL,
-	[LIBAXL_REQUEST_QUERY_FONT]                 = "1.24sssss2-sssss2-2222$111!ss4$*44*sssss2",
+	[LIBAXL_REQUEST_QUERY_FONT]                 = "1.24sssss2-sssss2-2222$111!ss4$*44/*sssss2/",
 	[LIBAXL_REQUEST_QUERY_TEXT_EXTENTS]         = "1124ssssSSS",
-	[LIBAXL_REQUEST_LIST_FONTS]                 = "1.242$==-,&1$u",
-	[LIBAXL_REQUEST_LIST_FONTS_WITH_INFO]       = "11$24?sssss2-sssss2-2222$?111!ss4*44u",
+	[LIBAXL_REQUEST_LIST_FONTS]                 = "1.242$==-,&1$u/",
+	[LIBAXL_REQUEST_LIST_FONTS_WITH_INFO]       = "11$24?sssss2-sssss2-2222$?111!ss4*44/u",
 	[LIBAXL_REQUEST_SET_FONT_PATH]              = NULL,
-	[LIBAXL_REQUEST_GET_FONT_PATH]              = "1.242$==-,&1$u",
+	[LIBAXL_REQUEST_GET_FONT_PATH]              = "1.242$==-,&1$u/",
 	[LIBAXL_REQUEST_CREATE_PIXMAP]              = NULL,
 	[LIBAXL_REQUEST_FREE_PIXMAP]                = NULL,
 	[LIBAXL_REQUEST_CREATE_GC]                  = NULL,
@@ -140,7 +141,7 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_POLY_FILL_RECTANGLE]        = NULL,
 	[LIBAXL_REQUEST_POLY_FILL_ARC]              = NULL,
 	[LIBAXL_REQUEST_PUT_IMAGE]                  = NULL,
-	[LIBAXL_REQUEST_GET_IMAGE]                  = "11244==-@u", /* "u" is actually "*1" */
+	[LIBAXL_REQUEST_GET_IMAGE]                  = "11244==-@u",
 	[LIBAXL_REQUEST_POLY_TEXT8]                 = NULL,
 	[LIBAXL_REQUEST_POLY_TEXT16]                = NULL,
 	[LIBAXL_REQUEST_IMAGE_TEXT8]                = NULL,
@@ -150,15 +151,15 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_COPY_COLORMAP_AND_FREE]     = NULL,
 	[LIBAXL_REQUEST_INSTALL_COLORMAP]           = NULL,
 	[LIBAXL_REQUEST_UNINSTALL_COLORMAP]         = NULL,
-	[LIBAXL_REQUEST_LIST_INSTALLED_COLORMAPS]   = "1.242$==-,*4",
+	[LIBAXL_REQUEST_LIST_INSTALLED_COLORMAPS]   = "1.242$==-,*4/",
 	[LIBAXL_REQUEST_ALLOC_COLOR]                = "1.24222,4",
 	[LIBAXL_REQUEST_ALLOC_NAMED_COLOR]          = "1.244222222",
-	[LIBAXL_REQUEST_ALLOC_COLOR_CELLS]          = "1.242$2$==-*4*4",
+	[LIBAXL_REQUEST_ALLOC_COLOR_CELLS]          = "1.242$2$==-*4/*4/",
 	[LIBAXL_REQUEST_ALLOC_COLOR_PLANES]         = "1.242$,444=*4",
 	[LIBAXL_REQUEST_FREE_COLORS]                = NULL,
 	[LIBAXL_REQUEST_STORE_COLORS]               = NULL,
 	[LIBAXL_REQUEST_STORE_NAMED_COLOR]          = NULL,
-	[LIBAXL_REQUEST_QUERY_COLORS]               = "1.242$==-,*222,",
+	[LIBAXL_REQUEST_QUERY_COLORS]               = "1.242$==-,*222,/",
 	[LIBAXL_REQUEST_LOOKUP_COLOR]               = "1.24222222",
 	[LIBAXL_REQUEST_CREATE_CURSOR]              = NULL,
 	[LIBAXL_REQUEST_CREATE_GLYPH_CURSOR]        = NULL,
@@ -166,9 +167,9 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_RECOLOR_CURSOR]             = NULL,
 	[LIBAXL_REQUEST_QUERY_BEST_SIZE]            = "1.2422",
 	[LIBAXL_REQUEST_QUERY_EXTENSION]            = "1.24!1111",
-	[LIBAXL_REQUEST_LIST_EXTENSIONS]            = "11$24===&1$u",
+	[LIBAXL_REQUEST_LIST_EXTENSIONS]            = "11$24===&1$u/",
 	[LIBAXL_REQUEST_CHANGE_KEYBOARD_MAPPING]    = NULL,
-	[LIBAXL_REQUEST_GET_KEYBOARD_MAPPING]       = "1124$===*4",
+	[LIBAXL_REQUEST_GET_KEYBOARD_MAPPING]       = "1124$===*4/",
 	[LIBAXL_REQUEST_CHANGE_KEYBOARD_CONTROL]    = NULL,
 	[LIBAXL_REQUEST_GET_KEYBOARD_CONTROL]       = "112441122,#",
 	[LIBAXL_REQUEST_BELL]                       = NULL,
@@ -177,16 +178,16 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_SET_SCREEN_SAVER]           = NULL,
 	[LIBAXL_REQUEST_GET_SCREEN_SAVER]           = "1.242211",
 	[LIBAXL_REQUEST_CHANGE_HOSTS]               = NULL,
-	[LIBAXL_REQUEST_LIST_HOSTS]                 = "1124$2==-,&1.2$up", /* "u" is actually "*1" */
+	[LIBAXL_REQUEST_LIST_HOSTS]                 = "1124$2==-,&1.2$up/",
 	[LIBAXL_REQUEST_SET_ACCESS_CONTROL]         = NULL,
 	[LIBAXL_REQUEST_SET_CLOSE_DOWN_MODE]        = NULL,
 	[LIBAXL_REQUEST_KILL_CLIENT]                = NULL,
 	[LIBAXL_REQUEST_ROTATE_PROPERTIES]          = NULL,
 	[LIBAXL_REQUEST_FORCE_SCREEN_SAVER]         = NULL,
 	[LIBAXL_REQUEST_SET_POINTER_MAPPING]        = "1124",
-	[LIBAXL_REQUEST_GET_POINTER_MAPPING]        = "11$24===*1",
+	[LIBAXL_REQUEST_GET_POINTER_MAPPING]        = "11$24===*1/",
 	[LIBAXL_REQUEST_SET_MODIFIER_MAPPING]       = "1124",
-	[LIBAXL_REQUEST_GET_MODIFIER_MAPPING]       = "11$24===*11",
+	[LIBAXL_REQUEST_GET_MODIFIER_MAPPING]       = "11$24===*11/",
 	[LIBAXL_REQUEST_NO_OPERATION]               = NULL
 };
 
@@ -194,11 +195,17 @@ static const char *const reply_formats[] = {
 int
 libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, int flags)
 {
+	struct {
+		const char *fmt;
+		char *msg;
+		size_t ic, oc, o, count;
+	} stack[3];
+	size_t si = 0;
 	LIBAXL_CONNECTION *conn = ctx->conn;
 	const char *fmt;
 	char *restrict msg = (char *)msgp;
 	char *restrict inbuf, *data;
-	size_t format = 1, counts[] = {0, 0, 0}, count;
+	size_t format = 1, counts[] = {0, 0, 0}, count = 0;
 	ssize_t r;
 	uint64_t n, u64;
 	uint8_t code;
@@ -418,7 +425,7 @@ received_reply:
 		return LIBAXL_ERROR_INVALID_REPLY_OPCODE;
 	}
 
-	for (i = o = 0; i < n; fmt++) {
+	for (i = o = 0; i < n || *fmt == '@' || *fmt == '$' || *fmt == '%' || *fmt == '/'; fmt++) {
 		switch (*fmt) {
 		case '\0':
 			goto end_of_fmt;
@@ -575,10 +582,19 @@ received_reply:
 		case '*':
 			ALIGN(&o, void *);
 			*(void **)&msg[o] = data = &inbuf[i];
+			o += sizeof(void *);
+			stack[si].fmt = fmt;
+			stack[si].msg = msg;
+			stack[si].ic = ic;
+			stack[si].oc = oc + 1;
+			stack[si].o = o;
+			stack[si].count = count;
+			si += 1;
 			count = counts[oc++];
-			/* TODO */
-			fprintf(stderr, "libaxl_receive: function not fully implemented: '*' case\n");
-			abort();
+			o = 0;
+			msg = data;
+			if (!count)
+				goto jump_to_end_of_repeat;
 			break;
 
 		case '&': /* TODO */
@@ -590,6 +606,32 @@ received_reply:
 			  LIBAXL_REQUEST_LIST_EXTENSIONS
 			  LIBAXL_REQUEST_LIST_HOSTS
 			 */
+			break;
+
+		case '/':
+			if (--count) {
+				fmt = stack[si - 1].fmt;
+			} else {
+				if (0) {
+				jump_to_end_of_repeat:
+					for (j = 0;; fmt++) {
+						if (*fmt == '*' || *fmt == '&') {
+							j += 1;
+						} else if (*fmt == '/') {
+							if (!j--)
+								break;
+						} else if (!*fmt) {
+							abort();
+						}
+					}
+				}
+				si -= 1;
+				msg = stack[si].msg;
+				ic = stack[si].ic;
+				oc = stack[si].oc;
+				o = stack[si].o;
+				count = stack[si].count;
+			}
 			break;
 
 		case '?':
@@ -606,6 +648,30 @@ received_reply:
 
 		default:
 			abort();
+		}
+	}
+
+	for (; *fmt && oc < ic && !counts[oc++]; fmt++) {
+		if (*fmt == '*' || *fmt == '&') {
+			ALIGN(&o, void *);
+			*(void **)&msg[o] = NULL;
+			o += sizeof(void *);
+			for (j = 0;; fmt++) {
+				if (*fmt == '*' || *fmt == '&') {
+					j += 1;
+				} else if (*fmt == '/') {
+					if (!--j)
+						break;
+				} else if (!*fmt) {
+					abort();
+				}
+			}
+		} else if (*fmt == 'u' || *fmt == 'U' || *fmt == 'd') {
+			ALIGN(&o, void *);
+			*(void **)&msg[o] = NULL;
+			o += sizeof(void *);
+		} else {
+			break;
 		}
 	}
 

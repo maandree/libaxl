@@ -105,7 +105,7 @@ struct libaxl_timecoord {
 
 struct libaxl_fontprop {
 	libaxl_atom_t      name;
-	uint32_t           value;                /* <32-bits> */
+	uint32_t           value;                /* <32 bits> */
 };
 
 struct libaxl_charinfo {

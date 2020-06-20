@@ -13,11 +13,36 @@ static char *
 path_in_home(const char *filename)
 {
 	const char *home;
-	char *ret;
+	struct passwd *pwd, pwd_buf;
+	size_t buf_size;
+	char *buf, *ret;
+	int r;
 
 	home = getenv("HOME");
-	if (!home || !*home) { /* TODO */
-		abort();
+	if (!home || !*home) {
+		buf_size = sysconf(_SC_GETPW_R_SIZE_MAX);
+		buf_size = buf_size == -1 ? 16384 : buf_size;
+		buf = alloca(buf_size);
+		r = getpwuid_r(getuid(), &pwd_buf, buf, buf_size, &pwd);
+		if (!pwd) {
+			liberror_save_backtrace(NULL);
+			r = (r == ENOENT || r == ESRCH || r == EBADF || r == EPERM || r == EIO /* glibc bug */) ? 0 : r;
+			if (r) {
+				liberror_set_error_errno(strerror(r), "getpwuid_r", r);
+			} else {
+				liberror_set_error_errno("User does not exist", "getpwuid_r", "libaxl",
+				                         LIBAXL_ERROR_USER_DOES_NOT_EXIST);
+			}
+			return NULL;
+		} else {
+			home = pwd->pw_dir;
+			if (!home || !*home) {
+				liberror_save_backtrace(NULL);
+				liberror_set_error_errno("User does not have a home", "libaxl_connect", "libaxl",
+				                         LIBAXL_ERROR_USER_DOES_NOT_HAVE_A_HOME);
+				return NULL;
+			}
+		}
 	}
 
 	ret = liberror_malloc(strlen(home) + strlen(filename) + 2);

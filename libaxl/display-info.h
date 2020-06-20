@@ -113,7 +113,7 @@ struct libaxl_screen {
 	 */
 	uint32_t black_pixel;
 
-	uint32_t current_input_masks; /* TODO SETofEVENTS */
+	uint32_t current_input_masks; /* See "window event mask" in "consts.h" */ /* TODO doc */
 
 	/**
 	 * The width, in pixels, of the root window;

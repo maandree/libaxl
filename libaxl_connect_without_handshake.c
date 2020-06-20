@@ -52,21 +52,51 @@ connect_unix(const char *path)
 	return fd;
 }
 
+static int
+connect_unix_abstract(const char *path, size_t len)
+{
+	struct sockaddr_un addr;
+	int fd;
+
+	fd = socket(PF_LOCAL, SOCK_STREAM | SOCK_CLOEXEC, 0);
+	if (fd < 0) {
+		liberror_save_backtrace(NULL);
+		liberror_set_error_errno(strerror(errno), "socket", errno);
+		return -1;
+	}
+
+	addr.sun_family = AF_LOCAL;
+	memcpy(addr.sun_path, path, len);
+	if (connect(fd, (void *)&addr, (socklen_t)len)) {
+		liberror_save_backtrace(NULL);
+		liberror_set_error_errno(strerror(errno), "connect", errno);
+		return -1;
+	}
+
+	return fd;
+}
+
 LIBAXL_CONNECTION *
 libaxl_connect_without_handshake(const char *host, const char *protocol, int display, int screen)
 {
 	LIBAXL_CONNECTION *conn;
-	char path[sizeof("/tmp/.X11-unix/X-") + 3 * sizeof(int)];
-	int fd;
+	char path[sizeof("@/tmp/.X11-unix/X-") + 3 * sizeof(int)];
+	int fd, len;
 
 	if ((!protocol || !*protocol) && (!host || !*host)) {
-		sprintf(path, "/tmp/.X11-unix/X%i", display);
-		fd = connect_unix(path);
-		/* TODO also try abstract address version with a NUL byte before it (truncate address to remove tailing NULs) */
+		len = sprintf(path, "%c/tmp/.X11-unix/X%i", 0, display);
+		fd = connect_unix(&path[1]);
 		if (fd < 0) {
-			fd = connect_tcp_ip("localhost", display);
-			if (fd >= 0)
+			fd = connect_unix_abstract(path, (size_t)len);
+			if (fd >= 0) {
 				liberror_pop_error();
+			} else {
+				fd = connect_tcp_ip("localhost", display);
+				if (fd >= 0) {
+					liberror_pop_error();
+					liberror_pop_error();
+				}
+			}
 		}
 
 	} else if (!protocol || !*protocol ||
