@@ -50,13 +50,21 @@ typedef struct libaxl_context LIBAXL_CONTEXT; /* TODO man */
 #define LIBAXL_ERROR_INVALID_HANDSHAKE_RESPONSE                       -12
 #define LIBAXL_ERROR_OUT_OF_RESOURCE_IDS                              -13
 #define LIBAXL_ERROR_PROTOCOL_NOT_SUPPORTED                           -14
+#define LIBAXL_ERROR_USER_DOES_NOT_EXIST                              -15
+#define LIBAXL_ERROR_USER_DOES_NOT_HAVE_A_HOME                        -16
 
-union libaxl_input { /* TODO doc, man */
+union libaxl_input { /* TODO doc, man (also LIBAXL_SYNTHETIC_EVENT_BIT) */
 	uint8_t            type;
 	union libaxl_error error; /* if .type = LIBAXL_ERROR */
 	union libaxl_reply reply; /* if .type = LIBAXL_REPLY */
 	union libaxl_event event; /* otherwise (.type = event type) */
 };
+
+/**
+ * Bit that is set in `.type` of `union libaxl_input` if the
+ * event a synthetic event.
+ */
+#define LIBAXL_SYNTHETIC_EVENT_BIT 0x80U
 
 _LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
 LIBAXL_CONNECTION *libaxl_connect(const char *restrict, char **restrict); /* TODO man doc */
