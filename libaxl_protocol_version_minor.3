@@ -5,26 +5,17 @@ libaxl_protocol_version_minor - X protocol version, minor number
 .nf
 #include <libaxl.h>
 
-int libaxl_protocol_version_minor(void);
+extern const int libaxl_protocol_version_minor;
 .fi
 .SH DESCRIPTION
 The
-.BR libaxl_protocol_version_minor ()
-function returns the minor number of the
+.B libaxl_protocol_version_minor
+variable is set to the minor number of the
 highest version of the X protocol that
 the library, as linked against, supports.
-.SH RETURN VALUE
-The
-.BR libaxl_protocol_version_minor ()
-function returns the minor number of the
-highest supported version of the X protocol.
-.SH ERRORS
-The
-.BR libaxl_protocol_version_minor ()
-function cannot fail.
 .SH NOTES
-There is no corresponding function for the lowest
-supported version. The lowest supported
+There is no corresponding variable for the
+lowest supported version. The lowest supported
 version is 11.0 (X11); X11 was released in
 September 1987 and predates Linux, thus
 this is extremely unlikely this will change.

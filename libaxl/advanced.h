@@ -7,16 +7,16 @@
 /**
  * The major version number of the highest version of X protocol
  * of the library supports (the lowest version is 11.0). If you
- * are using dynamic linking, you make also want to use the
- * libaxl_protocol_version_major() function.
+ * are using dynamic linking, you may also want to use the
+ * `libaxl_protocol_version_major` variable.
  */
 #define LIBAXL_PROTOCOL_VERSION_MAJOR 11
 
 /**
  * The minor version number of the highest version of X protocol
  * of the library supports (the lowest version is 11.0). If you
- * are using dynamic linking, you make also want to use the
- * libaxl_protocol_version_minor() function.
+ * are using dynamic linking, you may also want to use the
+ * `libaxl_protocol_version_minor` variable.
  */
 #define LIBAXL_PROTOCOL_VERSION_MINOR 0
 
@@ -25,44 +25,35 @@
  * the library supports, as one integer where the major number
  * is multiped by 1000, (the lowest version is 11.0, which is
  * encoded as 11000). If you are using dynamic linking, you
- * make also want to use the libaxl_protocol_version() function.
+ * may also want to use the `libaxl_protocol_version` variable.
  */
 #define LIBAXL_PROTOCOL_VERSION ((LIBAXL_PROTOCOL_VERSION_MAJOR) * 1000 + (LIBAXL_PROTOCOL_VERSION_MINOR))
 
 /**
- * Returns the major version number of the highest version of
+ * The major version number of the highest version of
  * X protocol of the library supports (the lowest version is
- * 11.0). If you are using static linking, you make also want
+ * 11.0). If you are using static linking, you may also want
  * to use the LIBAXL_PROTOCOL_VERSION_MAJOR constant.
- * 
- * @return  The major version number of highest support version of the protocol
  */
-_LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__)))
-int libaxl_protocol_version_major(void); /* TODO should be an `extern const int` */
+extern const int libaxl_protocol_version_major;
 
 /**
- * Returns the minor version number of the highest version of
+ * The minor version number of the highest version of
  * X protocol of the library supports (the lowest version is
- * 11.0). If you are using static linking, you make also want
+ * 11.0). If you are using static linking, you may also want
  * to use the LIBAXL_PROTOCOL_VERSION_MINOR constant.
- * 
- * @return  The minor version number of highest support version of the protocol
  */
-_LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__)))
-int libaxl_protocol_version_minor(void); /* TODO should be an `extern const int` */
+extern const int libaxl_protocol_version_minor;
 
 /**
- * Returns the minor version number of the highest version of
- * X protocol of the library supports (the lowest version is 11.0,
- * which is encoded as 11000). If you are using static linking,
- * you make also want to use the LIBAXL_PROTOCOL_VERSION constant.
- * 
- * @return  The version number of highest support version of the protocol,
- *          encoded as a sum of the major number multipled by 1000 and
- *          the minor number, e.g. 11000 for 11.0 (X11)
+ * Returns the version number, encoded as the sum of the major
+ * number multipled by 1000 and the minor number (e.g. 11000
+ * for 11.0 (X11)), of the highest version of X protocol of
+ * the library supports (the lowest version is 11.0, which is
+ * encoded as 11000). If you are using static linking, you
+ * may also want to use the LIBAXL_PROTOCOL_VERSION constant.
  */
-_LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__)))
-int libaxl_protocol_version(void); /* TODO should be an `extern const int` */
+extern const int libaxl_protocol_version;
 
 /**
  * Deallocations a connection object without
