@@ -14,8 +14,8 @@ typedef libaxl_id_t libaxl_cursor_t;
 typedef libaxl_id_t libaxl_font_t;
 typedef libaxl_id_t libaxl_gcontext_t;
 typedef libaxl_id_t libaxl_colormap_t;
-typedef libaxl_id_t libaxl_drawable_t;             /* libaxl_window_t or libaxl_pixmap_t */
-typedef libaxl_id_t libaxl_fontable_t;             /* libaxl_font_t or libaxl_gcontext_t */
+typedef libaxl_id_t libaxl_drawable_t;           /* libaxl_window_t or libaxl_pixmap_t */
+typedef libaxl_id_t libaxl_fontable_t;           /* libaxl_font_t or libaxl_gcontext_t */
 typedef libaxl_id_t libaxl_atom_t;
 typedef libaxl_id_t libaxl_visual_t;
 typedef uint32_t    libaxl_timestamp_t;
@@ -23,7 +23,6 @@ typedef uint32_t    libaxl_keysym_t;
 typedef uint8_t     libaxl_keycode_t;
 typedef uint8_t     libaxl_button_t;
 typedef uint8_t     libaxl_bool_t;
-typedef uint16_t    libaxl_keybutmask_t;
 
 struct libaxl_point {
 	int16_t            x;

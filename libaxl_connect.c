@@ -271,7 +271,12 @@ libaxl_connect(const char *restrict display, char **restrict reasonp)
 		goto fail;
 	}
 
+	if (xauthfile_free)
+		free(xauthfile);
 	libaxl_context_free(ctx);
+	free(authbuf);
+	free(host);
+	free(protocol);
 	return conn;
 
 fail:

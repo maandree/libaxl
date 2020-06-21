@@ -136,7 +136,7 @@ struct libaxl_reply_query_pointer {
 	int16_t                   root_y;
 	int16_t                   win_x;
 	int16_t                   win_y;
-	libaxl_keybutmask_t       mask;                  /* TODO ? SETofKEYBUTMASK shouldn't have its own type */
+	uint16_t                  mask;                  /* See "key button mask" in "consts.h" */
 	uint8_t                   __unused[6];
 };
 

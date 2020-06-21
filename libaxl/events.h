@@ -17,7 +17,7 @@ struct libaxl_event_key_press {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -35,7 +35,7 @@ struct libaxl_event_key_release {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -53,7 +53,7 @@ struct libaxl_event_key_press_release {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -71,7 +71,7 @@ struct libaxl_event_button_press {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -89,7 +89,7 @@ struct libaxl_event_button_release {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -107,7 +107,7 @@ struct libaxl_event_button_press_release {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -125,7 +125,7 @@ struct libaxl_event_motion_notify {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -143,7 +143,7 @@ struct libaxl_event_input_device_event {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	libaxl_bool_t             same_screen;
 	uint8_t                   __unused[1];
 };
@@ -161,7 +161,7 @@ struct libaxl_event_enter_notify {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, or UNGRAB} */
 	uint8_t                   flags;                 /* Bitmask: LIBAXL_{FOCUS, SAME_SCREEN} */
 };
@@ -179,7 +179,7 @@ struct libaxl_event_leave_notify {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, or UNGRAB} */
 	uint8_t                   flags;                 /* Bitmask: LIBAXL_{FOCUS, SAME_SCREEN} */
 };
@@ -197,7 +197,7 @@ struct libaxl_event_pointer_window_event {
 	int16_t                   root_y;
 	int16_t                   event_x;
 	int16_t                   event_y;
-	libaxl_keybutmask_t       state;
+	uint16_t                  state;                 /* See "key button mask" in "consts.h" */
 	uint8_t                   mode;                  /* LIBAXL_{NORMAL, GRAB, or UNGRAB} */
 	uint8_t                   flags;                 /* Bitmask: LIBAXL_{FOCUS, SAME_SCREEN} */
 };

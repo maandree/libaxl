@@ -21,3 +21,7 @@ The goals of libaxl are:
 *   Be thread-safe by default (unlike libX11)
 
 *   Use liberror for error handling (unlike XCB and libX11, obviously)
+
+libaxl is faster than Xlib because it is asynchronous,
+however it is slower than xcb because it parses format
+strings rather than specialised functions.

@@ -299,3 +299,23 @@
 #define LIBAXL_EVENT_MASK_PROPERTY_CHANGE       UINT32_C(0x00400000)
 #define LIBAXL_EVENT_MASK_COLOR_MAP_CHANGE      UINT32_C(0x00800000)
 #define LIBAXL_EVENT_MASK_OWNER_GRAB_BUTTON     UINT32_C(0x01000000)
+
+/* key button mask { */
+/* key mask */
+#define LIBAXL_MASK_SHIFT    0x0001
+#define LIBAXL_MASK_LOCK     0x0002
+#define LIBAXL_MASK_CONTROL  0x0004
+#define LIBAXL_MASK_MOD_1    0x0008
+#define LIBAXL_MASK_MOD_2    0x0010
+#define LIBAXL_MASK_MOD_3    0x0020
+#define LIBAXL_MASK_MOD_4    0x0040
+#define LIBAXL_MASK_MOD_5    0x0080
+/* button mask */
+#define LIBAXL_MASK_BUTTON_1 0x0100
+#define LIBAXL_MASK_BUTTON_2 0x0200
+#define LIBAXL_MASK_BUTTON_3 0x0400
+#define LIBAXL_MASK_BUTTON_4 0x0800
+#define LIBAXL_MASK_BUTTON_5 0x1000
+/* use in both above, but not in key button mask */
+#define LIBAXL_ANY_MODIFIER  0x8000
+/* } */

@@ -359,7 +359,7 @@ struct libaxl_request_grab_button {
 	libaxl_cursor_t                 cursor;                /* Can be LIBAXL_NONE */
 	uint8_t                         button;                /* Can be LIBAXL_ANY_BUTTON */
 	uint8_t                         __pad2;
-	uint16_t                        modifiers;             /* TODO SETofKEYMASK, #x8000 = AnyModifier */
+	uint16_t                        modifiers;             /* See "key mask" in "consts.h", also LIBAXL_ANY_MODIFIER */
 };
 
 struct libaxl_request_ungrab_button {
@@ -368,7 +368,7 @@ struct libaxl_request_ungrab_button {
 	uint8_t                         button;                /* Can be LIBAXL_ANY_BUTTON */
 	uint16_t                        _request_length;       /* = 3 */
 	libaxl_window_t                 grab_window;
-	uint16_t                        modifiers;             /* TODO SETofKEYMASK, #x8000 = AnyModifier */
+	uint16_t                        modifiers;             /* See "key mask" in "consts.h", also LIBAXL_ANY_MODIFIER */
 	uint16_t                        __pad;
 };
 
@@ -409,7 +409,7 @@ struct libaxl_request_grab_key {
 	libaxl_bool_t                   owner_events;
 	uint16_t                        _request_length;       /* = 4 */
 	libaxl_window_t                 grab_window;
-	uint16_t                        modifiers;             /* TODO SETofKEYMASK, #x8000 = AnyModifier */
+	uint16_t                        modifiers;             /* See "key mask" in "consts.h", also LIBAXL_ANY_MODIFIER */
 	libaxl_keycode_t                key;                   /* Can be LIBAXL_ANY_KEY */
 	uint8_t                         pointer_mode;          /* LIBAXL_{SYNCHRONOUS or ASYNCHRONOUS} */
 	uint8_t                         keyboard_mode;         /* LIBAXL_{SYNCHRONOUS or ASYNCHRONOUS} */
@@ -422,7 +422,7 @@ struct libaxl_request_ungrab_key {
 	libaxl_keycode_t                key;                   /* Can be LIBAXL_ANY_KEY */
 	uint16_t                        _request_length;       /* = 3 */
 	libaxl_window_t                 grab_window;
-	uint16_t                        modifiers;             /* TODO SETofKEYMASK, #x8000 = AnyModifier */
+	uint16_t                        modifiers;             /* See "key mask" in "consts.h", also LIBAXL_ANY_MODIFIER */
 	uint16_t                        __pad;
 };
 
