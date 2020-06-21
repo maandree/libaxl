@@ -13,6 +13,8 @@ libaxl_context_create(LIBAXL_CONNECTION *conn)
 		ctx->out_buf      = NULL;
 		ctx->in_buf_size  = 0;
 		ctx->in_buf       = NULL;
+		ctx->aux_buf_size = 0;
+		ctx->aux_buf      = NULL;
 	}
 	return ctx;
 }

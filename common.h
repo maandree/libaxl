@@ -102,15 +102,21 @@ struct libaxl_context {
 	char              *out_buf;
 	size_t             in_buf_size;
 	char              *in_buf;
+	size_t             aux_buf_size;
+	char              *aux_buf;
 };
 
-#define ALIGN(VP, T)\
+#define ALIGN_VAR(VP, ALIGNMENT)\
 	do {\
-		if (*(VP) & (_Alignof(T) - 1)) {\
-			*(VP) |= _Alignof(T) - 1;\
+		if (*(VP) & ((ALIGNMENT) - 1)) {\
+			*(VP) |= (ALIGNMENT) - 1;\
 			*(VP) += 1;\
 		}\
 	} while (0)
+
+#define ALIGN(VP, T) ALIGN_VAR(VP, _Alignof(T))
+
+#define MAX(A, B) ((A) > (B) ? (A) : (B))
 
 #if INT_MIN + 1 == -INT_MAX
 # define TWOS_COMPLEMENT8(VP)  ((void)0)

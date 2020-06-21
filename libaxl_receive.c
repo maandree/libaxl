@@ -64,8 +64,8 @@ static const char *const reply_formats[] = {
 	 * U = STRING16, align output to (void *) and enter (equivalent to "*2/")
 	 * d = data, uses %, align output to (void *) and enter
 	 * * = following are repeated, align output to (void *) and enter
-	 * & = * but requires allocation
-	 * / = end of * or &
+	 * & = * but requires allocation (there is only support for use once) (choose padding after alignment)
+	 * / = end of * or &, for & unless finished realigned output and start over
 	 * p = padding, align input to byte-quad
 	 */
 	[0]                                         = NULL,
@@ -191,6 +191,89 @@ static const char *const reply_formats[] = {
 	[LIBAXL_REQUEST_NO_OPERATION]               = NULL
 };
 
+static size_t
+calculate_struct_size(const char *fmt, size_t *alignmentp)
+{
+	size_t size = 0, i;
+	*alignmentp = 1;
+	for (;; fmt++) {
+		switch (*fmt) {
+		case '?':
+		case '$':
+		case '%':
+		case 'p':
+			break;
+
+		case '.':
+		case '!':
+		case '1':
+		case 'z':
+			size += 1;
+			break;
+
+		case ',':
+		case '2':
+		case 's':
+			*alignmentp = MAX(*alignmentp, 2);
+			size += 2;
+			break;
+
+		case '_':
+			size += 3;
+			break;
+
+		case '-':
+		case '4':
+		case 'S':
+			*alignmentp = MAX(*alignmentp, 4);
+			size += 4;
+			break;
+
+		case '=':
+			*alignmentp = MAX(*alignmentp, 4); /* 2 uint32_t, not 1 uint64_t */
+			size += 8;
+			break;
+
+		case '#':
+			size += 32;
+			break;
+
+		case '@':
+			*alignmentp = MAX(*alignmentp, sizeof(size_t));
+			ALIGN(&size, size_t);
+			size += sizeof(size_t);
+			break;
+
+		case '*':
+			for (i = 0;; fmt++) {
+				if (*fmt == '*') {
+					i += 1;
+				} else if (*fmt == '/') {
+					if (!--i)
+						break;
+				} else if (!*fmt) {
+					abort();
+				}
+			}
+			/* fall through */
+
+		case 'u':
+		case 'U':
+		case 'd':
+			*alignmentp = MAX(*alignmentp, sizeof(void *));
+			ALIGN(&size, void *);
+			size += sizeof(void *);
+			break;
+
+		case '/':
+			return size;
+
+		default:
+			abort();
+		}
+	}
+}
+
 /* TODO make it possible to prefetch pending messages */
 int
 libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, int flags)
@@ -209,13 +292,11 @@ libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, 
 	ssize_t r;
 	uint64_t n, u64;
 	uint8_t code;
-	size_t t, i, j, o, ic = 0, oc = 0;
+	size_t t, i, j, o, ic = 0, oc = 0, size, alignment = 1;
 	int qc = 0;
 #ifdef MSG_TRUNC
 	int flag_trunc;
-#endif
 
-#ifdef MSG_TRUNC
 	flags ^= flag_trunc = flags & MSG_TRUNC;
 #endif
 
@@ -580,6 +661,7 @@ received_reply:
 			break;
 
 		case '*':
+			alignment = 1;
 			ALIGN(&o, void *);
 			*(void **)&msg[o] = data = &inbuf[i];
 			o += sizeof(void *);
@@ -597,20 +679,44 @@ received_reply:
 				goto jump_to_end_of_repeat;
 			break;
 
-		case '&': /* TODO */
-			fprintf(stderr, "libaxl_receive: function not fully implemented: '&' case\n");
-			abort();
-			/*
-			  LIBAXL_REQUEST_LIST_FONTS
-			  LIBAXL_REQUEST_GET_FONT_PATH
-			  LIBAXL_REQUEST_LIST_EXTENSIONS
-			  LIBAXL_REQUEST_LIST_HOSTS
-			 */
+		case '&':
+			size = calculate_struct_size(&fmt[1], &alignment);
+			ALIGN_VAR(&size, alignment);
+			alignment = size;
+			data = NULL;
+			if (counts[oc]) {
+				size *= counts[oc];
+				if (size > ctx->aux_buf_size) {
+					data = liberror_realloc(ctx->aux_buf, size);
+					if (!data)
+						return LIBAXL_ERROR_SYSTEM;
+					ctx->aux_buf = data;
+					ctx->aux_buf_size = size;
+				} else {
+					data = ctx->aux_buf;
+				}
+			}
+			ALIGN(&o, void *);
+			*(void **)&msg[o] = data;
+			o += sizeof(void *);
+			stack[si].fmt = fmt;
+			stack[si].msg = msg;
+			stack[si].ic = ic;
+			stack[si].oc = oc + 1;
+			stack[si].o = o;
+			stack[si].count = count;
+			si += 1;
+			count = counts[oc++];
+			o = 0;
+			msg = data;
+			if (!count)
+				goto jump_to_end_of_repeat;
 			break;
 
 		case '/':
 			if (--count) {
 				fmt = stack[si - 1].fmt;
+				ALIGN_VAR(&o, alignment);
 			} else {
 				if (0) {
 				jump_to_end_of_repeat:
