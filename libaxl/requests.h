@@ -1327,7 +1327,7 @@ struct libaxl_request_set_screen_saver {
 	int16_t                         timeout;
 	int16_t                         interval;
 	uint8_t                         prefer_blanking;       /* LIBAXL_{NO, YES, or DEFAULT} */
-	uint8_t                         allow_exposures;       /* LIBAXL_}NO, YES, or DEFAULT} */
+	uint8_t                         allow_exposures;       /* LIBAXL_{NO, YES, or DEFAULT} */
 	uint16_t                        __pad2;
 };
 
