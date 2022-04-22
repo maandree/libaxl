@@ -69,8 +69,8 @@ union libaxl_input { /* TODO doc, man(makefile) (also LIBAXL_SYNTHETIC_EVENT_BIT
 /**
  * Connect to a display server and preform the connection handshake
  * 
- * @param   display  The display name string, $DISPLAY will be used if `NULL` or empty; see the
- *                   documentation for the libaxl_parse_display() for more details
+ * @param   display  The display name string, $DISPLAY will be used if `NULL` or empty; see
+ *                   the documentation for the libaxl_parse_display() for more details
  * @param   reasonp  Output parameter for the reason the handshake or authorisation failed;
  *                   The contents of the reason string are specific to the used authorisation
  *                   protocol. Will be set to `NULL` if not applicable.
