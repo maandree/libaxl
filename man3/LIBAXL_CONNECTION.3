@@ -1,0 +1,35 @@
+.TH LIBAXL_CONNECTION 3 libaxl
+.SH NAME
+LIBAXL_CONNECTION - Connection to display server
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+typedef struct libaxl_connection LIBAXL_CONNECTION;
+.fi
+.SH DESCRIPTION
+The
+.B LIBAXL_CONNECTION
+type definition (also known as
+.BR "struct libaxl_connection" )
+is used by the libaxl library to store the
+state of a connection to an X display server,
+as well as the connection itself to the
+display server.
+.PP
+The library only exposes an incomplete
+definition to of the structure because it
+should be regarded as opaque as it may change
+between versions of the library.
+.PP
+Using the
+.BR libaxl_connect (3)
+function is the easiest way to create a
+connection to the display server; it can
+be disposed with the
+.BR libaxl_close (3)
+function.
+.SH SEE ALSO
+.BR libaxl_connect (3),
+.BR libaxl_close (3),
+.BR LIBAXL_CONTEXT (3)

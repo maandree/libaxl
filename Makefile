@@ -136,6 +136,8 @@ MAN3 =\
 	man3/LIBAXL_ATOM_WM_TRANSIENT_FOR.3\
 	man3/LIBAXL_ATOM_WM_ZOOM_HINTS.3\
 	man3/LIBAXL_ATOM_X_HEIGHT.3\
+	man3/LIBAXL_CONNECTION.3\
+	man3/LIBAXL_CONTEXT.3\
 	man3/LIBAXL_DECNET_OBJECT_MAX.3\
 	man3/LIBAXL_ERROR.3\
 	man3/LIBAXL_ERROR_ACCESS.3\
@@ -299,6 +301,8 @@ MAN3 =\
 	man3/libaxl_protocol_version_minor.3\
 	man3/libaxl_receive_handshake.3\
 	man3/libaxl_send_handshake.3\
+	man3/struct_libaxl_connection.3\
+	man3/struct_libaxl_context.3\
 	man3/struct_libaxl_error_access.3\
 	man3/struct_libaxl_error_alloc.3\
 	man3/struct_libaxl_error_atom.3\

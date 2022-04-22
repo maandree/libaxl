@@ -1,5 +1,6 @@
 Man pages: check italic–bold consistency
 Man pages: check values of constants
+Man pages: add linking instructions
 Add libaxl_marshal
 Add libaxl_unmarshal
 libaxl_close: guarantee that the file is closed

@@ -1,0 +1,38 @@
+.TH LIBAXL_CONTEXT 3 libaxl
+.SH NAME
+LIBAXL_CONTEXT - Thread context for connection to display server
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+typedef struct libaxl_context LIBAXL_CONTEXT;
+.fi
+.SH DESCRIPTION
+The
+.B LIBAXL_CONTEXT
+type definition (also known as
+.BR "struct libaxl_context" )
+is used by the libaxl library to wrap a
+.BR LIBAXL_CONNECTION (3)
+object and store thread-private data.
+All threads running at the same time shall
+access the display server via a unique
+.B LIBAXL_CONTEXT
+object.
+.PP
+The library only exposes an incomplete
+definition to of the structure because it
+should be regarded as opaque as it may change
+between versions of the library.
+.PP
+The
+.BR libaxl_context_create (3)
+function is used to create a
+.B LIBAXL_CONTEXT
+object; it can be deallocated with the
+.BR libaxl_context_free (3)
+function.
+.SH SEE ALSO
+.BR libaxl_context_create (3),
+.BR libaxl_context_free (3),
+.BR LIBAXL_CONNECTION (3)
