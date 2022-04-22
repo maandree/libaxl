@@ -1,6 +1,7 @@
 .TH libaxl_receive_handshake 3 libaxl
 .SH NAME
 libaxl_receive_handshake - Finish connection handshake
+.B (ADVANCED)
 .SH SYNOPSIS
 .nf
 #include <libaxl.h>
@@ -25,7 +26,68 @@ The value of the
 parameter shall be the thread's state for the
 connection to the display server.
 .PP
-TODO majorp, minorp, reasonp
+If the
+.I majorp
+parameter is set to a
+.RI non- NULL
+pointer and the
+.BR libaxl_receive_handshake ()
+function returns
+.B LIBAXL_HANDSHAKE_SUCCESS
+or
+.BR LIBAXL_HANDSHAKE_FAILED ,
+.I *majorp
+will be set to the major version number for a
+version of the X protocol that the display server
+supports, which is not necessarily the version
+that the library uses.
+.PP
+If the
+.I minorp
+parameter is set to a
+.RI non- NULL
+pointer and the
+.BR libaxl_receive_handshake ()
+function returns
+.B LIBAXL_HANDSHAKE_SUCCESS
+or
+.BR LIBAXL_HANDSHAKE_FAILED ,
+.I *minorp
+will be set to the minor version number for the
+verison for which the major version number was
+returned in
+.I *majorp
+(or if
+.I majorp
+is
+.IR NULL :
+would have been returned).
+.PP
+If the
+.I reasonp
+parameter is set to a
+.RI non- NULL
+pointer and the
+.BR libaxl_receive_handshake ()
+function returns
+.B LIBAXL_HANDSHAKE_FAILED
+or
+.BR LIBAXL_HANDSHAKE_AUTHENTICATE ,
+.I *reasonp
+will be set to a dynamically allocated string
+(which the caller must deallocate with the
+.BR free (3)
+function) providing an authorisation
+protocol-specific reason which the handshake
+failed. If The
+.BR libaxl_receive_handshake ()
+function returns any other value, and the
+.I reasonp
+paramater is set to a
+.RI non- NULL ,
+.I *reasonp
+will be set to
+.IR NULL .
 .PP
 Flags to used in the fourth argument when the
 .BR libaxl_receive_handshake ()
@@ -40,7 +102,7 @@ The
 function return
 .B LIBAXL_HANDSHAKE_SUCCESS
 upon successful completion with successful handshake
-(beaware, this value is not 0),
+(beware, this value is not 0!),
 .B LIBAXL_HANDSHAKE_FAILURE
 upon successful completion with handshake failure,
 .B LIBAXL_HANDSHAKE_AUTHENTICATE

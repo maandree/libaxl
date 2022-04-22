@@ -47,7 +47,7 @@ LIBAXL_CONNECTION *libaxl_create(int);
  * is always LIBAXL_ERROR_SYSTEM
  */
 _LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
-LIBAXL_CONNECTION *libaxl_connect_without_handshake(const char *host, const char *protocol, int display, int screen); /* TODO man(makefile; ref libaxl_parse_display, libaxl_send_handshake, libaxl_connect) */
+LIBAXL_CONNECTION *libaxl_connect_without_handshake(const char *host, const char *protocol, int display, int screen); /* TODO man(makefile; ref libaxl_parse_display, libaxl_send_handshake, libaxl_connect; (ADVANCED)) */
 
 /**
  * Parse a display name string
@@ -148,7 +148,7 @@ int libaxl_send_handshake(LIBAXL_CONTEXT *restrict, const char *, size_t, const 
  *                   LIBAXL_HANDSHAKE_SUCCESS.
  * @param   reasonp  Output parameter for the reason the handshake or authorisation
  *                   failed; the contents are specific to the authorisation protocol
- *                   in use Will be set to `NULL` unless the function returns
+ *                   in use. Will be set to `NULL` unless the function returns
  *                   LIBAXL_HANDSHAKE_FAILED or LIBAXL_HANDSHAKE_AUTHENTICATE.
  *                   Remember to free after successful completion (non-negative return)
  * @param   flags    Flags to use for the 4th parameter when calling recv(3)
