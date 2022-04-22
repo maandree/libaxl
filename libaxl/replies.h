@@ -4,7 +4,7 @@
 # error Do not include <libaxl/replies.h> directly, include <libaxl.h> instead.
 #endif
 
-#define LIBAXL_REPLY 1 /* TODO man */
+#define LIBAXL_REPLY 1 /* TODO man(makefile) */
 
 struct libaxl_reply_get_window_attributes {
 	uint8_t                   __one;
@@ -483,7 +483,7 @@ struct libaxl_reply_get_modifier_mapping {
 	libaxl_keycode_t         *keycodes;
 };
 
-union libaxl_reply {
+union libaxl_reply { /* TODO man(makefile) */
 	struct {
 		uint8_t           __one;
 		uint8_t           __data;

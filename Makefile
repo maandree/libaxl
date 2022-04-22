@@ -478,8 +478,6 @@ MAN3 =\
 	man3/struct_libaxl_request_warp_pointer.3\
 	man3/union_libaxl_error.3
 
-MAN = $(MAN0) $(MAN3) $(MAN7)
-
 LOBJ = $(OBJ:.o=.lo)
 
 all: libaxl.a libaxl.$(LIBEXT) $(LIB_SUBHDR_GEN)
@@ -508,8 +506,9 @@ libaxl/requests-structs.h: libaxl/requests.h
 	sed -n 's/^struct libaxl_request_\([^ \t]*\).*$$/\tstruct libaxl_request_\1 \1;/p' < libaxl/requests.h > $@
 
 libaxl.a: $(OBJ)
-	$(AR) rc $@ $?
-	$(AR) s $@
+	@rm -f -- $@
+	$(AR) rc $@ $(OBJ)
+	$(AR) ts $@ > /dev/null
 
 libaxl.$(LIBEXT): $(LOBJ)
 	$(CC) $(LIBFLAGS) -o $@ $(LOBJ) $(LDFLAGS)
@@ -524,6 +523,7 @@ install: libaxl.a libaxl.$(LIBEXT)
 	cp -- $(LIB_SUBHDR) "$(DESTDIR)$(PREFIX)/include/libaxl"
 	cp -- libaxl.a "$(DESTDIR)$(PREFIX)/lib"
 	cp -- libaxl.$(LIBEXT) "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBMINOREXT)"
+	$(FIX_INSTALL_NAME) "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBMINOREXT)"
 	ln -sf -- libaxl.$(LIBMINOREXT) "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBMAJOREXT)"
 	ln -sf -- libaxl.$(LIBMINOREXT) "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBEXT)"
 #	cp -P -- $(MAN0) "$(DESTDIR)$(MANPREFIX)/man0"
@@ -537,7 +537,9 @@ uninstall:
 	-rm -f -- "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBMINOREXT)"
 	-rm -f -- "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBMAJOREXT)"
 	-rm -f -- "$(DESTDIR)$(PREFIX)/lib/libaxl.$(LIBEXT)"
-#	-cd -- "$(DESTDIR)$(MANPREFIX)/" && rm -f -- $(MAN)
+#	-cd -- "$(DESTDIR)$(MANPREFIX)/" && rm -f -- $(MAN0)
+#	-cd -- "$(DESTDIR)$(MANPREFIX)/" && rm -f -- $(MAN3)
+#	-cd -- "$(DESTDIR)$(MANPREFIX)/" && rm -f -- $(MAN7)
 
 clean:
 	-rm -f -- *.o *.lo *.a *.su *.$(LIBEXT) libaxl/*-structs.h

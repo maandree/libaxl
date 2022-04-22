@@ -53,7 +53,7 @@ typedef struct libaxl_context LIBAXL_CONTEXT; /* TODO man */
 #define LIBAXL_ERROR_USER_DOES_NOT_EXIST                              -15
 #define LIBAXL_ERROR_USER_DOES_NOT_HAVE_A_HOME                        -16
 
-union libaxl_input { /* TODO doc, man (also LIBAXL_SYNTHETIC_EVENT_BIT) */
+union libaxl_input { /* TODO doc, man(makefile) (also LIBAXL_SYNTHETIC_EVENT_BIT(~makefile)) */
 	uint8_t            type;
 	union libaxl_error error; /* if .type = LIBAXL_ERROR */
 	union libaxl_reply reply; /* if .type = LIBAXL_REPLY */
@@ -66,8 +66,18 @@ union libaxl_input { /* TODO doc, man (also LIBAXL_SYNTHETIC_EVENT_BIT) */
  */
 #define LIBAXL_SYNTHETIC_EVENT_BIT 0x80U
 
+/**
+ * Connect to a display server and preform the connection handshake
+ * 
+ * @param   display  The display name string, $DISPLAY will be used if `NULL` or empty; see the
+ *                   documentation for the libaxl_parse_display() for more details
+ * @param   reasonp  Output parameter for the reason the handshake or authorisation failed;
+ *                   The contents of the reason string are specific to the used authorisation
+ *                   protocol. Will be set to `NULL` if not applicable.
+ * @return           the connection object, will be set to `NULL` on error
+ */
 _LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
-LIBAXL_CONNECTION *libaxl_connect(const char *restrict, char **restrict); /* TODO man doc */
+LIBAXL_CONNECTION *libaxl_connect(const char *restrict, char **restrict); /* TODO man(makefile) */
 
 /**
  * Deallocation and close a connection
@@ -108,7 +118,7 @@ int libaxl_fileno(LIBAXL_CONNECTION *);
  * is always LIBAXL_ERROR_SYSTEM
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__, __warn_unused_result__, __const__)))
-const struct libaxl_display_info *libaxl_info(LIBAXL_CONNECTION *, int); /* TODO man */
+const struct libaxl_display_info *libaxl_info(LIBAXL_CONNECTION *, int); /* TODO man(makefile) */
 
 /**
  * Get the next element in a `struct libaxl_depth *`
@@ -131,7 +141,7 @@ const struct libaxl_display_info *libaxl_info(LIBAXL_CONNECTION *, int); /* TODO
  */
 _LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__, __pure__, __nonnull__, __returns_nonnull__)))
 inline const struct libaxl_depth *
-libaxl_next_depth(const struct libaxl_depth *depth) /* TODO man */
+libaxl_next_depth(const struct libaxl_depth *depth) /* TODO man(makefile) */
 {
 	return (const struct libaxl_depth *)(uintptr_t)&depth->visuals[depth->number_of_visuals];
 }
@@ -156,7 +166,7 @@ libaxl_next_depth(const struct libaxl_depth *depth) /* TODO man */
  */
 _LIBAXL_GCC_ONLY(__attribute__((__warn_unused_result__, __pure__, __nonnull__, __returns_nonnull__)))
 inline const struct libaxl_screen *
-libaxl_next_screen(const struct libaxl_screen *screen) /* TODO man */
+libaxl_next_screen(const struct libaxl_screen *screen) /* TODO man(makefile) */
 {
 	uint8_t n = screen->number_of_allowed_depths;
 	const struct libaxl_depth *depth = screen->allowed_depths;
@@ -170,7 +180,7 @@ libaxl_next_screen(const struct libaxl_screen *screen) /* TODO man */
  * the display server
  * 
  * @param   conn  The connection to the display server
- * @return        The context, NULL on failure (can only be out of memory)
+ * @return        The context, `NULL` on failure (can only be out of memory)
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__, __malloc__, __warn_unused_result__)))
 LIBAXL_CONTEXT *libaxl_context_create(LIBAXL_CONNECTION *);
@@ -230,7 +240,7 @@ int libaxl_deallocate_id(LIBAXL_CONTEXT *, libaxl_id_t);
  * thread.
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__(1))))
-int libaxl_send_request(LIBAXL_CONTEXT *restrict, union libaxl_request_const_ptr, int, uint16_t *restrict); /* TODO man */
+int libaxl_send_request(LIBAXL_CONTEXT *restrict, union libaxl_request_const_ptr, int, uint16_t *restrict); /* TODO man(makefile) */
 
 /**
  * Send any pending messages to the display server
@@ -246,7 +256,7 @@ int libaxl_send_request(LIBAXL_CONTEXT *restrict, union libaxl_request_const_ptr
  * is nothing more to flush.
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__)))
-int libaxl_flush(LIBAXL_CONNECTION *restrict, int); /* TODO man */
+int libaxl_flush(LIBAXL_CONNECTION *restrict, int); /* TODO man(makefile) */
 
 /**
  * Receive the next pending message from the display server
@@ -272,7 +282,7 @@ int libaxl_flush(LIBAXL_CONNECTION *restrict, int); /* TODO man */
  * is used
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__)))
-int libaxl_receive(LIBAXL_CONTEXT *restrict, union libaxl_input *restrict, int); /* TODO man */
+int libaxl_receive(LIBAXL_CONTEXT *restrict, union libaxl_input *restrict, int); /* TODO man(makefile) */
 
 #undef LIBAXL_H
 #define LIBAXL_H 1

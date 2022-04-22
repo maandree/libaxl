@@ -4,9 +4,9 @@
 # error Do not include <libaxl/low-level.h> directly, include <libaxl.h> instead.
 #endif
 
-#define LIBAXL_HANDSHAKE_FAILED       0
-#define LIBAXL_HANDSHAKE_SUCCESS      1
-#define LIBAXL_HANDSHAKE_AUTHENTICATE 2
+#define LIBAXL_HANDSHAKE_FAILED       0 /* Handshake failed  */
+#define LIBAXL_HANDSHAKE_SUCCESS      1 /* Handshake succeeded */
+#define LIBAXL_HANDSHAKE_AUTHENTICATE 2 /* Further authnetication is required */
 
 /*
  * The largest possible return of the libaxl_get_decnet_object()
@@ -27,8 +27,27 @@
 _LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
 LIBAXL_CONNECTION *libaxl_create(int);
 
+/**
+ * Connect to a display server, but do not initiate the handshake
+ *
+ * The libaxl_send_handshake() function can be used to initiate
+ * the handshake
+ * 
+ * @param   host      The host of or (if the protocol is "unix") path to the display
+ * @param   protocol  The network protocol used to access the display
+ * @param   display   The display's index (0 if the protocol is "unix")
+ * @param   screen    The screen's index (-1 of not specified)
+ * @return            The connection object, `NULL` on error
+ * 
+ * The parameters host, protocol, display, and screen can be
+ * parsed from e.g. the DISPLAY environment variable using
+ * the libaxl_parse_display() function
+ * 
+ * On failure, no error is returned, but the error
+ * is always LIBAXL_ERROR_SYSTEM
+ */
 _LIBAXL_GCC_ONLY(__attribute__((__malloc__, __warn_unused_result__)))
-LIBAXL_CONNECTION *libaxl_connect_without_handshake(const char *host, const char *protocol, int display, int screen); /* TODO man doc */
+LIBAXL_CONNECTION *libaxl_connect_without_handshake(const char *host, const char *protocol, int display, int screen); /* TODO man(makefile; ref libaxl_parse_display, libaxl_send_handshake, libaxl_connect) */
 
 /**
  * Parse a display name string
@@ -41,7 +60,7 @@ LIBAXL_CONNECTION *libaxl_connect_without_handshake(const char *host, const char
  * 
  *     <path>[.<screen>]
  * 
- * @param   name       The display name string, $DISPLAY will be used if NULL or empty
+ * @param   name       The display name string, $DISPLAY will be used if `NULL` or empty
  * @param   hostp      Output parameter for the host of or (if the protocol is "unix") path
  *                     to the display, remember to free after successful completion
  * @param   protocolp  Output parameter for the network protocol used to access the display,
@@ -71,7 +90,7 @@ inline uint16_t libaxl_get_tcp_port(int display)
  * @param   buf      Buffer that the object name shall be written to, it is recommended
  *                   that its size, if static, is LIBAXL_DECNET_OBJECT_MAX (which is
  *                   always sufficient), otherwise it should be at least the return value
- *                   of this function (for the same last argument but with NULL and 0
+ *                   of this function (for the same last argument but with `NULL` and 0
  *                   as the first two arguments) plus 1
  * @param   size     The size of the buffer in the `buf` argument
  * @param   display  The display's number
@@ -96,9 +115,9 @@ int libaxl_get_decnet_object(char *, size_t, int);
  * @param   ctx            The thread's context for the connection to the display to send the handshake over
  * @param   auth_name      The protocol name of the authorisation the client expects the server to use;
  *                         valid authorisation mechanisms are not part of the core X protocol
- * @param   auth_name_len  The length of `auth_name`, 0 if `auth_name` is NULL
+ * @param   auth_name_len  The length of `auth_name`, 0 if `auth_name` is `NULL`
  * @param   auth_data      The authorisation data, which is specific to the choosen authorisation mechanism
- * @param   auth_data_len  The length of `auth_data`, 0 if `auth_data` is NULL
+ * @param   auth_data_len  The length of `auth_data`, 0 if `auth_data` is `NULL`
  * @param   flags          Flags to use for the 4th parameter when calling send(3)
  * @return                 0 on success, a negative libaxl error code on failure
  * 
@@ -107,7 +126,7 @@ int libaxl_get_decnet_object(char *, size_t, int);
  * sent) and pending to be sent by calling libaxl_flush().
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__(1))))
-int libaxl_send_handshake(LIBAXL_CONTEXT *restrict, const char *, size_t, const char *, size_t, int); /* TODO man */
+int libaxl_send_handshake(LIBAXL_CONTEXT *restrict, const char *, size_t, const char *, size_t, int);
 
 /**
  * Receive the server's part of the handshake, this function
@@ -128,18 +147,19 @@ int libaxl_send_handshake(LIBAXL_CONTEXT *restrict, const char *, size_t, const 
  *                   be set if the function returns LIBAXL_HANDSHAKE_FAILED or
  *                   LIBAXL_HANDSHAKE_SUCCESS.
  * @param   reasonp  Output parameter for the reason the handshake or authorisation
- *                   failed. Will be set to NULL unless the function returns
+ *                   failed; the contents are specific to the authorisation protocol
+ *                   in use Will be set to `NULL` unless the function returns
  *                   LIBAXL_HANDSHAKE_FAILED or LIBAXL_HANDSHAKE_AUTHENTICATE.
  *                   Remember to free after successful completion (non-negative return)
  * @param   flags    Flags to use for the 4th parameter when calling recv(3)
  * @return           LIBAXL_HANDSHAKE_SUCCESS (NB! this value is not 0) on
  *                   success, LIBAXL_HANDSHAKE_FAILED on handshake failure,
- *                   LIBAXL_HANDSHAKE_AUTHENTICATE 2, or a negative libaxl error
- *                   code on failure
+ *                   LIBAXL_HANDSHAKE_AUTHENTICATE if further authentication is
+ *                   required, or a negative libaxl error code on failure
  * 
  * Behaviour is unspecified if SO_PEEK_OFF is active on the
  * connection to the display server or if the MSG_PEEK flag
  * is used
  */
 _LIBAXL_GCC_ONLY(__attribute__((__nonnull__(1))))
-int libaxl_receive_handshake(LIBAXL_CONTEXT *restrict, int *restrict, int *restrict, char **restrict, int); /* TODO man */
+int libaxl_receive_handshake(LIBAXL_CONTEXT *restrict, int *restrict, int *restrict, char **restrict, int);

@@ -1,0 +1,62 @@
+.TH LIBAXL_REQUEST_GET_POINTER_CONTROL 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_GET_POINTER_CONTROL - Get current acceleration and threshold for the pointer
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_GET_POINTER_CONTROL 106
+struct libaxl_request_get_pointer_control {
+        uint8_t  \fIopcode\fP;
+        uint8_t  \fI__pad\fP;
+        uint16_t \fI_request_length\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the current
+acceleration and threshold for the pointer.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_GET_POINTER_CONTROL
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+None.
+.SH REPLIES
+.nf
+struct libaxl_reply_get_pointer_control {
+        uint8_t  \fI__one\fP;
+        uint8_t  \fI__pad\fP;
+        uint16_t \fIsequence_number\fP;
+        uint32_t \fI_reply_length\fP;
+        uint16_t \fIacceleration_numerator\fP;
+        uint16_t \fIacceleration_denominator\fP;
+        uint16_t \fIthreshold\fP;
+        uint8_t  \fI__unused\fP[18];
+};
+.fi
+.PP
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_get_pointer_control"
+with the
+.I acceleration_numerator
+and
+.I acceleration_denominator
+fields set such that
+.I ((double)acceleration_numerator/acceleration_denominator)
+is the value of the current acceleration for the pointer,
+and the
+.I threshold
+field set to the current threshold for the pointer.
+.SH
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_CHANGE_POINTER_CONTROL (3)
