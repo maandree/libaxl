@@ -26,7 +26,7 @@ _Static_assert(sizeof(MUTEX) == sizeof(uint32_t));
 	do {\
 		atomic_store(&(MUTEX), 0);\
 		if (syscall(SYS_futex, &(MUTEX), FUTEX_PRIVATE_FLAG | FUTEX_WAKE, INT_MAX, NULL, 0, 0) < 0) {\
-			/* TODO handle of error in _UNLOCK */\
+			/* XXX handle of error in _UNLOCK */\
 			abort();\
 		}\
 	} while (0)
@@ -34,7 +34,7 @@ _Static_assert(sizeof(MUTEX) == sizeof(uint32_t));
 #define _WAIT(MUTEX)\
 	do {\
 		if (syscall(SYS_futex, &(MUTEX), FUTEX_PRIVATE_FLAG | FUTEX_WAIT, 1, NULL, 0, 0) < 0) {\
-			/* TODO handle of error in _WAIT */\
+			/* XXX handle of error in _WAIT */\
 			abort();\
 		}\
 	} while (0)

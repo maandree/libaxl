@@ -1433,7 +1433,7 @@ struct libaxl_request_no_operation {
 	uint16_t                        request_length;
 };
 
-union libaxl_request { /* TODO man page */
+union libaxl_request { /* TODO man(makefile) */
 	struct {
 		uint8_t                 opcode;
 		uint8_t                 __data;
@@ -1442,7 +1442,7 @@ union libaxl_request { /* TODO man page */
 # include "requests-structs.h"
 };
 
-union libaxl_request_const_ptr { /* TODO man page */
+union libaxl_request_const_ptr { /* TODO man(makefile) */
 	const void                     *as_voidptr;
 	const union libaxl_request     *as_union;
 # include "requests-ptr-structs.h"

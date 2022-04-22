@@ -274,7 +274,7 @@ calculate_struct_size(const char *fmt, size_t *alignmentp)
 	}
 }
 
-/* TODO make it possible to prefetch pending messages */
+/* XXX make it possible to prefetch pending messages */
 int
 libaxl_receive(LIBAXL_CONTEXT *restrict ctx, union libaxl_input *restrict msgp, int flags)
 {

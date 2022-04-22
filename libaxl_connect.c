@@ -142,10 +142,10 @@ get_auth(const char *xauthfile, int sockfd, const char *host, const char *protoc
 		family = FamilyLocal;
 		break;
 	case AF_INET:
-		family = FamilyInternet; /* TODO */
+		family = FamilyInternet; /* XXX */
 		return 0;
 	case AF_INET6:
-		family = FamilyInternet6; /* TODO */
+		family = FamilyInternet6; /* XXX */
 		return 0;
 	default:
 		return 0;
@@ -259,8 +259,8 @@ libaxl_connect(const char *restrict display, char **restrict reasonp)
 
 	r = libaxl_receive_handshake(ctx, &major, &minor, reasonp, MSG_NOSIGNAL);
 	switch (r) {
-	case LIBAXL_HANDSHAKE_FAILED: /* TODO */
-	case LIBAXL_HANDSHAKE_AUTHENTICATE: /* TODO */
+	case LIBAXL_HANDSHAKE_FAILED: /* XXX */
+	case LIBAXL_HANDSHAKE_AUTHENTICATE: /* XXX */
 		abort();
 		break;
 

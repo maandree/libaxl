@@ -7,7 +7,7 @@ connect_tcp_ip(const char *host, int display)
 	uint16_t port = libaxl_get_tcp_port(display);
 	int fd;
 
-	abort(); /* TODO */
+	abort(); /* XXX */
 
 	setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &(int){1}, sizeof(int));
 	setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &(int){1}, sizeof(int));

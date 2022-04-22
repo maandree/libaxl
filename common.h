@@ -78,7 +78,7 @@ struct libaxl_connection {
 	int                              fd;
 	uint16_t                         last_seqnum;
 	LIBAXL_CONNECTION_RWLOCK;
-	LIBAXL_CONTEXT                  *pending_out; /* TODO can _Atomic be used instead of mutex */
+	LIBAXL_CONTEXT                  *pending_out; /* XXX can _Atomic be used instead of mutex */
 	size_t                           in_progress;
 	size_t                           in_buf_size;
 	char                            *in_buf;

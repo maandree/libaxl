@@ -32,7 +32,7 @@ libaxl_send_handshake(LIBAXL_CONTEXT *restrict ctx, const char *auth_name, size_
 	conn->info.protocol_version_major = LIBAXL_PROTOCOL_VERSION_MAJOR;
 	conn->info.protocol_version_minor = LIBAXL_PROTOCOL_VERSION_MINOR;
 	conn->info.protocol_version       = LIBAXL_PROTOCOL_VERSION;
-	conn->info.protocol_byte_order    = LIBAXL_MSB_FIRST; /* TODO Use LIBAXL_LSB_FIRST if preferable */
+	conn->info.protocol_byte_order    = LIBAXL_MSB_FIRST; /* XXX Use LIBAXL_LSB_FIRST if preferable */
 	RUNLOCK_CONNECTION_SEND(conn);
 	if (pending) {
 		liberror_save_backtrace(NULL);
@@ -68,7 +68,7 @@ libaxl_send_handshake(LIBAXL_CONTEXT *restrict ctx, const char *auth_name, size_
 			ctx->out_buf_size = len;
 	}
 
-	buf[o++] = 'B'; /* TODO Use 'l' (LSB first) if preferable */
+	buf[o++] = 'B'; /* XXX Use 'l' (LSB first) if preferable */
 	buf[o++] = 0;
 	*(uint16_t *)&buf[o] = htons(LIBAXL_PROTOCOL_VERSION_MAJOR);
 	o += 2;

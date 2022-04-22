@@ -14,7 +14,7 @@
 /**
  * Opaque structure for connection to the X display server
  */
-typedef struct libaxl_connection LIBAXL_CONNECTION; /* TODO man */
+typedef struct libaxl_connection LIBAXL_CONNECTION; /* TODO man(makefile) */
 
 /**
  * Opaque structure that wraps LIBAXL_CONNECTION with
@@ -22,7 +22,7 @@ typedef struct libaxl_connection LIBAXL_CONNECTION; /* TODO man */
  * the same time shall access the display server
  * via a unique LIBAXL_CONTEXT
  */
-typedef struct libaxl_context LIBAXL_CONTEXT; /* TODO man */
+typedef struct libaxl_context LIBAXL_CONTEXT; /* TODO man(makefile) */
 
 #include "libaxl/types.h"
 #include "libaxl/consts.h"

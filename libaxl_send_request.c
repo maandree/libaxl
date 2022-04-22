@@ -166,7 +166,7 @@ send_all(int fd, const void *restrict data, size_t n, int flags, size_t *restric
 	return 0;
 }
 
-/* TODO make it possible to send multiple request in the same syscall */
+/* XXX make it possible to send multiple request in the same syscall */
 int
 libaxl_send_request(LIBAXL_CONTEXT *restrict ctx, union libaxl_request_const_ptr request, int flags, uint16_t *restrict seqnump)
 {
