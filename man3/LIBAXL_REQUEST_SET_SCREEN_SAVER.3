@@ -1,0 +1,138 @@
+.TH LIBAXL_REQUEST_SET_SCREEN_SAVER 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_SET_SCREEN_SAVER - Configure screen-saver
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_SET_SCREEN_SAVER 107
+struct libaxl_request_set_screen_saver {
+        uint8_t  \fIopcode\fP;
+        uint8_t  \fI__pad1\fP;
+        uint16_t \fI_request_length\fP;
+        int16_t  \fItimeout\fP;
+        int16_t  \fIinterval\fP;
+        uint8_t  \fIprefer_blanking\fP;
+        uint8_t  \fIallow_exposures\fP;
+        uint8_t  \fI__pad2\fP;
+};
+.fi
+.SH DESCRIPTION
+If the
+.I timeout
+field is set to
+.I LIBAXL_DISABLE
+(=
+.IR 0 ),
+the display server shall disable screen-saving,
+but shall however not deactivate any currently
+active screen saver.
+.PP
+If the
+.I timeout
+field is set to a positive value, the display
+server shall enable screen-saving and start the
+screen saver whenever there has been no human
+input to the display server (for example keyboard
+or pointer input) for
+.I timeout
+seconds.
+.PP
+If the
+.I timeout
+field is set to
+.I LIBAXL_RESTORE_DEFAULT
+(=
+.IR -1 ),
+the default value for this field is applied.
+.PP
+If the
+.I prefer_blanking
+field is set to
+.I LIBAXL_YES
+or is set to
+.I LIBAXL_DEFAULT
+and the default value is
+.IR LIBAXL_YES ,
+when the screen-saver is activated, any monitor
+than supports video blanking will go blank.
+.PP
+If the
+.I allow_exposures
+field is set to
+.I LIBAXL_YES
+or is set to
+.I LIBAXL_DEFAULT
+and the default value is
+.IR LIBAXL_YES ,
+or if the screen can be regenerated without sending
+exposure events to the clients, when the screen-saver
+is activated, any monitor that is not blanked is
+changed in a server-dependent fashion to avoid
+burn-in/burn-out. Otherwise, any monitor that is not
+blanked when the screen-saver is activated will remain
+unchanged.
+.PP
+If the screen saver is subject to periodic changes
+(for example by periodically changing the colour map),
+the value of the
+.I interval
+field serves as a hint to the display server how often
+it shall change. This is expressed as an interval in
+seconds. If the
+.I interval
+field is set to
+.I LIBAXL_DISABLE
+(=
+.IR 0 ),
+periodic change is disabled.
+.PP
+If the
+.I interval
+field is set to
+.I LIBAXL_RESTORE_DEFAULT
+(=
+.IR -1 ),
+the default value for this field is applied.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_SET_SCREEN_SAVER
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+.I timeout
+or
+.I interval
+is less than
+.I -1
+or
+.I prefer_blanking
+or
+.I allow_exposures
+is neither
+.IR LIBAXL_NO ,
+.IR LIBAXL_YES ,
+nor
+.IR LIBAXL_DEFAULT .
+.SH REPLIES
+None.
+.SH NOTES
+The screen-saver is deactivated when there is
+human input or when there is a
+.BR LIBAXL_REQUEST_FORCE_SCREEN_SAVER (3)
+request made with the
+.I mode
+set to
+.IR LIBAXL_RESET .
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_GET_SCREEN_SAVER (3),
+.BR LIBAXL_REQUEST_FORCE_SCREEN_SAVER (3)

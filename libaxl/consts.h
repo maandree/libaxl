@@ -272,6 +272,7 @@
 #define LIBAXL_COPY_FROM_PARENT     0
 #define LIBAXL_POINTER_ROOT         1
 #define LIBAXL_PARENT               2
+#define LIBAXL_RESTORE_DEFAULT     -1
 
 /* window event mask */
 #define LIBAXL_EVENT_MASK_KEY_PRESS             UINT32_C(0x00000001) /* in SETofDEVICEEVENT                       */

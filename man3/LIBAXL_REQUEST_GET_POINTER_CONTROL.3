@@ -42,7 +42,6 @@ struct libaxl_reply_get_pointer_control {
 };
 .fi
 .PP
-.PP
 The display server shall, unless it returns an
 error, return one
 .B "struct libaxl_reply_get_pointer_control"
@@ -55,7 +54,10 @@ fields set such that
 is the value of the current acceleration for the pointer,
 and the
 .I threshold
-field set to the current threshold for the pointer.
+field set to the current threshold for the pointer, that is,
+the number of pixels the pointer must move at once before
+acceleration takes affect (acceleration only applies to the
+pixels beyond the threshold).
 .SH
 .BR libaxl_send_request (3),
 .BR libaxl_receive (3),

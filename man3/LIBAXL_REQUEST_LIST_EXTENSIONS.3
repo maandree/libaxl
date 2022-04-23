@@ -1,0 +1,69 @@
+.TH LIBAXL_REQUEST_LIST_EXTENSIONS 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_LIST_EXTENSIONS - Get support display server protocol extension
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_LIST_EXTENSIONS 99
+struct libaxl_request_list_extensions {
+        uint8_t  \fIopcode\fP;
+        uint8_t  \fI__pad1\fP;
+        uint16_t \fI_request_length\fP;
+};
+.fi
+.SH DESCRIPTION
+Requests the a list of protocol extensions supported
+by the display server
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_LIST_EXTENSIONS
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+None.
+.SH REPLIES
+.nf
+struct libaxl_reply_list_extensions {
+        uint8_t             \fI__one\fP;
+        uint8_t             \fInumber_of_names\fP;
+        uint16_t            \fIsequence_number\fP;
+        uint32_t            \fI_reply_length\fP;
+        uint8_t             \fI__unused\fP[24];
+        struct libaxl_str8 *\fInames\fP;
+};
+
+struct libaxl_str8 {
+        uint8_t \fIlength\fP;
+        char   *\fIname\fP;
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_list_extensions"
+with the
+.I number_of_names
+field set to the number of support extensions,
+and with their names stored in
+.IR names ,
+where
+.IR names[i].length ,
+for indices
+.I i
+in [
+.IR 0 ,
+.IR number_of_names ),
+is the length of
+.IR names[i].name ,
+which is the name of a supported extension.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_QUERY_EXTENSION (3)

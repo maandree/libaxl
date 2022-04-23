@@ -1,0 +1,83 @@
+.TH LIBAXL_REQUEST_CHANGE_POINTER_CONTROL 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_CHANGE_POINTER_CONTROL - Set acceleration or threshold for the pointer
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_CHANGE_POINTER_CONTROL 105
+struct libaxl_request_change_pointer_control {
+        uint8_t       \fIopcode\fP;
+        uint8_t       \fI__pad\fP;
+        uint16_t      \fI_request_length\fP;
+        int16_t       \fIacceleration_numerator\fP;
+        int16_t       \fIacceleration_denominator\fP;
+        int16_t       \fIthreshold\fP;
+	libaxl_bool_t \fIdo_acceleration\fP;
+	libaxl_bool_t \fIdo_threshold\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall reconfigure the
+acceleration, if the
+.I do_acceleration
+field is set to
+.IR LIBAXL_TRUE ,
+and the threshold, if the
+.I do_threshold
+field is set to
+.IR LIBAXL_TRUE ,
+for the pointer; the display server may however
+round the accerlation arbitrarily.
+.PP
+The
+.I acceleration_numerator
+and
+.I acceleration_denominator
+fields shall be set so that
+.I ((double)acceleration_numerator/acceleration_denominator)
+is the desired multiple of the normal acceleration that
+shall be set to the acceleration of the pointer.
+.PP
+The
+.I threshold
+field shall be set to the desired threshold for the pointer,
+that is, the number of the pixels the pointer must move at
+once before acceleration takes place (acceleration only
+applies to the pixels beyond the threshold).
+.PP
+Setting one these fields to
+.I LIBAXL_RESTORE_DEFAULT
+(=
+.IR -1 )
+restores the default value.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_CHANGE_POINTER_CONTROL
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+.IR acceleration_numerator ,
+.IR acceleration_denominator ,
+or
+.IR threshold ,
+is less than
+.I -1
+or
+.I acceleration_denominator
+is
+.IR 0 .
+.SH REPLIES
+None.
+.SH
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3),
+.BR LIBAXL_REQUEST_GET_POINTER_CONTROL (3)

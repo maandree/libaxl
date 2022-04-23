@@ -7,6 +7,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/* TODO man(makefile) */
+
 typedef uint32_t    libaxl_id_t;
 typedef libaxl_id_t libaxl_window_t;
 typedef libaxl_id_t libaxl_pixmap_t;
