@@ -63,6 +63,10 @@ in [
 is the length of
 .IR names[i].name ,
 which is the name of a supported extension.
+.PP
+Protocol-extension names are encoded in ISO Latin-1,
+a superset of ASCII, and a subset, to the lowest 256
+codepoints of UCS.
 .SH SEE ALSO
 .BR libaxl_send_request (3),
 .BR libaxl_receive (3),
