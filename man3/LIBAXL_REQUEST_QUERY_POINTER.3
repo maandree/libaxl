@@ -1,0 +1,125 @@
+.TH LIBAXL_REQUEST_QUERY_POINTER 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_QUERY_POINTER - Get pointer status
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_QUERY_POINTER 38
+struct libaxl_request_query_pointer {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fI__pad\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall return the pointer's
+current location and button status.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_QUERY_POINTER
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The specified window ID does not exist.
+.SH REPLIES
+.nf
+struct libaxl_reply_query_pointer {
+        uint8_t          \fI__one\fP;
+        libaxl_bool_t    \fIsame_screen\fP;
+        uint16_t         \fIsequence_number\fP;
+        uint32_t         \fI_reply_length\fP;
+        libaxl_window_t  \fIroot\fP;
+        libaxl_window_t  \fIchild\fP;
+        int16_t          \fIroot_x\fP;
+        int16_t          \fIroot_y\fP;
+        int16_t          \fIwin_x\fP;
+        int16_t          \fIwin_y\fP;
+        uint16_t         \fImask\fP;
+#define LIBAXL_MASK_SHIFT    0x0001
+#define LIBAXL_MASK_LOCK     0x0002
+#define LIBAXL_MASK_CONTROL  0x0004
+#define LIBAXL_MASK_MOD_1    0x0008
+#define LIBAXL_MASK_MOD_2    0x0010
+#define LIBAXL_MASK_MOD_3    0x0020
+#define LIBAXL_MASK_MOD_4    0x0040
+#define LIBAXL_MASK_MOD_5    0x0080
+#define LIBAXL_MASK_BUTTON_1 0x0100
+#define LIBAXL_MASK_BUTTON_2 0x0200
+#define LIBAXL_MASK_BUTTON_3 0x0400
+#define LIBAXL_MASK_BUTTON_4 0x0800
+#define LIBAXL_MASK_BUTTON_5 0x1000
+        uint8_t          \fI__unused\fP[6];
+};
+.fi
+.PP
+The display server shall, unless it returns an
+error, return one
+.B "struct libaxl_reply_query_pointer"
+with the
+.I root_x
+and
+.I root_y
+fields set to the pointer's position within
+the root window, on the screen the pointer is
+in, and the
+.I root
+field shall be set to the ID of that root window,
+and the
+.I mask
+field shall be set so that the bits in it shall
+be set for and only for the buttons and modifiers
+that are pressed down or locked on.
+\" TODO what each key button mask bit represent
+Additionally, the
+.I same_screen
+field will be set to either
+.I LIBAXL_TRUE
+or
+.IR LIBAXL_FALSE .
+If
+.I same_screen
+is set to
+.IR LIBAXL_TRUE ,
+the pointer is in the same screen as the window,
+and the
+.IR win_x
+and
+.IR win_y
+fields will be set to the pointer's position
+relative to the top-left corner of the
+.I window
+specified in the query, and the
+.I child
+field will be set to the ID of the window containing
+the pointer, or to
+.I LIBAXL_NONE
+if the pointer is only contained inside the root
+window. If
+.I same_screen
+is set to
+.IR LIBAXL_FALSE ,
+the pointer is not in the same screen as the
+.I window
+specified in the query, and the
+.I win_x ,
+.I win_y ,
+and
+.I child
+fields will be set to
+.IR 0 ,
+.IR 0 ,
+and
+.IR LIBAXL_NONE .
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR libaxl_receive (3)
