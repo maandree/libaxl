@@ -1,0 +1,53 @@
+.TH LIBAXL_REQUEST_BELL 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_BELL - Ring the keyboard bell
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_BELL 49
+struct libaxl_request_bell {
+        uint8_t     \fIopcode\fP;
+        uint8_t     \fIpercent\fP;
+        uint16_t    \fI_request_length\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall ring the bell
+on the keyboard, at a volume relative to
+the base volume for the keyboard, if possible.
+.PP
+The value of the
+.I percent
+field shall be set to a value within [-100, 100],
+where -100 maps to a volume of 0, 0 maps to the
+base volume, and 100 maps to 100%. Other values
+are interpreted via piece-wise linear interpolation.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH EXTENDED DESCRIPTION
+The volume at which the bell is rung is
+.I (base - (base * percent) / 100 + percent)
+when
+.I percent
+is nonnegative and
+.I (base + (base * percent) / 100)
+when
+.I percent
+is negative;
+where
+.I base
+is the base volume for the keyboard.
+.SH ERRORS
+.TP
+.B LIBAXL_ERROR_VALUE (3)
+.I percent
+is less than -100 or greater than 100.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_CHANGE_KEYBOARD_CONTROL (3),
+.BR LIBAXL_REQUEST_GET_KEYBOARD_CONTROL (3)
