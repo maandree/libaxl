@@ -1,0 +1,65 @@
+.TH LIBAXL_REQUEST_SET_ACCESS_CONTROL 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_SET_ACCESS_CONTROL - Enable or disable use of ACL at connection setup
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_SET_ACCESS_CONTROL 111
+struct libaxl_request_set_access_control {
+        uint8_t     \fIopcode\fP;
+        uint8_t     \fImode\fP;
+        uint16_t    \fI_request_length\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall enable or disable the
+use of the access control list at connection setup.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_SET_ACCESS_CONTROL
+to signify that the request is of the request
+described in this document.
+.PP
+The value of the
+.I mode
+field shall be set to either
+.I LIBAXL_ENABLE
+(=
+.IR 1 )
+or
+.I LIBAXL_DISABLE
+(=
+.IR 0 ).
+The value
+.I LIBAXL_ENABLE
+enables the use of the access control list,
+and the value
+.I LIBAXL_DISABLE
+disables the use of it.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_ACCESS (3)
+The client does not reside on the same host
+as the server and has not be granted permission,
+using a server-dependent method, to execute this
+request.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+.I mode
+is neither set to
+.I LIBAXL_DISABLE
+nor
+.IR LIBAXL_ENABLE .
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_CHANGE_HOSTS (3),
+.BR LIBAXL_REQUEST_LIST_HOSTS (3)
