@@ -53,7 +53,7 @@ typedef struct libaxl_context LIBAXL_CONTEXT;
 #define LIBAXL_ERROR_USER_DOES_NOT_EXIST                              -15
 #define LIBAXL_ERROR_USER_DOES_NOT_HAVE_A_HOME                        -16
 
-union libaxl_input { /* TODO doc, man(makefile) (also LIBAXL_SYNTHETIC_EVENT_BIT(~makefile)) */
+union libaxl_input { /* TODO doc, man (also docs LIBAXL_SYNTHETIC_EVENT_BIT) */
 	uint8_t            type;
 	union libaxl_error error; /* if .type = LIBAXL_ERROR */
 	union libaxl_reply reply; /* if .type = LIBAXL_REPLY */
