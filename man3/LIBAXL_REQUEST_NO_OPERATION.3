@@ -1,0 +1,46 @@
+.TH LIBAXL_REQUEST_NO_OPERATION 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_NO_OPERATION - Do nothing
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_NO_OPERATION 127
+struct libaxl_request_no_operation {
+        uint8_t     \fIopcode\fP;
+        uint8_t     \fI__pad\fP;
+        uint16_t    \fIrequest_length\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall consume but ignore the
+request. The display server shall not generate
+any request or any response or take any action.
+.PP
+This request is not generally useful.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_NO_OPERATION
+to signify that the request is of the request
+described in this document.
+.PP
+The value of the
+.I request_length
+field shall be set to any positive value. The
+sent message will be this number times 4 bytes
+in size. The minimum value of this field is
+useful where the client finds it convient to
+add padding to force requests to begin on
+64-bit boundaries.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+None.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3)
