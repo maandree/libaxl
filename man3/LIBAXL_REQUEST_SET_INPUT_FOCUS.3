@@ -1,0 +1,131 @@
+.TH LIBAXL_REQUEST_SET_INPUT_FOCUS 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_SET_INPUT_FOCUS - Select keyboard input focus
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_SET_INPUT_FOCUS 42
+struct libaxl_request_set_input_focus {
+        uint8_t            \fIopcode\fP;
+        uint8_t            \fIrevert_to\fP;
+        uint16_t           \fI_request_length\fP;
+        libaxl_window_t    \fIfocus\fP;
+        libaxl_timestamp_t \fItime\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall change current
+keyboard input focus and generated appreciate
+input focus events
+.RI ( LIBAXL_EVENT_FOCUS_IN
+and
+.IR LIBAXL_EVENT_FOCUS_OUT ),
+as well as configure how the keyboard input
+focus shall but reverted once the selected
+window stops being viewable.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_SET_INPUT_FOCUS
+to signify that the request is of the
+request described in this document.
+.PP
+The value of the
+.I focus
+field shall either be set to one of the following:
+.TP
+.I a viewable window
+This window becomes the keyboard's focus window,
+and any generated keyboard event that would normally
+be reported to this window or one of its inferiors
+are reported normally, other events are reported
+with resepct to the focus window.
+.TP
+.B LIBAXL_POINTER_ROOT
+At each keyboard event, the root window of whichever
+screen the pointer is on is dynmatically take as
+the keyboard's focus window.
+.TP
+.B LIBAXL_NONE
+All future keyboard events are discarded unitl a
+new focus window is set.
+.PP
+The value of the
+.I revert_to
+field shall be one of the follow values, however
+it is only interpreted if the value of the
+.I focus
+field is a window ID.
+.TP
+.B LIBAXL_PARENT
+When the selected input focus window becomes
+stops being viewable, the focus is translated
+to the closest viewable ancestor of that window,
+and the new
+.I revert_to
+value is taken to be
+.IR LIBAXL_NONE .
+.TP
+.B LIBAXL_POINTER_ROOT
+The new
+.I focus 
+value is taken to be
+.I LIBAXL_POINTER_ROOT
+when the focus window stops being viewable;
+that is the focus window is dymaically taken
+to be the root window of whichever screen the
+pointer is on when an event is generated.
+.TP
+.B LIBAXL_NONE
+The new
+.I focus 
+value is taken to be
+.I LIBAXL_NONE
+when the focus window stops being viewable;
+that is keyboard events get discarded.
+.PP
+If the value of the
+.I time
+field, where
+.I LIBAXL_CURRENT_TIME
+is replaced by the current server time, is set earlier
+than the current last-focus-change time or is later than
+current server time, the request is ignored. Otherwise
+the value of the
+.I time
+field is selected as the new last-focus-change time.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_MATCH (3)
+The selected
+.I focus
+window is not viewable.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+An invalid value as been specified for
+.IR revert_to ,
+.IR focus ,
+or
+.IR time .
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+The selected
+.I focus
+window does not exist.
+.SH REPLIES
+None.
+.SH NOTES
+Whenever the keyboard input focus changes,
+focus events are generated, however the
+last-focus-change time remains unchanged
+if the focus change is the result of a focus
+revert when a window stops being viewable.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_GET_INPUT_FOCUS (3)
