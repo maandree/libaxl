@@ -1,0 +1,82 @@
+.TH LIBAXL_REQUEST_GET_INPUT_FOCUS 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_GET_INPUT_FOCUS - Query keyboard input focus
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_GET_INPUT_FOCUS 43
+struct libaxl_request_get_input_focus {
+        uint8_t            \fIopcode\fP;
+        uint8_t            \fI__pad\fP;
+        uint16_t           \fI_request_length\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall send back the
+current keyboard input focus configuration.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_GET_INPUT_FOCUS
+to signify that the request is of the
+request described in this document.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH ERRORS
+None.
+.SH REPLIES
+.nf
+struct libaxl_reply_get_input_focus {
+        uint8_t             \fI__one\fP;
+        uint8_t             \fIrevert_to\fP;
+        uint16_t            \fIsequence_number\fP;
+        uint32_t            \fI_reply_length\fP;
+        libaxl_window_t     \fIfocus\fP;
+        uint8_t             \fI__unused\fP[20];
+};
+.fi
+.PP
+The display server shall, unless it returns
+an error, return one
+.B "struct libaxl_reply_get_input_focus"
+with the
+.I revert_to
+and
+.I focus
+fields set to currently active values for the
+fields with the same names for the
+.BR LIBAXL_REQUEST_SET_INPUT_FOCUS (3)
+request:
+.I focus
+can either be a viewable window,
+.I LIBAXL_NONE
+(no window get keyboard events), or
+.I LIBAXL_POINTER_ROOT
+(root window on whichever screen the
+pointer is on get get keyboard events), and
+.I revert_to
+can be either be
+.I LIBAXL_NONE
+.RI ( focus
+reverts to
+.I LIBAXL_NONE
+when the window stops being viewable),
+.I LIBAXL_POINTER_ROOT
+.RI ( focus
+reverts to
+.I LIBAXL_POINTER_ROOT
+when the window stops being viewable), or
+.I LIBAXL_PARENT
+.RI ( focus
+reverts to the input focus windows closest
+viewable ancester when it [the input focus
+window] stops being viewable).
+.SH NOTES
+Mone.
+.SH SEE ALSO
+.BR libaxl_send_request (3),
+.BR LIBAXL_REQUEST_SET_INPUT_FOCUS (3)
