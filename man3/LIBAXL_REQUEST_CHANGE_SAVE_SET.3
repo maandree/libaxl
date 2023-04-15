@@ -1,0 +1,90 @@
+.TH LIBAXL_REQUEST_CHANGE_SAVE_SET 3 libaxl
+.SH NAME
+LIBAXL_REQUEST_CHANGE_SAVE_SET - Add or remove window from save-set
+.SH SYNOPSIS
+.nf
+#include <libaxl.h>
+
+#define LIBAXL_REQUEST_CHANGE_SAVE_SET 6
+struct libaxl_request_change_save_set {
+        uint8_t         \fIopcode\fP;
+        uint8_t         \fImode\fP;
+        uint16_t        \fI_request_length\fP;
+        libaxl_window_t \fIwindow\fP;
+};
+.fi
+.SH DESCRIPTION
+The display server shall either add or remove
+a window, created by some other client, from
+the client's save-set.
+.PP
+The value of the
+.I opcode
+field shall be
+.I LIBAXL_REQUEST_LIST_FONTS
+to signify that the request is of the
+request described in this document.
+.PP
+The value of the
+.I mode
+field shall be either
+.I LIBAXL_INSERT
+.RI (= 0 )
+or
+.I LIBAXL_DELETE
+.RI (= 1 ).
+If
+.I LIBAXL_INSERT
+is specified, the window is added to the
+client's save-set. If
+.I LIBAXL_DELETE
+is specified, the window is remove from
+the client's save-set. Windows are automatically
+removed from the save-set when they are destroyed.
+.PP
+The value of the
+.I window
+field shall the window to add to or remove from
+the client's save-set. The window must have been
+created by some other client.
+.PP
+Other fields are filled in automatically by the
+.BR libaxl_send_request (3)
+function.
+.SH EXTENDED DESCRIPTION
+When a client's resources are destroyed, a save-set
+processing is performed for each window in the client's
+save-set. Windows in the save-set that are inferiors of
+a window created by the client are reparented to its
+closest ancestor that is not created by the client,
+For unmapped windows in the save-set (regardless of
+whether it is an inferior to one of the client's
+windows), the display server sends a
+.BR LIBAXL_REQUEST_MAP_WINDOW (3)
+request.
+.PP
+When save-set windows are reparented during this
+process, the coordinates of the upper-left outer
+corner is unchanged with respect to the root window.
+.SH ERRORS
+.TP
+.BR LIBAXL_ERROR_MATCH (3)
+.I window
+refers to a window that was
+.I not
+created by another client.
+.TP
+.BR LIBAXL_ERROR_VALUE (3)
+.I mode
+is neither
+.I LIBAXL_INSERT
+nor
+.IR LIBAXL_DELETE .
+.TP
+.BR LIBAXL_ERROR_WINDOW (3)
+.I window
+does not refer to an existing window.
+.SH REPLIES
+None.
+.SH SEE ALSO
+.BR libaxl_send_request (3)
