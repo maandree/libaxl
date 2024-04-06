@@ -107,7 +107,7 @@ int libaxl_fileno(LIBAXL_CONNECTION *);
  * 
  * @param   conn     The connection to the display server
  * @param   version  Should be `LIBAXL_DISPLAY_INFO_VERSION`; used to
- *                   identify if old fields that have been replaces
+ *                   identify if old fields that have been replaced
  *                   must allocated and filled in with information
  *                   from the new fields that the application does
  '                   not know about
